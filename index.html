@@ -2140,14 +2140,14 @@ function currentLevel(){ return curLevelU(CU); }
 /* segmented progress ring: one segment per lesson, filled segments in the bright unit colour */
 function segRing(frac){
   const n = 12, k = frac > 0 ? Math.max(1, Math.floor(frac*n + 1e-6)) : 0;
-  const r = 49.5, c = 53, gap = 8, span = 360/n;
+  const r = 49.5, c = 53, gap = 13, span = 360/n;
   let out = "";
   for (let i = 0; i < n; i++){
     const a0 = (-90 + i*span + gap/2) * Math.PI/180, a1 = (-90 + (i+1)*span - gap/2) * Math.PI/180;
     const x0 = c + r*Math.cos(a0), y0 = c + r*Math.sin(a0), x1 = c + r*Math.cos(a1), y1 = c + r*Math.sin(a1);
     const large = (span - gap) > 180 ? 1 : 0;
     const d = `M ${x0.toFixed(2)} ${y0.toFixed(2)} A ${r} ${r} 0 ${large} 1 ${x1.toFixed(2)} ${y1.toFixed(2)}`;
-    out += `<path d="${d}" fill="none" stroke-width="7" stroke-linecap="round" stroke="${i < k ? "var(--uc)" : "var(--ucf)"}"/>`;
+    out += `<path d="${d}" fill="none" stroke-width="4.5" stroke-linecap="round" stroke="${i < k ? "var(--uc)" : "var(--ucf)"}"/>`;
   }
   return `<svg class="segring" viewBox="0 0 106 106" aria-hidden="true">${out}</svg>`;
 }
@@ -3826,7 +3826,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "13.4 (November 2, 2026)";
+const APP_VERSION = "13.4.1 (November 2, 2026)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */
