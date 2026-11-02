@@ -1091,7 +1091,7 @@ function buyItem(it){
   buyParty(it);
 }
 /* ---------- 🎆 The big moment: a new item for Миша ---------- */
-function buyParty(it){
+function buyParty(it, preview){
   const ov = document.createElement("div"); ov.className = "party";
   ov.innerHTML = `<canvas></canvas><div class="pin"><div class="ptitle">New for Ми́ша!</div>${liveMisha("pmisha", "wave", it.id)}<h2>${esc(it.name)}</h2><button class="btn" id="pDone">Wear it! 🎉</button></div>`;
   document.body.appendChild(ov);
@@ -1121,7 +1121,8 @@ function buyParty(it){
   if (!still){ burst(); loop(); }
   try { sfx.chestOpen(); setTimeout(() => sfx.giggle(), 700); setTimeout(() => sfx.goal && sfx.goal(), 1200); } catch(_){}
   buzz([30,40,30,40,80]);
-  const close = () => { alive = false; cancelAnimationFrame(raf); ov.classList.add("out"); setTimeout(() => ov.remove(), 300); wardrobeScreen(); };
+  if (preview) ov.querySelector("#pDone").textContent = "Close preview";
+  const close = () => { alive = false; cancelAnimationFrame(raf); ov.classList.add("out"); setTimeout(() => ov.remove(), 300); if (!preview) wardrobeScreen(); };
   ov.querySelector("#pDone").onclick = close;
 }
 
@@ -1996,6 +1997,8 @@ function grownSettings(keep){
   const bg = sheet(`<h2>🔓 Grown-up settings</h2>
     <label class="toggle">Open all levels (for testing)<input type="checkbox" id="tAll" ${S.unlockAll?"checked":""}></label>
     <label class="toggle">Try everything: all of Ми́ша’s items to try on<input type="checkbox" id="tTry" ${P.tryAll?"checked":""}></label>
+    <div class="row" style="flex-wrap:wrap;gap:8px;margin-top:8px"><button class="btn small ghost" id="tStarsUp">⭐ +300 stars for ${esc(me().name)}</button><button class="btn small ghost" id="tStarsDn">⭐ −300</button><button class="btn small ghost" id="tParty">🎆 Preview the celebration</button></div>
+    <p class="note" style="margin:4px 0 0">For testing. Stars added here don’t count as earned and don’t change the family goal.</p>
     <h3>Microsoft Speech</h3>
     <p class="note" style="text-align:left;margin:0">Paste your key once. It stays on this device and is shared by all learners. Works from your own web link (GitHub Pages), not inside Claude.</p>
     <label class="field">Key<input type="password" id="azKey" autocomplete="off" placeholder="Paste KEY 1 here" value="${esc(S.azKey||"")}"></label>
@@ -2028,6 +2031,9 @@ function grownSettings(keep){
   $("#rsBtn",bg).onclick = () => $("#rsFile",bg).click();
   $("#rsFile",bg).onchange = e => { const f = e.target.files[0]; if (f){ bg.remove(); importBackup(f, () => { gsDone.rsBtn = "✓ Restored"; grownSettings(true); }); } };
   $("#tAll",bg).onchange = e => { S.unlockAll = e.target.checked; save(); home(); };
+  $("#tStarsUp",bg).onclick = () => { S.stars = (S.stars||0) + 300; S.shownStars = S.stars; save(); toast(`${me().name} now has ⭐ ${S.stars}.`); };
+  $("#tStarsDn",bg).onclick = () => { S.stars = Math.max(0, (S.stars||0) - 300); S.shownStars = S.stars; save(); toast(`${me().name} now has ⭐ ${S.stars}.`); };
+  $("#tParty",bg).onclick = () => { const it = ITEMS.find(i => i.id===SHOP_LINE.find(id => !(S.owned||[]).includes(id))) || ITEMS.find(i => i.id==="crown"); bg.remove(); buyParty(it, true); };
   $("#tTry",bg).onchange = e => { P.tryAll = e.target.checked; if (!P.tryAll) P.tryWear = {}; saveP(); toast(P.tryAll ? "Try-everything is on. Open the 🐿️ Ми́ша tab." : "Try-everything is off. Back to earned items."); };
   const store = () => { S.azKey = $("#azKey",bg).value.trim(); S.azRegion = ($("#azRegion",bg).value.trim() || "eastus").toLowerCase().replace(/\s+/g,""); S.azVoice = $("#azVoice",bg).value; P.az = {key:S.azKey, region:S.azRegion, voice:S.azVoice}; saveP(); save(); ttsCache.clear(); azWarned = false; };
   $("#azSave",bg).onclick = () => { store(); mark("azSave", "✓ Saved"); $("#azStatus",bg).textContent = azOn() ? "Saved. Microsoft voice is on." : "Saved. No key: using the phone’s voice."; };
@@ -3470,7 +3476,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "13.2 (November 2, 2026)";
+const APP_VERSION = "13.2.1 (November 2, 2026)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */
