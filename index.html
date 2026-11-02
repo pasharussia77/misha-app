@@ -986,13 +986,14 @@ function questsScreen(){
   const mins = todayMin(S), goal = S.goalMin||10, now = new Date(), left = Math.max(1, Math.ceil((new Date(now.getFullYear(), now.getMonth(), now.getDate()+1) - now)/36e5));
   app.innerHTML = `<div class="phead2" style="background:#7A5BD6">${chip("pointing-happy")}<div><h2>Daily quests</h2><p>New quests in ${left} hour${left>1?"s":""}</p></div></div>
     <div style="padding:16px;display:grid;gap:12px">
-      ${q.list.map(it => { const d = qdef(it.id); return `<div class="qcard ${it.done ? "done" : ""}"><span class="ic">${it.done ? "✅" : d.icon}</span><span class="tx">${esc(d.label)}<div class="qbar"><i style="width:${Math.round(100*it.prog/d.target)}%"></i><em>${it.prog} / ${d.target}</em></div></span></div>`; }).join("")}
-      <div class="qcard" style="justify-content:center;text-align:center;flex-direction:column;gap:4px"><span style="font-size:40px">${q.chest ? "✨" : "🎁"}</span><b>${q.chest ? "Quest chest opened today!" : "Finish all 3 quests to win the quest chest and a 🌰 acorn"}</b></div>
+      ${q.list.map(it => { const d = qdef(it.id); return `<div class="qcard ${it.done ? "done" : ""}" ${it.id==="weak5" && !it.done ? `data-weak role="button" style="cursor:pointer"` : ""}><span class="ic">${it.done ? "✅" : d.icon}</span><span class="tx">${esc(d.label)}<div class="qbar"><i style="width:${Math.round(100*it.prog/d.target)}%"></i><em>${it.prog} / ${d.target}</em></div></span></div>`; }).join("")}
+      <div class="qcard" style="justify-content:center;text-align:center;flex-direction:column;gap:4px"><span style="font-size:40px">${q.chest ? "✨" : "🎁"}</span><b>${q.chest ? "Quest chest opened today!" : `Finish all ${q.list.length} quests to win the quest chest and a 🌰 acorn`}</b></div>
       <h3 style="font-family:var(--font-head);margin:8px 0 0">Daily goal</h3>
       <div class="today" style="margin:0;cursor:default"><div class="goalring">${ringSVG(mins/goal)}<span>🎯</span></div><div class="tx"><b>${Math.min(mins, goal)} of ${goal} minutes today</b><small>${mins >= goal ? "Goal reached! Молоде́ц!" : "Lessons and practice both count."}</small></div></div>
       <div class="goalpick">${[[5,"Casual"],[10,"Regular"],[15,"Serious"],[20,"Intense"]].map(([m,n]) => `<button data-goal="${m}" aria-pressed="${goal===m}">${m} min<small>${n}</small></button>`).join("")}</div>
     </div>${navHTML("quests")}`;
   app.querySelectorAll("[data-goal]").forEach(b => b.onclick = () => { S.goalMin = +b.dataset.goal; save(); questsScreen(); });
+  app.querySelectorAll("[data-weak]").forEach(b => b.onclick = () => startPractice("weak"));
   wireNav();
 }
 function badgesScreen(){
@@ -1765,7 +1766,7 @@ function home(){
     </div>
     <div class="greet">${liveMisha("", "wave")}<div class="bubble">${esc(msg)}</div></div>
     ${(() => { ensureFields(S); const q = questsToday(), m = todayMin(S), g = S.goalMin||10, qd = q.list.filter(x => x.done).length;
-      return `<div class="today" id="todayCard" role="button" aria-label="Daily goal and quests"><div class="goalring">${ringSVG(m/g)}<span>${m >= g ? "✅" : "🎯"}</span></div><div class="tx"><b>${m >= g ? "Daily goal done!" : "Daily goal"}</b><small>${Math.min(m,g)} of ${g} minutes today</small></div><span class="qpill">🎯 ${qd}/3 quests</span></div>`; })()}
+      return `<div class="today" id="todayCard" role="button" aria-label="Daily goal and quests"><div class="goalring">${ringSVG(m/g)}<span>${m >= g ? "✅" : "🎯"}</span></div><div class="tx"><b>${m >= g ? "Daily goal done!" : "Daily goal"}</b><small>${Math.min(m,g)} of ${g} minutes today</small></div><span class="qpill">🎯 ${qd}/${questsToday().list.length} quests</span></div>`; })()}
     ${(() => { const fs = familyStatus(), nr = nextReward();
       const fam = `<div class="fam"><div class="row1">👪 <span style="flex:1">Family goal this week</span><small>${fs.total} / ${fs.target} ⭐</small></div><div class="qbar"><i style="width:${Math.min(100, Math.round(100*fs.total/fs.target))}%;background:${fs.total>=fs.target ? "var(--good)" : "var(--sun)"}"></i></div>
         ${fs.per.length > 1 ? `<small>${fs.per.map(x => `${x.p.avatar} ${x.n}`).join("  ·  ")}</small>` : ""}</div>`;
@@ -2023,7 +2024,8 @@ const QPOOL = [
   {id:"speak3", icon:"🎙️", label:"Say 3 things with a score of 80+", target:3, m:"speak80", g:2, az:true},
   {id:"practice1", icon:"🏋️", label:"Finish a practice session", target:1, m:"practice", g:2},
   {id:"listen8", icon:"🎧", label:"Get 8 listening exercises right", target:8, m:"listen", g:2},
-  {id:"mm1", icon:"⏲️", label:"Play Match Madness", target:1, m:"mm", g:2}
+  {id:"mm1", icon:"⏲️", label:"Play Match Madness", target:1, m:"mm", g:2},
+  {id:"weak5", icon:"💪", label:"Practise your 5 weakest words", target:1, m:"weak", g:9}
 ];
 function seeded(str){ let h = fnv(str); return () => { h = Math.imul(h ^ (h >>> 15), 2246822507) >>> 0; h = Math.imul(h ^ (h >>> 13), 3266489909) >>> 0; return (h >>> 0) / 4294967296; }; }
 function questsToday(){
@@ -2032,6 +2034,8 @@ function questsToday(){
     const rnd = seeded(k + (P.current||"")), pick = g => { const c = QPOOL.filter(q => q.g===g && (!q.az || azOn())); return c[Math.floor(rnd()*c.length)]; };
     S.q = {date:k, list:[pick(0), pick(1), pick(2)].map(q => ({id:q.id, prog:0, done:false})), chest:false};
   }
+  /* the word workout is a 4th quest every day, once the child knows at least 3 words */
+  if (!S.q.chest && !S.q.list.some(x => x.id==="weak5") && learnedWords().length >= 3) S.q.list.push({id:"weak5", prog:0, done:false});
   return S.q;
 }
 const qdef = id => QPOOL.find(q => q.id===id);
@@ -2129,6 +2133,7 @@ function practiceScreen(){
     <div class="pheader">${chip("teach")}<div><h2>Practice</h2><p>Short sessions to make it stick.</p></div></div>
     <div style="padding:16px;display:grid;gap:12px">
       <button class="prow" data-p="mm"><span class="tx"><b>⏲️ Match Madness</b><small>60 seconds, beat your best: ${S.mmBest||0}</small></span><span class="ic" style="background:#FFE7B8">⚡</span></button>
+      <button class="prow" data-p="weak"><span class="tx"><b>💪 Weak words</b><small>${learnedWords().length >= 3 ? "Learn your 5 weakest words, then say them from memory" : "Learn 3 words first"}</small></span><span class="ic" style="background:#FFE3D6">💪</span></button>
       <button class="prow" data-p="review"><span class="tx"><b>Smart review</b><small>${(() => { const d = dueCount(); return d ? `${d} item${d>1?"s are":" is"} fading. Bring ${d>1?"them":"it"} back!` : "Everything is fresh. Review anyway?"; })()}</small></span><span class="ic" style="background:#FFF1C9">🧠${dueCount()?`<span class="badge">${dueCount()}</span>`:""}</span></button>
       <button class="prow" data-p="mistakes"><span class="tx"><b>Mistakes</b><small>${mist.length ? `Fix ${mist.length} recent mistake${mist.length>1?"s":""}` : "No mistakes to fix. Great!"}</small></span><span class="ic" style="background:#FFE6C7">↻${mist.length?`<span class="badge">${mist.length}</span>`:""}</span></button>
       <button class="prow" data-p="words"><span class="tx"><b>Words</b><small>${words.length} words learned</small></span><span class="ic" style="background:var(--chip)">🗂️</span></button>
@@ -2145,6 +2150,7 @@ function startPractice(kind){
   const words = learnedWords(), sents = learnedSentences();
   if (kind==="letters") return lettersScreen();
   if (kind==="mm") return matchMadness();
+  if (kind==="weak") return weakWorkout();
   if (kind==="words") return wordsScreen();
   const pool = words.length ? words : null;
   let q = [];
@@ -2179,6 +2185,41 @@ function startPractice(kind){
   }
   if (!q.length){ toast("Nothing to practise yet."); return; }
   runQueue(shuffle(q).map(e => ({...e, practice:true})), {kind:"practice", practice:kind});
+}
+/* ---------- 💪 Weak words: learn 5 words, then say them from memory until each one sticks ---------- */
+function weakestWords(n=5){
+  const words = learnedWords(); if (!words.length) return [];
+  const first = S.wkFirst||[], mist = S.mistakes||[];
+  const rank = w => { const st = wordStats(S, w), sc = st && st.score != null ? st.score : 50;
+    return (first.includes(w.id) ? -1000 : 0) + (mist.includes("w:" + w.id) ? -300 : 0) + sc; };
+  return words.slice().sort((a,b) => rank(a) - rank(b)).slice(0, n);
+}
+const wkRecall = (w, t) => speakEx(w.ru, w.en, "recall", {wk:{id:w.id, t}});
+function weakWorkout(){
+  const words = weakestWords(5);
+  if (words.length < 3){ toast("Learn a few more words first, then come back!"); return; }
+  const q = [];
+  words.forEach(w => { q.push({type:"intro", word:w, wk:{learn:true}}); q.push(speakEx(w.ru, w.en, "repeat", {wk:{learn:true}})); });
+  q.push({...matchEx(words), wk:{learn:true}});
+  q.push({type:"wround", r:2});
+  L = Object.assign({level:0, n:0, queue:q, i:0, total:q.length, firstTry:0, graded:0, requeued:new Set(), start:Date.now(), storyShown:[], combo:0, pendingCombo:0, reviewShown:true},
+    {kind:"practice", practice:"weak", wkWords:words.map(w => w.id), wkNext:[], wkOk:[], wkLater:[]});
+  splash(chip("teach"), "Round 1: let’s learn 5 words!", "Look, listen and say them. Then you’ll say them from memory.");
+  $("#go").onclick = showExercise;
+}
+/* called after each from-memory try */
+function wkResult(ex, ok){
+  const w = W(ex.wk.id); if (!w) return;
+  if (ok){
+    L.wkOk.push(w.id); S.wkFirst = (S.wkFirst||[]).filter(x => x!==w.id); S.mistakes = (S.mistakes||[]).filter(k => k!=="w:" + w.id);
+    const m = (S.mem||{})["w:" + w.id]; if (m) m.r++;            /* saying it from memory counts double */
+    return;
+  }
+  const t = ex.wk.t + 1;
+  /* show the right answer straight away: Миша says it, the child repeats it */
+  L.queue.splice(L.i + 1, 0, speakEx(w.ru, w.en, "repeat", {wk:{fix:true}})); L.total++;
+  if (ok === null || t >= 3){ L.wkLater.push(w.id); S.wkFirst = [w.id].concat((S.wkFirst||[]).filter(x => x!==w.id)).slice(0, 10); }
+  else L.wkNext.push({id:w.id, t});
 }
 function wordsScreen(){
   const words = learnedWords(), mist = new Set(S.mistakes||[]);
@@ -2350,7 +2391,7 @@ function sleepySheet(go){
   const bg = sheet(`<div style="text-align:center">${chip("sleepy").replace('class="chip ', 'style="width:130px;margin:0 auto" class="chip ')}
       <h2 style="margin:8px 0 4px">Today’s new circle is done!</h2>
       <p class="sub" style="margin:0">Ми́ша is sleepy. A new circle opens tomorrow. You can still practise and replay everything you’ve learned.</p>
-      <p class="sub" style="margin:10px 0 0">${ac ? `You have 🌰 ${ac} acorn${ac>1?"s":""}. An acorn opens one bonus circle today.` : "Finish all 3 daily quests to earn a 🌰 acorn. An acorn opens one bonus circle."}</p></div>
+      <p class="sub" style="margin:10px 0 0">${ac ? `You have 🌰 ${ac} acorn${ac>1?"s":""}. An acorn opens one bonus circle today.` : "Finish all your daily quests to earn a 🌰 acorn. An acorn opens one bonus circle."}</p></div>
     <div style="display:grid;gap:12px;margin-top:16px">${ac ? `<button class="btn" id="useAc">Use a 🌰 acorn</button>` : ""}<button class="btn ${ac ? "ghost" : ""}" id="goPr">🏋️ Practise instead</button><button class="btn ghost" data-close>OK</button></div>`, true);
   const u = $("#useAc", bg); if (u) u.onclick = () => { S.acorns = Math.max(0, (S.acorns||0) - 1); const x = newToday(); x.extra++; S.lvDay = x; save(); bg.remove(); sfx.pop(); go(); };
   $("#goPr", bg).onclick = () => { bg.remove(); startPractice("review"); };
@@ -2421,7 +2462,7 @@ function feedback(ok, correctText, note){
     if (["listen","heard","dictation","lhear"].includes(ex.type)){ bumpCnt("listen"); questProgress("listen", 1); }
   }
   if (ok && ex.l){ S.mastery = S.mastery || {}; S.mastery[ex.l.u] = Math.min(5, (S.mastery[ex.l.u]||0) + 1); }
-  if (!ok && !L.requeued.has(L.i)){ L.requeued.add(L.i); L.queue.push({...ex, retry:true}); L.total++; }
+  if (!ok && !L.requeued.has(L.i) && !ex.wk){ L.requeued.add(L.i); L.queue.push({...ex, retry:true}); L.total++; }
   ok ? sfx.good() : sfx.bad(); buzz(ok ? 25 : [45,35,45]);
   const f = $("#footer");
   f.className = "footer " + (ok ? "ok" : "no");
@@ -2457,6 +2498,18 @@ function splash(img, line, sub){
 
 /* ---------- Renderers ---------- */
 const RENDER = {
+  wround(ex){
+    const items = ex.r===2 ? L.wkWords.map(id => ({id, t:0})) : L.wkNext;
+    L.wkNext = [];
+    const add = items.map(it => W(it.id)).filter(Boolean);
+    L.i++;
+    if (!add.length) return showExercise();
+    const extra = items.filter(it => W(it.id)).map(it => wkRecall(W(it.id), it.t)).concat({type:"wround", r:ex.r+1});
+    L.queue.splice(L.i, 0, ...extra); L.total += extra.length;
+    const n = add.length;
+    if (ex.r===2) splash(chip("teach"), "Round 2: from memory!", "Now I show the English. You say it in Russian.");
+    else splash(chip("review"), `Round ${ex.r}: try again!`, `${n} word${n>1?"s":""} to go. You can do it!`);
+  },
   intro(ex){
     const w = ex.word;
     lessonShell(`<p class="prompt">New word</p>
@@ -2531,7 +2584,7 @@ const RENDER = {
   dictation(ex){ tiles(ex, `Tap what you hear`, `<div class="say" style="justify-content:center">${sayBtns(ex.s.ru)}</div>`, true); speak(ex.s.ru); },
   speak(ex){
     const mode = ex.mode || "repeat", hidden = ["recall","picture","answer"].includes(mode);
-    const title = {repeat:"Listen, then say it", read: ex.after ? "Now say it!" : "Read it aloud", recall:"Say it in Russian", picture:"What is this? Say it in Russian", answer:"Answer Ми́ша"}[mode];
+    const title = {repeat: ex.wk && ex.wk.fix ? "Here’s the right word. Listen, then say it" : "Listen, then say it", read: ex.after ? "Now say it!" : "Read it aloud", recall:"Say it in Russian", picture:"What is this? Say it in Russian", answer:"Answer Ми́ша"}[mode];
     const big = `<div class="ru big" style="font-size:${plain(ex.text).length > 16 ? 28 : 36}px">${ex.text}</div>`;
     const hid = `<div id="hid"><div style="font-size:26px;letter-spacing:.3em;color:var(--muted)">• • •</div><button class="btn small ghost" id="hintBtn" style="margin-top:6px">💡 Show me</button></div>`;
     let top;
@@ -2561,8 +2614,11 @@ const RENDER = {
       if (hidden){ $("#hid").innerHTML = `${big}<div class="say" style="justify-content:center">${sayBtns(ex.text)}</div>`; }
       wireSay(); if (play) setTimeout(() => speak(ex.text), 500);
     };
-    const hb = $("#hintBtn"); if (hb) hb.onclick = () => { reveal(true); sfx.pop(); };
-    const grade = ok => { if (graded) return; graded = true; if (!ex.retry){ L.graded++; if (ok) L.firstTry++; } bump(ok); memUpdate(speakKey(ex), ok); };
+    let peeked = false;
+    const hb = $("#hintBtn"); if (hb) hb.onclick = () => { peeked = true; reveal(true); sfx.pop(); };
+    const isWk = ex.wk && ex.wk.id;
+    const grade = ok => { if (graded) return; graded = true; if (isWk && peeked) ok = false; if (!ex.retry){ L.graded++; if (ok) L.firstTry++; } bump(ok); memUpdate(speakKey(ex), ok); if (isWk) wkResult(ex, ok); };
+    if (isWk){ $("#skip").textContent = "I don’t know it"; }
     let raf = null;
     const recUI = on => {
       btn.classList.toggle("on", on); $("#recWrap").classList.toggle("on", on); $("#bars").classList.toggle("on", on);
@@ -2621,7 +2677,8 @@ const RENDER = {
     $("#again").onclick = again; $("#againAz").onclick = again;
     $("#right").onclick = () => { grade(true); sfx.good(); advance(); };
     $("#nextAz").onclick = () => { grade(best >= 60); advance(); };
-    $("#skip").onclick = async () => { if (rec){ const r = rec; rec = null; clearTimeout(timer); await r.stop(); } advance(); };
+    $("#skip").onclick = async () => { if (rec){ const r = rec; rec = null; clearTimeout(timer); await r.stop(); } if (isWk){ reveal(true); grade(false); } advance(); };
+    if (isWk){ const nb = document.createElement("button"); nb.className = "btn ghost"; nb.id = "notYet"; nb.textContent = "Not yet"; $("#judge").insertBefore(nb, $("#right")); nb.onclick = () => { grade(false); advance(); }; }
   },
   lintro(ex){
     const l = ex.l;
@@ -2822,6 +2879,7 @@ function finishLesson(){
   if (flawlessRun && !isP) bumpCnt("flawless");
   if (!isP && L.level===3 && !isA) bumpCnt("stories");
   if (isP) questProgress("practice", 1); else questProgress("lessons", 1);
+  if (isP && L.practice==="weak") questProgress("weak", 1);
   questProgress("right", L.firstTry); questProgress("combo", L.maxCombo||0, "max");
   if (flawlessRun && !isP) questProgress("flawless", 1);
   questProgress("minutes", todayMin(S), "max");
@@ -2832,7 +2890,8 @@ function finishLesson(){
   const unitDone = isA ? (!wasDone && alphaDone()) : (curLevelU(un)===-1 && levelDone);
   const flawless = L.graded > 0 && L.firstTry===L.graded;
   const title = isP ? (flawless ? "Flawless practice!" : "Practice complete!") : unitDone ? (isA ? "Alphabet complete!" : `Unit ${un} complete!`) : flawless ? "Flawless!" : isA ? `${ALPHA[L.n].title}: done!` : levelDone ? `${LEVELS[lv].title}: level complete!` : "Lesson complete!";
-  const line = isP ? "Practice keeps your Russian fresh. Молоде́ц!" : unitDone ? (isA ? "You can read all 33 Russian letters. Unit 1 is open!" : UNITS[un].doneLine + (UNITS[un+1] ? ` Unit ${un+1} is open!` : "")) : isA && !flawless ? "Your Russian letters are growing!" : flawless ? "Not a single mistake. Отли́чно!" : levelDone ? "A new level is open on your path." : "Every lesson makes your Russian stronger.";
+  const wkLine = () => { const ok = L.wkOk.length, n = L.wkWords.length, later = L.wkLater.length; return ok===n ? `You said all ${n} words from memory! Молоде́ц!` : `You said ${ok} of ${n} words from memory. ${later===1 ? "One word comes" : `${later} words come`} back first tomorrow.`; };
+  const line = isP && L.practice==="weak" ? wkLine() : isP ? "Practice keeps your Russian fresh. Молоде́ц!" : unitDone ? (isA ? "You can read all 33 Russian letters. Unit 1 is open!" : UNITS[un].doneLine + (UNITS[un+1] ? ` Unit ${un+1} is open!` : "")) : isA && !flawless ? "Your Russian letters are growing!" : flawless ? "Not a single mistake. Отли́чно!" : levelDone ? "A new level is open on your path." : "Every lesson makes your Russian stronger.";
   const accL = acc===100 ? "Amazing" : acc>=80 ? "Great" : "Good";
   const timeL = secs<120 ? "Blazing" : secs<240 ? "Speedy" : "Time";
   sfx.done();
@@ -2855,7 +2914,7 @@ function finishLesson(){
   if (levelDone && !isP){ chestStars = 5 + Math.floor(Math.random()*6); chain.push(chestScreen({stars:chestStars}, "You earned a chest for finishing the level!")); }
   else if (!isP && Math.random() < 0.2) chain.push(chestScreen(surpriseReward(), "A surprise chest! 🎉"));
   if (goalHit) chain.push(goalScreen());
-  if ((S.newQuests||[]).length){ const ids = S.newQuests; S.newQuests = []; chain.push(questDoneScreen(ids)); const q = questsToday(); if (q.list.every(x => x.done) && !q.chest){ q.chest = true; chain.push(chestScreen({stars:10 + Math.floor(Math.random()*11), acorn:true}, "All 3 daily quests done! Here’s your quest chest.")); } }
+  if ((S.newQuests||[]).length){ const ids = S.newQuests; S.newQuests = []; chain.push(questDoneScreen(ids)); const q = questsToday(); if (q.list.every(x => x.done) && !q.chest){ q.chest = true; chain.push(chestScreen({stars:10 + Math.floor(Math.random()*11), acorn:true}, `All ${q.list.length} daily quests done! Here’s your quest chest.`)); } }
   chain.push(badgeCheckStep());
   chain.push(familyStep(famBefore));
   chain.push(rewardStep());
@@ -3323,7 +3382,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "13.0 (November 1, 2026)";
+const APP_VERSION = "13.1 (November 2, 2026)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */
