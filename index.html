@@ -315,6 +315,17 @@ img.chip.papa{filter:brightness(.8) saturate(.85)}
 .chips span.lo{background:var(--bad-bg);color:var(--bad-ink)}.chips span.mid{background:#FFF4D6;color:#8A5A00}
 .dsec{margin-top:12px;font-weight:800}
 .dsec small{display:block;color:var(--muted);font-weight:700}
+/* Parent dashboard: folded cards and sections, all closed by default */
+.dcard.fold{padding:0}
+.fhd,.fhd2{display:flex;align-items:center;gap:12px;width:100%;appearance:none;border:0;background:none;font:inherit;color:inherit;cursor:pointer;text-align:left}
+.fhd{padding:14px 16px}.fhd h3{flex:1}
+.fhd2{gap:8px;padding:13px 0;font-weight:800;font-size:16px}.fhd2 .t{flex:1}
+.fhd .chev,.fhd2 .chev{color:var(--muted);font-size:22px;transition:transform .2s}
+.open>.fhd .chev,.open>.fhd2 .chev{transform:rotate(90deg)}
+.fold>.fbody{display:none;padding:0 16px 16px}
+.fsec{border-top:2px solid var(--line)}
+.fsec>.fbody{display:none;padding:0 0 14px}
+.fold.open>.fbody,.fsec.open>.fbody{display:block;animation:popup .25s ease-out}
 /* Offline */
 .offrow{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:2px solid var(--line)}
 .offrow .tx{flex:1;font-weight:800}.offrow small{display:block;color:var(--muted);font-weight:700}
@@ -3025,7 +3036,8 @@ function deleteLearnerNow(p, after){
   saveP(); toast(`${p.name} was deleted.`); after && after();
 }
 /* ---------- Parent dashboard ---------- */
-function parentGate(){ askPin(parentDash, "Parent dashboard"); }
+let dashOpen = {};
+function parentGate(){ askPin(() => { dashOpen = {}; parentDash(); }, "Parent dashboard"); }
 function childReport(p){
   const s = p.id===P.current ? S : loadS(p.id);
   const now = new Date(), dow = (now.getDay()+6)%7, names = ["Mo","Tu","We","Th","Fr","Sa","Su"];
@@ -3052,30 +3064,32 @@ function childReport(p){
   const unitPct = u => { const d = u===2 ? (s.done2||[0,0,0,0,0]) : s.done; const tot = LEVELS.reduce((a,l) => a + l.lessons, 0); return {done: d.reduce((a,v,i) => a + Math.min(v, LEVELS[i].lessons), 0), tot}; };
   const bar = (label, done, tot) => `<div class="prog"><div class="lab"><span>${label}</span><span>${done} / ${tot}</span></div><div class="bar"><i style="width:${Math.round(100*done/tot)}%"></i></div></div>`;
   const u1 = unitPct(1), u2 = unitPct(2);
-  return `<div class="dcard">
-    <div class="dhead">${avHTML(p.avatar, 56)}<div style="flex:1"><h3>${esc(p.name)}</h3><small style="color:var(--muted);font-weight:700">🔥 ${s.streak||0}-day streak · ⭐ ${s.stars||0} stars</small></div>
-      <button class="iconbtn" data-edit="${p.id}" aria-label="Edit ${esc(p.name)}">✏️</button></div>
-    <div class="dsec">This week<small>${daysWeek} day${daysWeek===1?"":"s"} practised · ${minWeek} min in total</small></div>
-    <div class="week7">${week.map(w => `<div><i style="height:${w.future ? 0 : Math.max(3, Math.round(56*w.min/maxMin))}px;${w.min ? "" : "background:var(--line)"}"></i>${w.nm}</div>`).join("")}</div>
-    <div class="dstats">
+  const id = p.id, fs = (k, title, html) => { const key = id + ":" + k; return `<div class="fsec ${dashOpen[key] ? "open" : ""}"><button class="fhd2" data-ft="${key}"><span class="t">${title}</span><span class="chev">›</span></button><div class="fbody">${html}</div></div>`; };
+  return `<div class="dcard fold ${dashOpen[id] ? "open" : ""}">
+    <button class="fhd" data-ft="${id}">${avHTML(p.avatar, 48)}<h3>${esc(p.name)}</h3><span class="chev">›</span></button>
+    <div class="fbody">
+    ${fs("week", "📅 This week", `<div class="dsec" style="margin-top:0"><small>${daysWeek} day${daysWeek===1?"":"s"} practised · ${minWeek} min in total</small></div>
+    <div class="week7">${week.map(w => `<div><i style="height:${w.future ? 0 : Math.max(3, Math.round(56*w.min/maxMin))}px;${w.min ? "" : "background:var(--line)"}"></i>${w.nm}</div>`).join("")}</div>`)}
+    ${fs("sum", "📈 Summary", `<small style="color:var(--muted);font-weight:700">🔥 ${s.streak||0}-day streak · ⭐ ${s.stars||0} stars</small><div class="dstats">
       <div><b>${st.lessons}</b><small>lessons finished</small></div>
       <div><b>${st.practice}</b><small>practice sessions</small></div>
       <div><b>${acc==null ? "–" : acc + "%"}</b><small>right first time</small></div>
       <div><b>${wordsLearned}</b><small>words learned</small></div>
       <div><b>${avgG || "–"}</b><small>average grade</small></div>
       <div><b>${lettersMet}</b><small>letters met</small></div>
-    </div>
-    ${bar("Letters", Math.min(s.alpha||0, ALPHA.length), ALPHA.length)}
+    </div>`)}
+    ${fs("prog", "📚 Letters and units", `${bar("Letters", Math.min(s.alpha||0, ALPHA.length), ALPHA.length)}
     ${bar("Unit 1: Make introductions", u1.done, u1.tot)}
-    ${bar("Unit 2: What is this?", u2.done, u2.tot)}
-    <div class="dsec">Word grades<small>${wordsLearned ? `A ${dist.A} · B ${dist.B} · C ${dist.C} · D ${dist.D} · F ${dist.F}${dist.N ? ` · not graded yet ${dist.N}` : ""}` : "No words learned yet."}</small></div>
+    ${bar("Unit 2: What is this?", u2.done, u2.tot)}`)}
+    ${fs("grades", "🔤 Word grades", `<div class="dsec" style="margin-top:0"><small>${wordsLearned ? `A ${dist.A} · B ${dist.B} · C ${dist.C} · D ${dist.D} · F ${dist.F}${dist.N ? ` · not graded yet ${dist.N}` : ""}` : "No words learned yet."}</small></div>
     ${wordsLearned ? `<div class="gdist">${["A","B","C","D","F","N"].map(g => dist[g] ? `<i class="g${g}" style="width:${100*dist[g]/wordsLearned}%"></i>` : "").join("")}</div>` : ""}
-    ${weakWords.length ? `<div class="dsec" style="margin-top:8px"><small>Weakest words</small></div><div class="chips">${weakWords.map(w => `<span class="${w.b}">${w.t} · ${w.g}</span>`).join("")}</div>` : ""}
-    <div class="dsec">Memory<small>${due ? `${due} item${due>1?"s":""} need${due>1?"":"s"} review. Smart review in Practice brings them back.` : "Everything is fresh right now."}</small></div>
-    <div class="dsec">Pronunciation<small>${pavg==null ? "No scored speaking yet. Connect Microsoft Speech in Grown-up settings and use the speaking exercises." : `Average score (last ${Math.min(20, pr.length)} tries): ${pavg} / 100`}</small></div>
-    ${snd.length ? `<div class="dsec" style="margin-top:8px"><small>Sounds to practise (average score)</small></div><div class="chips">${snd.map(x => `<span class="${band(x.avg)}">${esc(x.ph)} · ${x.avg}</span>`).join("")}</div>` : ""}
-    <div class="dsec">Recent mistakes<small>${(s.mistakes||[]).length} to fix · the Mistakes practice uses these</small></div>
-    <button class="btn ghost" data-stats="${p.id}" style="margin-top:12px">📊 All words and grades</button>
+    ${weakWords.length ? `<div class="dsec" style="margin-top:8px"><small>Weakest words</small></div><div class="chips">${weakWords.map(w => `<span class="${w.b}">${w.t} · ${w.g}</span>`).join("")}</div>` : ""}<button class="btn ghost" data-stats="${p.id}" style="margin-top:12px">📊 All words and grades</button>`)}
+    ${fs("mem", "🧠 Memory", `<div class="dsec" style="margin-top:0"><small>${due ? `${due} item${due>1?"s":""} need${due>1?"":"s"} review. Smart review in Practice brings them back.` : "Everything is fresh right now."}</small></div>`)}
+    ${fs("pron", "🎙️ Pronunciation", `<div class="dsec" style="margin-top:0"><small>${pavg==null ? "No scored speaking yet. Connect Microsoft Speech in Grown-up settings and use the speaking exercises." : `Average score (last ${Math.min(20, pr.length)} tries): ${pavg} / 100`}</small></div>
+    ${snd.length ? `<div class="dsec" style="margin-top:8px"><small>Sounds to practise (average score)</small></div><div class="chips">${snd.map(x => `<span class="${band(x.avg)}">${esc(x.ph)} · ${x.avg}</span>`).join("")}</div>` : ""}`)}
+    ${fs("mist", "❌ Recent mistakes", `<div class="dsec" style="margin-top:0"><small>${(s.mistakes||[]).length} to fix · the Mistakes practice uses these</small></div>`)}
+    <div class="fsec" style="padding-top:12px"><button class="btn ghost" data-edit="${p.id}">✏️ Edit, reset or delete ${esc(p.name)}</button></div>
+    </div>
   </div>`;
 }
 function parentDash(){
@@ -3084,18 +3098,19 @@ function parentDash(){
     <div style="padding:0 16px 12px"><h2 style="font-family:var(--font-head);margin:0;font-size:28px">Parent dashboard</h2>
       <p class="sub" style="margin:4px 0 0">Saved on this device only.</p></div>
     <div class="dash">
-      <div class="dcard"><h3>👪 Family goal</h3><p class="sub" style="margin:4px 0 8px">Stars all learners earn together each week (Monday to Sunday). This week: ${familyStatus().total}.</p>
-        <label class="field">Weekly target<input type="number" inputmode="numeric" id="famT" min="10" max="2000" value="${(P.family||{target:60}).target}"></label><button class="btn small" id="famSave">Save target</button></div>
-      <div class="dcard"><h3>🎁 Family rewards</h3><p class="sub" style="margin:4px 0 8px">Real-life rewards children work towards. They see the next one on their home screen.</p>
+      <div class="dcard fold ${dashOpen.fam ? "open" : ""}"><button class="fhd" data-ft="fam"><h3>👪 Family goal</h3><span class="chev">›</span></button><div class="fbody"><p class="sub" style="margin:0 0 8px">Stars all learners earn together each week (Monday to Sunday). This week: ${familyStatus().total}.</p>
+        <label class="field">Weekly target<input type="number" inputmode="numeric" id="famT" min="10" max="2000" value="${(P.family||{target:60}).target}"></label><button class="btn small" id="famSave">Save target</button></div></div>
+      <div class="dcard fold ${dashOpen.rw ? "open" : ""}"><button class="fhd" data-ft="rw"><h3>🎁 Family rewards</h3><span class="chev">›</span></button><div class="fbody"><p class="sub" style="margin:0 0 8px">Real-life rewards children work towards. They see the next one on their home screen.</p>
         <div id="rwList">${(P.rewards||[]).map(r => `<div class="rw"><span class="e">${r.emoji}</span><span class="tx"><b>${esc(r.title)}</b><small>${rewardLabel(r)} · ${r.who==="all" ? "everyone" : esc((P.profiles.find(p => p.id===r.who)||{name:"?"}).name)}</small>
           <small>${P.profiles.filter(p => r.who==="all" || r.who===p.id).map(p => { const e = (r.earned||{})[p.id], g = (r.given||{})[p.id]; return `${p.avatar} ${g ? "given ✓" : e ? `<button class="btn small" data-give="${r.id}:${p.id}" style="padding:4px 8px;font-size:13px">Mark given</button>` : "working on it"}`; }).join(" · ")}</small></span>
           <button class="iconbtn" data-delr="${r.id}" aria-label="Delete reward">🗑️</button></div>`).join("") || `<p class="note" style="text-align:left">No rewards yet.</p>`}</div>
-        <button class="btn" id="addRw" style="margin-top:10px">＋ Add a reward</button></div>
+        <button class="btn" id="addRw" style="margin-top:10px">＋ Add a reward</button></div></div>
       ${P.profiles.map(childReport).join("") || `<p class="note">No learners yet.</p>`}
       <button class="btn ghost" id="addP2">＋ Add learner</button></div>`;
   $("#back").onclick = whoScreen;
   $("#addP2").onclick = () => editLearner(null);
-  app.querySelectorAll("[data-stats]").forEach(b => b.onclick = () => statsScreen(b.dataset.stats));
+  app.querySelectorAll("[data-ft]").forEach(h => h.onclick = () => { const k = h.dataset.ft; dashOpen[k] = !dashOpen[k]; h.parentElement.classList.toggle("open", dashOpen[k]); });
+  app.querySelectorAll("[data-stats]").forEach(b => b.onclick = () => { statView.open = {}; statsScreen(b.dataset.stats); window.scrollTo(0, 0); });
   $("#famSave").onclick = e => { P.family = {target: Math.max(10, +$("#famT").value || 60)}; saveP(); doneBtn(e.currentTarget, "✓ Saved"); toast("Family goal saved."); };
   app.querySelectorAll("[data-delr]").forEach(b => b.onclick = () => askConfirm("Delete this reward?", "Yes, delete", () => { P.rewards = (P.rewards||[]).filter(r => r.id!==b.dataset.delr); saveP(); parentDash(); }));
   app.querySelectorAll("[data-give]").forEach(b => b.onclick = () => { const [rid, pid] = b.dataset.give.split(":"); const r = P.rewards.find(x => x.id===rid); r.given = r.given || {}; r.given[pid] = todayKey(); saveP(); parentDash(); });
@@ -3276,7 +3291,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "12.8 (November 1, 2026)";
+const APP_VERSION = "12.9 (November 1, 2026)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */
@@ -3326,7 +3341,7 @@ function statsScreen(pid){
       <div class="chipsel" style="margin-top:12px">${["all","A","B","C","D","F"].map(g => `<button data-g="${g}" aria-pressed="${statView.grade===g}">${g==="all" ? "All" : g}</button>`).join("")}</div>
       <div class="chipsel" style="margin-top:8px">${[["weak","Weakest first"],["best","Best first"],["abc","А–Я"]].map(([v,n]) => `<button data-sort="${v}" aria-pressed="${statView.sort===v}">${n}</button>`).join("")}</div>
       ${groups.map(g => { const rows = g.rows.filter(r => statView.grade==="all" || gradeOf(r.st.score)===statView.grade).sort(sortFn);
-        return `<div class="pmc ${statView.open[g.u]!==false ? "open" : ""}" style="margin-top:14px"><div class="hd" data-tg="${g.u}"><span class="ic">${g.u===1 ? "👋" : "🐱"}</span><span class="tx"><b>${esc(g.title)}</b><small>${g.rows.length} of ${UNITS[g.u].words.length} words learned</small></span><span class="chev">›</span></div>
+        return `<div class="pmc ${statView.open[g.u] ? "open" : ""}" style="margin-top:14px"><div class="hd" data-tg="${g.u}"><span class="ic">${g.u===1 ? "👋" : "🐱"}</span><span class="tx"><b>${esc(g.title)}</b><small>${g.rows.length} of ${UNITS[g.u].words.length} words learned</small></span><span class="chev">›</span></div>
           <div class="body2">${rows.length ? rows.map(r => { const gr = gradeOf(r.st.score); return `<button class="srow" data-w="${r.w.id}"><span class="grade g${gr}">${gr==="N" ? "new" : gr}</span><span class="w"><b>${r.w.ru}</b><small>${esc(r.w.en)}</small></span><span style="font-weight:800;color:var(--muted)">${r.st.score ?? "–"}</span></button>
             <div class="sdet" id="d-${r.w.id}">${bar("Pronunciation", r.st.pron)}${bar("Memory now", r.st.memory)}${bar("Accuracy", r.st.accuracy)}<small style="color:var(--muted);font-weight:700">${r.st.right} right · ${r.st.wrong} wrong</small> <button class="btn small ghost" data-say="${esc(r.w.ru)}" style="margin-left:6px">🔊</button></div>`; }).join("") : `<p class="note" style="padding:10px">No words here yet.</p>`}</div></div>`; }).join("")}
       <p class="note" style="text-align:left;margin-top:14px">How grades work: pronunciation (Microsoft’s average for the word) 40%, memory now 35%, accuracy 25%. Without speaking scores: memory 55%, accuracy 45%. Memory drops when a word isn’t practised, so grades can fall and climb again with review. A 90+ · B 80–89 · C 70–79 · D 60–69 · F below 60.</p>
@@ -3335,7 +3350,7 @@ function statsScreen(pid){
   const sw = $("#stWho"); if (sw) sw.onchange = e => statsScreen(e.target.value);
   app.querySelectorAll("[data-g]").forEach(b => b.onclick = () => { statView.grade = b.dataset.g; statsScreen(p.id); });
   app.querySelectorAll("[data-sort]").forEach(b => b.onclick = () => { statView.sort = b.dataset.sort; statsScreen(p.id); });
-  app.querySelectorAll("[data-tg]").forEach(h => h.onclick = () => { const u = h.dataset.tg; statView.open[u] = statView.open[u]===false; h.parentElement.classList.toggle("open"); });
+  app.querySelectorAll("[data-tg]").forEach(h => h.onclick = () => { const u = h.dataset.tg; statView.open[u] = !statView.open[u]; h.parentElement.classList.toggle("open", statView.open[u]); });
   app.querySelectorAll("[data-w]").forEach(b => b.onclick = () => { const d = $("#d-" + b.dataset.w); if (d) d.classList.toggle("open"); });
   app.querySelectorAll("[data-say]").forEach(b => b.onclick = e => { e.stopPropagation(); speak(b.dataset.say); });
 }
