@@ -519,6 +519,22 @@ img.chip.wobble{animation:wobble .6s ease-in-out 1, breathe 3.4s ease-in-out .6s
 .item.hint .pic{opacity:.38;filter:saturate(.55)}.item.hint b{color:var(--muted)}
 .item.mystery{background:var(--line);border-color:var(--line)}
 .item.mystery .pic{filter:grayscale(1) brightness(0);opacity:.13}.item.mystery b{font-size:20px;color:var(--muted)}
+.wscard{margin:12px 16px 0;padding:14px;border-radius:20px;background:linear-gradient(135deg,#FFF4D6,#FFE1EC);border:2px solid #F2B84B;border-bottom-width:5px;box-shadow:0 0 0 0 rgba(242,184,75,.5);animation:wsGlow 2.6s ease-in-out infinite;color:#3B2A1A}
+.wscard.ready{border-color:#3CAA5E;background:linear-gradient(135deg,#E5F8E9,#FFF4D6)}
+@keyframes wsGlow{50%{box-shadow:0 0 0 7px rgba(242,184,75,.16)}}
+.wsh{display:flex;gap:10px;align-items:center}.wsh b{display:block;font-family:var(--font-head);font-size:18px}.wsh small{display:block;color:#7A6450;font-weight:700;font-size:13px}
+.wsi{font-size:34px;flex:none}
+.wstrack{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:12px 0 8px;text-align:center}
+.wstrack div{opacity:.35}.wstrack div.done{opacity:.75}.wstrack div.now{opacity:1;transform:scale(1.08)}
+.wstrack span{display:block;font-size:26px}.wstrack small{font-size:11px;font-weight:800;line-height:1.1;display:block}
+.wsmsg{background:#fff;border-radius:14px;padding:10px 12px;font-weight:700;font-size:15px;margin:4px 0 10px;color:#3B2A1A}
+.wscard .nbar{background:rgba(0,0,0,.08)}
+.wslog div{border-top:2px solid var(--line);padding:8px 0}.wslog small{color:var(--muted);font-weight:800}.wslog p{margin:2px 0 0;font-weight:700}
+.wsideas{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chipbtn{appearance:none;border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:6px 10px;font:inherit;font-weight:700;font-size:14px;cursor:pointer}
+.wsorder{border-top:2px solid var(--line);padding:10px 0}.wsorder:first-child{border-top:0}
+.wsbtns{display:flex;flex-wrap:wrap;gap:6px}
+.wsnew{border-color:#F2B84B}.newpill{background:#E8507A;color:#fff;border-radius:999px;font-size:12px;padding:2px 8px;vertical-align:middle}
 .nextcard{margin:10px 16px 0;padding:12px;border-radius:20px;background:var(--surface);border:2px solid var(--line);border-bottom-width:4px;display:flex;gap:12px;align-items:center}
 .nextcard>img{width:86px;height:86px;object-fit:contain;flex:none}
 .nextcard .tx{flex:1;min-width:0}.nextcard small{color:var(--muted);font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
@@ -1003,7 +1019,7 @@ function homeIdle(){
 /* ---------- Bottom tab bar ---------- */
 function navHTML(active){
   const tabs = [["home","🏠","Learn"],["quests","🎯","Quests"],["practice","🏋️","Practice"],["badges","🏅","Badges"],["misha","🐿️","Ми́ша"]];
-  return `<div class="tabspace"></div><nav class="tabbar" aria-label="Main"><div class="in">${tabs.map(([id,ic,lb]) => `<button data-tab="${id}" aria-current="${id===active}">${ic}<span>${lb}</span>${id==="quests" && questsLeft() && active!=="quests" ? `<i class="dot"></i>` : ""}</button>`).join("")}</div></nav>`;
+  return `<div class="tabspace"></div><nav class="tabbar" aria-label="Main"><div class="in">${tabs.map(([id,ic,lb]) => `<button data-tab="${id}" aria-current="${id===active}">${ic}<span>${lb}</span>${(id==="quests" && questsLeft() && active!=="quests") || (id==="misha" && active!=="misha" && wsNews()) ? `<i class="dot"></i>` : ""}</button>`).join("")}</div></nav>`;
 }
 function wireNav(){
   const go = {home:() => home(), quests:() => questsScreen(), practice:() => practiceScreen(), badges:() => badgesScreen(), misha:() => (typeof wardrobeScreen==="function" ? wardrobeScreen() : toast("Coming soon"))};
@@ -1034,6 +1050,315 @@ function badgesScreen(){
   wireNav();
 }
 
+/* ---------- 🧵 Миша's workshop: what happens along the way (each child sees every message once before any comes back) ---------- */
+const WS_MSGS = {
+studio:[
+"The designer sneezed on the drawing. Now it has polka dots. She loves it!",
+"Our designer drew your item 12 times. The 13th was perfect.",
+"The studio cat sat on the sketch. Good news: the cat approves.",
+"The designer measured Ми́ша with a banana. He is exactly 2.5 bananas tall.",
+"The pencils had a meeting about your item. They all voted YES.",
+"The designer drew so fast her pencil got warm. She put it in the fridge.",
+"Ми́ша sent a photo of his best side. The designer says both sides are his best.",
+"The design team ate cookies for inspiration. It worked!",
+"A pigeon looked through the window and nodded. That means it’s a good design.",
+"The ruler and the eraser had an argument. The eraser won. The drawing looks great.",
+"The designer hummed a Russian song while drawing. The lines came out extra smooth.",
+"Your idea was so good that the whole studio clapped. Even the plant.",
+"The designer tried the colours on a paper chipmunk first. He looked fabulous.",
+"Someone spilled cocoa on the plan. It made the perfect brown for the details!",
+"The studio dog guarded your sketch all night. Not one crumb touched it.",
+"The designer drew your item upside down by mistake. It looked cool that way too.",
+"Our oldest designer, Grandpa Owl, said “Hoo! Excellent!” That’s his highest praise.",
+"The sketch was pinned on the wall of fame. Right next to the golden acorn.",
+"The designer counted every stripe on Ми́ша’s tail to make sure it fits. Seven!",
+"A tiny ladybug walked across the drawing and left a little dot. It’s now a signature.",
+"The colour pencils lined up from lightest to darkest, just for your order.",
+"The designer’s glasses fogged up from excitement. She wiped them and kept going.",
+"Three designers wanted to draw your item. They took turns. Everyone was happy.",
+"The plan was checked with a magnifying glass. Every line is perfect.",
+"The designer showed the sketch to her grandma. Grandma said “Молоде́ц!”"
+],
+workshop:[
+"The sewing machine got hiccups, so every stitch came out a little bouncy. Fixed!",
+"A mouse helper held the thread for an hour. He asked for a cheese medal.",
+"The scissors were so excited they did a little dance. Snip, snip, hooray!",
+"The workshop ran out of glue, so the beavers made more from tree sap. Sticky and strong!",
+"A button rolled under the table. The hedgehog found it and brought it back.",
+"The master tailor tried your item on his nose to check the size. It fits Ми́ша better.",
+"The hammer said “bonk” 47 times. All bonks were in the right places.",
+"The workshop radio played a polka. Everybody worked faster.",
+"The needle threader got tangled. The spider helped untangle it. Spiders are good with threads!",
+"Your item went through the shiny machine. Now it sparkles a tiny bit.",
+"The workers had borscht for lunch, then got right back to work on your item.",
+"A squirrel cousin from Siberia sent special fluffy thread. It’s very soft!",
+"The tape measure rolled away across the room. A puppy caught it like a ball.",
+"The iron made the item so smooth that a snail tried to slide on it.",
+"One piece was cut a bit too big. The tailor said “perfect, more love inside!”",
+"The workshop bell rang to say: halfway done! Everyone cheered.",
+"The paint was too shy to come out of the tube. We sang to it. It came out.",
+"A tiny robot helper polished every corner. Then it took a nap.",
+"The master checked the item with his special ruler made of birch wood. Approved!",
+"Someone sat on the item by accident. It survived. That means it’s extra strong.",
+"The workshop owl stayed up all night to keep an eye on your order.",
+"We added one secret stitch that only Ми́ша will know about.",
+"The bear in charge of quality hugged the item. It passed the hug test.",
+"The workshop smelled like pine and cinnamon today. Your item does too.",
+"The last knot was tied with a big “Ура́!” from the whole team."
+],
+warehouse:[
+"The box was so excited it tried to wrap itself. It took three tries.",
+"The warehouse cat checked the box for mice. Only happiness inside!",
+"Your parcel got a shiny sticker that says “VERY IMPORTANT CHIPMUNK”.",
+"The bubble wrap popped twice during packing. We added more bubbles.",
+"The forklift driver honked a happy song as he carried your box.",
+"The box was weighed. It weighs exactly one smile and a half.",
+"A label printer printed your name in its fanciest letters.",
+"The warehouse is so big that the box took a little scooter to the door.",
+"Your parcel was tucked in with a soft blanket for the trip.",
+"The packing tape squeaked “good luck!” as it closed the box.",
+"A mouse checked the address three times. It’s definitely going to Ми́ша.",
+"Your box got the window seat on the shelf. Great view!",
+"The warehouse manager stamped your box: BOOM! Approved!",
+"The boxes on the shelf whispered: “Who is the lucky one?” It’s you!",
+"The parcel was so neat that the other boxes asked for packing lessons.",
+"A raccoon wanted to open the box. We gave him an apple instead.",
+"The warehouse clock struck twelve and your box said: “Let’s go!”",
+"Your parcel was put on the shelf marked FAST. It’s the best shelf.",
+"The packers drew a tiny chipmunk on the box. It’s smiling.",
+"The scanner beeped extra loudly. It must like your order.",
+"Your box got a red ribbon, because red means fast.",
+"Two hedgehogs carried the box together. Teamwork!",
+"The warehouse dog wagged at your box. That’s a good sign.",
+"Your parcel was the last one packed, so it gets to go first!",
+"The box was so excited it wiggled on the conveyor belt the whole way."
+],
+road:[
+"The truck got a flat tyre, but a family of beavers helped change it in two minutes.",
+"The driver sang Russian songs all the way. Two cows started dancing.",
+"A moose stood on the road. He moved after the driver said “пожа́луйста”.",
+"The truck took the shortcut through the birch forest. Very pretty!",
+"Ducks crossed the road in a long line. The driver counted 14 and waved to each one.",
+"The driver stopped for blini and tea. Fully charged and back on the road!",
+"Your parcel rode in the front seat with its seatbelt on.",
+"The truck drove over a bumpy bridge. Your box went “boing” but it’s fine.",
+"A fox ran next to the truck for a mile. He wanted to see what’s inside.",
+"The GPS said “turn left”, then “turn right”, then “wow, nice trees”.",
+"It rained a little, so the driver covered your box with his own jacket.",
+"The truck passed a field of sunflowers. They all turned to look.",
+"A friendly train honked at the truck. The truck honked back.",
+"The driver’s cat is riding along. She is guarding your parcel.",
+"The truck went up a big hill. Everyone cheered at the top.",
+"A hedgehog hitchhiker got a short ride. He says thank you.",
+"The truck washed itself in a puddle. Now it’s sparkly and fast.",
+"The driver found a rainbow and drove right under it. Lucky parcel!",
+"Your box is on the most important seat: the one with snacks.",
+"The truck stopped to let a squirrel family cross. Ми́ша says hi to his cousins.",
+"The road was bumpy, so the driver drove extra slowly and carefully.",
+"A rooster raced the truck. The truck won, but only just.",
+"The driver waved to a lighthouse. The lighthouse winked back.",
+"The truck crossed a wide river on a ferry. Your parcel enjoyed the sea breeze.",
+"Only a few more hills to go. The driver can almost see Ми́ша’s house!"
+],
+delay:[
+"A snowstorm in Siberia! The roads are closed until tomorrow.",
+"The parcel went to the wrong squirrel. We’re getting it back.",
+"A curious bear opened the box to try it on. It needs a little cleaning.",
+"The courier stopped to help a hedgehog cross the road. A very slow hedgehog.",
+"The truck got stuck behind a herd of very sleepy cows.",
+"The bridge is being painted. The driver is waiting for it to dry.",
+"The driver took a wrong turn and ended up at a honey festival. Coming back now!",
+"A flock of geese is blocking the road and refusing to move. Negotiations continue.",
+"The delivery truck’s horn got stuck playing “Kalinka”. The mechanic is fixing it.",
+"The parcel was so popular at the post office that everyone wanted a photo with it.",
+"The truck ran out of fuel. The driver is walking to get more. He says it’s good exercise.",
+"A big puddle turned into a small lake. The truck is waiting for a boat.",
+"The courier dropped the map in the river. A friendly otter is bringing it back.",
+"The truck’s windscreen wipers went on strike. They want more holidays.",
+"A goat ate part of the address label. We’re printing a new one.",
+"The road was closed for a squirrel parade. Ми́ша’s cousins were marching!",
+"The parcel fell asleep in the warehouse and missed the truck. It’s awake now.",
+"The driver’s cat hid the truck keys. The search is going well.",
+"Fog so thick the driver could only see his own nose. Waiting for sunshine.",
+"The truck got a second flat tyre. The beavers are on their way again.",
+"A bird built a nest on the truck mirror. The driver is gently moving it to a tree.",
+"The ferry is taking a lunch break. Back in an hour or two.",
+"The traffic light was stuck on red. The driver read a whole book while waiting.",
+"Your parcel was too excited and rolled into the wrong truck. It’s coming back.",
+"Heavy wind blew the box off the trolley. A kind owl caught it.",
+"The post office had a power cut, so they’re sorting parcels by candlelight. Cosy but slow.",
+"A moose wanted a ride and wouldn’t get out of the truck. He finally left after a carrot.",
+"The road is covered in autumn leaves. The driver is sweeping a path.",
+"The delivery driver caught a cold. A new driver with a warm scarf is taking over.",
+"The tyres were too cold to roll. The driver is warming them with hot tea."
+]};
+
+const WS_PRICE = 1000;
+/* Custom items made for one order each. Claude adds them here (with their pictures in DRESS and DCAL). */
+const CUSTOM_ITEMS = [];
+const WS_STAGES = [["📝","Order received"],["✂️","Being made"],["🚚","On the way"],["🎁","Ready for pickup"]];
+const wsItem = o => o && CUSTOM_ITEMS.find(c => c.order===o.id);
+function wsPick(kind, s = S){
+  const pool = WS_MSGS[kind]; s.wsSeen = s.wsSeen || {}; let seen = s.wsSeen[kind] || [];
+  if (seen.length >= pool.length) seen = [];
+  const free = pool.map((_, i) => i).filter(i => !seen.includes(i)), i = free[Math.floor(Math.random()*free.length)];
+  s.wsSeen[kind] = seen.concat(i); return pool[i];
+}
+/* the order is “ready” on the day the grown-up switched it, but never before day 3 */
+const wsReadyD = o => o.readyDay ? Math.max(3, daysBetween(o.day, o.readyDay)) : Infinity;
+function wsSync(s = S){
+  const o = s.order; if (!o) return;
+  o.log = o.log || []; const dNow = daysBetween(o.day, todayKey());
+  for (let d = (o.lastD ?? -1) + 1; d <= dNow; d++){
+    if (o.log.some(e => e.k==="ready")) break;
+    if (d===0) o.log.push({d, k:"studio", t:wsPick("studio", s)});
+    else if (d===1) o.log.push({d, k:"workshop", t:wsPick("workshop", s)});
+    else if (d===2){ o.log.push({d, k:"warehouse", t:wsPick("warehouse", s)}); o.log.push({d, k:"road", t:wsPick("road", s)}); }
+    else if (d >= wsReadyD(o)) o.log.push({d, k:"ready", t:"Your order has arrived at Ми́ша’s house! Tap “Pick it up!”"});
+    else o.log.push({d, k:"delay", t:wsPick("delay", s)});
+    o.lastD = d;
+  }
+  /* switched to ready later on a day that already had its news */
+  if (!o.log.some(e => e.k==="ready") && dNow >= wsReadyD(o)) o.log.push({d:dNow, k:"ready", t:"Your order has arrived at Ми́ша’s house! Tap “Pick it up!”"});
+  if (s===S && !o.notified) wsNotify(o);
+}
+const wsReady = o => !!(o && o.log && o.log.some(e => e.k==="ready"));
+const wsStage = o => wsReady(o) ? 3 : Math.min(2, daysBetween(o.day, todayKey()));
+function wsNews(){ try { if (!S.order) return false; wsSync(); return S.order.log.length > (S.order.seen||0); } catch(_){ return false; } }
+let wsSending = false;
+async function wsNotify(o){
+  if (wsSending || o.notified || !P.ntfy || !navigator.onLine) return; wsSending = true;
+  try {
+    const r = await fetch("https://ntfy.sh/", {method:"POST", body:JSON.stringify({topic:P.ntfy, title:"🧵 New Миша order", message:`${o.name} ordered: ${o.wish} (order ${o.id})`, tags:["scissors"]})});
+    if (r.ok){ o.notified = true; save(); }
+  } catch(_){}
+  wsSending = false;
+}
+window.addEventListener("online", () => { if (S && S.order) wsNotify(S.order); });
+const wsWhen = k => { const [y,m,d] = k.split("-").map(Number); return new Date(y, m-1, d).toLocaleDateString("en-GB", {day:"numeric", month:"short"}); };
+
+/* the bright card at the top of the Миша tab */
+function wsCardHTML(){
+  const o = S.order;
+  if (!o){
+    const pct = Math.min(100, Math.round(100*S.stars/WS_PRICE)), can = S.stars >= WS_PRICE;
+    return `<div class="wscard"><div class="wsh"><span class="wsi">🧵</span><div><b>Ми́ша’s workshop</b><small>Order a one-of-a-kind item, made just for you!</small></div></div>
+      <div class="nbar"><i style="width:${pct}%"></i><em>⭐ ${Math.min(S.stars, WS_PRICE)} / ${WS_PRICE}</em></div>
+      <button class="btn small" id="wsOrder">${can ? "✨ Place an order" : "See how it works"}</button></div>`;
+  }
+  wsSync(); const st = wsStage(o), last = o.log[o.log.length-1];
+  return `<div class="wscard ${wsReady(o) ? "ready" : ""}"><div class="wsh"><span class="wsi">🧵</span><div><b>Your order: ${esc(o.wish)}</b><small>Order ${esc(o.id)} · made just for you</small></div></div>
+    <div class="wstrack">${WS_STAGES.map(([ic, lb], i) => `<div class="${i < st ? "done" : i===st ? "now" : ""}"><span>${ic}</span><small>${lb}</small></div>`).join("")}</div>
+    ${last ? `<div class="wsmsg">${wsIcon(last.k)} ${esc(last.t)}</div>` : ""}
+    <div class="nbtns">${wsReady(o) ? `<button class="btn small" id="wsPick">🎁 Pick it up!</button>` : ""}<button class="btn small ghost" id="wsLog">📜 All updates</button></div></div>`;
+}
+const wsIcon = k => ({studio:"🎨", workshop:"✂️", warehouse:"📦", road:"🚚", delay:"⏳", ready:"🎁"})[k] || "🧵";
+function wsWire(){
+  const ob = $("#wsOrder"); if (ob) ob.onclick = wsOrderSheet;
+  const lb = $("#wsLog"); if (lb) lb.onclick = () => {
+    const o = S.order;
+    sheet(`<h2>🧵 ${esc(o.wish)}</h2><p class="sub" style="margin:0 0 10px">Order ${esc(o.id)} · ordered ${wsWhen(o.day)}</p>
+      <div class="wslog">${o.log.slice().reverse().map(e => `<div><small>${wsWhen(addDays(o.day, e.d))}</small><p>${wsIcon(e.k)} ${esc(e.t)}</p></div>`).join("")}</div>`);
+  };
+  const pb = $("#wsPick"); if (pb) pb.onclick = wsPickup;
+  if (S.order){ S.order.seen = S.order.log.length; save(); }
+}
+function wsOrderSheet(){
+  const can = S.stars >= WS_PRICE;
+  const ideas = ["🏴‍☠️ Pirate hat","🚀 Space helmet","🦸 Superhero cape","🎸 Guitar","🪄 Magic wand","⚽ Football"];
+  const bg = sheet(`<div style="text-align:center"><div style="font-size:54px">🧵</div><h2 style="margin:4px 0">Ми́ша’s workshop</h2>
+      <p class="sub" style="margin:0">Tell the workshop what to make for Ми́ша. It will be made just for you: nobody else can get it!</p>
+      <p class="sub" style="margin:8px 0 0">📝 Order → ✂️ Made → 🚚 Delivered → 🎁 Pick up. It takes a few days. Check for news every day!</p></div>
+    ${can ? `<label class="field" style="margin-top:12px">What should we make?<input type="text" id="wsWish" maxlength="60" autocomplete="off" placeholder="For example: a pirate hat"></label>
+      <div class="wsideas">${ideas.map(t => `<button class="chipbtn" data-idea="${esc(t.slice(t.indexOf(" ")+1))}">${t}</button>`).join("")}</div>
+      ${("webkitSpeechRecognition" in window || "SpeechRecognition" in window) ? `<button class="btn small ghost" id="wsMic" style="margin-top:8px">🎙️ Say it instead</button>` : ""}
+      <div style="display:grid;gap:10px;margin-top:14px"><button class="btn" id="wsGo">Order for ⭐ ${WS_PRICE}</button><button class="btn ghost" data-close>Not now</button></div>`
+    : `<p class="sub" style="text-align:center;margin:12px 0 0"><b>You need ⭐ ${WS_PRICE - S.stars} more stars.</b> Keep learning and come back!</p>`}`, !can ? false : true);
+  if (!can) return;
+  const inp = $("#wsWish", bg);
+  bg.querySelectorAll("[data-idea]").forEach(b => b.onclick = () => { inp.value = "a " + b.dataset.idea.toLowerCase(); sfx.pop(); });
+  const mic = $("#wsMic", bg); if (mic) mic.onclick = () => {
+    try { const R = window.SpeechRecognition || window.webkitSpeechRecognition, r = new R(); r.lang = "en-US"; r.interimResults = false;
+      mic.textContent = "🎙️ Listening…"; r.onresult = e => { inp.value = e.results[0][0].transcript.slice(0, 60); mic.textContent = "🎙️ Say it again"; };
+      r.onerror = r.onend = () => { if (mic.textContent.includes("Listening")) mic.textContent = "🎙️ Say it instead"; }; r.start();
+    } catch(_){ toast("The microphone isn’t available here. Please type it."); }
+  };
+  $("#wsGo", bg).onclick = () => {
+    const wish = inp.value.trim(); if (wish.length < 2){ toast("Tell the workshop what to make!"); inp.focus(); return; }
+    bg.remove(); wsPlace(wish);
+  };
+}
+function wsPlace(wish){
+  const now = new Date(), id = "W-" + String(now.getMonth()+1).padStart(2,"0") + String(now.getDate()).padStart(2,"0") + "-" + Math.random().toString(36).slice(2,5).toUpperCase();
+  S.stars -= WS_PRICE; S.shownStars = S.stars;
+  S.order = {id, wish, price:WS_PRICE, day:todayKey(), at:Date.now(), pid:P.current, name:me().name, log:[], seen:0, notified:false, pSeen:false};
+  wsSync(); save(); sfx.chestOpen(); confetti(40); buzz([20,40,20]);
+  wardrobeScreen(); window.scrollTo({top:0, behavior:"smooth"});
+  setTimeout(() => sheet(`<div style="text-align:center">${chip("cheer-jump").replace('class="chip ', 'style="width:130px;margin:0 auto" class="chip ')}<h2 style="margin:6px 0 4px">Order placed!</h2><p class="sub" style="margin:0">The workshop got your order: <b>${esc(wish)}</b>. Check back every day to see what happens!</p></div>`), 400);
+}
+function wsPickup(){
+  const o = S.order, it = wsItem(o); if (!it || !wsReady(o)) return;
+  S.owned = (S.owned||[]).concat(it.id); S.wear = it.id;
+  S.orders = (S.orders||[]).concat({id:o.id, wish:o.wish, day:o.day, picked:todayKey(), item:it.id});
+  S.order = null; tryOn = null; save(); buyParty(it);
+}
+/* ---------- grown-up side: orders in the Parent dashboard ---------- */
+function wsAllOrders(){
+  return P.profiles.map(p => { const cur = p.id===P.current, s = cur ? S : loadS(p.id);
+    if (s.order){ wsSync(s); if (cur) save(); else { try { localStorage.setItem(profKey(p.id), JSON.stringify(s)); } catch(_){} } }
+    return s.order ? {p, s, o:s.order} : null; }).filter(Boolean);
+}
+const wsUnseen = () => { try { return wsAllOrders().some(x => !x.o.pSeen); } catch(_){ return false; } };
+function wsForClaude(p, o){
+  return `Миша app — workshop order
+Order: ${o.id}
+Learner: ${p.name} (profile ID: ${p.id})
+Wish: “${o.wish}”
+Ordered: ${wsWhen(o.day)} ${o.day.slice(0,4)}
+
+Claude: please add this as a custom item for this order only. Then I’ll switch it to “Ready for pickup”.
+
+ChatGPT prompt for the 2 pictures (attach the 2 reference pictures from the Parent dashboard):
+I’m attaching 2 reference pictures of Миша, a cartoon chipmunk with round glasses. Draw the SAME character in the SAME flat vector style, same colours, same proportions, on a transparent background, as two separate square images:
+1) The standing pose exactly like reference picture 1, now with: ${o.wish}.
+2) The waving pose exactly like reference picture 2, now with: ${o.wish}.
+Keep his face, glasses, eyes and mouth exactly as in the references, with the eyes open and the mouth closed. Make the item clear, cute and sized to fit him. Keep the character centred, the same size and position as in the references.`;
+}
+function wsCopy(text){
+  const done = () => toast("Copied! Paste it into ChatGPT and into Claude.");
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, () => fallback()); else fallback();
+  function fallback(){ const t = document.createElement("textarea"); t.value = text; t.style.cssText = "position:fixed;opacity:0"; document.body.appendChild(t); t.select(); try { document.execCommand("copy"); done(); } catch(_){ toast("Couldn’t copy. Long-press to copy instead."); } t.remove(); }
+}
+function wsRefPics(){
+  [[CHIP.neutral, "misha-reference-1-standing.webp"], [CHIP["wave-happy"], "misha-reference-2-waving.webp"]].forEach(([src, name], i) => setTimeout(() => {
+    const a = document.createElement("a"); a.href = src; a.download = name; document.body.appendChild(a); a.click(); a.remove(); }, i*400));
+  toast("Saving 2 reference pictures…");
+}
+function wsDashHTML(){
+  const all = wsAllOrders(); if (!all.length) return "";
+  const fresh = all.some(x => !x.o.pSeen); if (fresh) dashOpen.ws = true;
+  return `<div class="dcard fold ${dashOpen.ws || fresh ? "open" : ""} ${fresh ? "wsnew" : ""}"><button class="fhd" data-ft="ws"><h3>🧵 Workshop orders${fresh ? ` <span class="newpill">New</span>` : ""}</h3><span class="chev">›</span></button><div class="fbody">
+    ${all.map(({p, o}) => { const it = wsItem(o), st = wsStage(o), arr = o.readyDay ? addDays(o.day, wsReadyD(o)) : null;
+      return `<div class="wsorder"><div class="wsh">${avHTML(p.avatar, 40)}<div><b>${esc(p.name)}: “${esc(o.wish)}”</b><small>Order ${esc(o.id)} · ordered ${wsWhen(o.day)} · now: ${WS_STAGES[st][0]} ${WS_STAGES[st][1]}</small></div></div>
+        <p class="note" style="text-align:left;margin:6px 0">${it ? (o.readyDay ? (wsReady(o) ? "✓ Delivered. Waiting for pickup." : `✓ Switched to ready. It arrives on ${wsWhen(arr)}.`) : "✓ The item is in the app. You can switch it to ready.") : "The item isn’t in the app yet. Copy the order for Claude, make the pictures, then bring them to Claude."}</p>
+        <div class="wsbtns"><button class="btn small ghost" data-wscopy="${p.id}">📋 Copy for Claude</button><button class="btn small ghost" data-wsref>⬇️ Reference pictures</button>
+        ${!o.readyDay ? `<button class="btn small" data-wsready="${p.id}" ${it ? "" : "disabled"}>🎁 Ready for pickup</button>` : ""}<button class="btn small ghost" data-wscancel="${p.id}">↩️ Cancel and refund</button></div></div>`; }).join("")}
+    </div></div>`;
+}
+function wsDashWire(editKid){
+  const all = wsAllOrders(), find = pid => all.find(x => x.p.id===pid);
+  app.querySelectorAll("[data-wscopy]").forEach(b => b.onclick = () => { const x = find(b.dataset.wscopy); wsCopy(wsForClaude(x.p, x.o)); });
+  app.querySelectorAll("[data-wsref]").forEach(b => b.onclick = wsRefPics);
+  app.querySelectorAll("[data-wsready]").forEach(b => b.onclick = () => { editKid(b.dataset.wsready, s2 => { if (s2.order){ s2.order.readyDay = todayKey(); wsSync(s2); } }); dashOpen.ws = true; parentDash(); toast("Done! The children will see it arrive."); });
+  app.querySelectorAll("[data-wscancel]").forEach(b => b.onclick = () => {
+    const x = find(b.dataset.wscancel);
+    const bg = sheet(`<h2>Cancel this order?</h2><p class="sub">${esc(x.p.name)} gets the ⭐ ${x.o.price} stars back.</p><div style="display:grid;gap:10px"><button class="btn" id="wsCx">Cancel and refund</button><button class="btn ghost" data-close>Keep the order</button></div>`, true);
+    $("#wsCx", bg).onclick = () => { editKid(x.p.id, s2 => { if (s2.order){ s2.stars = (s2.stars||0) + s2.order.price; s2.order = null; } }); bg.remove(); parentDash(); toast("Order cancelled. Stars returned."); };
+  });
+  /* the grown-up has now seen every order */
+  all.forEach(x => { if (!x.o.pSeen) editKid(x.p.id, s2 => { if (s2.order) s2.order.pSeen = true; }); });
+}
+
 let tryOn = null;   /* the next item, tried on but not bought */
 function wardrobeScreen(){
   ensureFields(S); S.owned = S.owned || []; S.wear = migrateWear(S.wear); if (P.tryAll) P.tryWear = migrateWear(P.tryWear); save();
@@ -1041,7 +1366,7 @@ function wardrobeScreen(){
   const setWear = id => { if (P.tryAll){ P.tryWear = id; saveP(); } else { S.wear = id; save(); } };
   const shop = SHOP_LINE.map(id => ITEMS.find(i => i.id===id)).filter(Boolean);
   const left = shop.filter(it => !has(it.id)), next = left[0], hint = left[1];
-  const prizes = ITEMS.filter(i => i.badge);
+  const prizes = ITEMS.filter(i => i.badge), mine = CUSTOM_ITEMS.filter(c => S.owned.includes(c.id));
   if (tryOn && (!next || tryOn !== next.id)) tryOn = null;
   const shown = tryOn || wearing;
   const pct = next ? Math.min(100, Math.round(100*S.stars/shopPrice(next.id))) : 100;
@@ -1054,6 +1379,7 @@ function wardrobeScreen(){
     return `<button class="item ${st}" data-item="${it.id}" data-st="${st==="mystery" ? "prize" : st}"><img class="pic" src="${DRESS.wave[it.id]}" alt="" loading="lazy"><b>${st==="mystery" ? "?" : esc(it.name)}</b><small>${st==="wearing" ? "✓ Wearing" : st==="owned" ? "Tap to wear" : "🏅 Win a badge"}</small></button>`; };
   app.innerHTML = `<div class="phead2" style="background:#B86A2E"><div><h2>Ми́ша’s wardrobe</h2><p>⭐ ${S.stars} stars · one item at a time</p></div></div>
     ${P.tryAll ? `<div class="trybar">🔓 Try-everything mode (grown-up): try anything on. Nothing is bought or saved for the children.</div>` : ""}
+    ${P.tryAll ? "" : wsCardHTML()}
     <div class="wprev">${liveMisha("", "wave", shown || null)}</div>
     ${tryOn ? `<p class="note" style="text-align:center;margin:0">Trying on: ${esc(next.name)}</p>` : wearing ? `<div style="text-align:center"><button class="btn small ghost" id="takeOff">Take it off</button></div>` : ""}
     ${next && !P.tryAll ? `<div class="nextcard">
@@ -1065,6 +1391,7 @@ function wardrobeScreen(){
     <div style="padding:6px 16px 16px">
       <h3 style="font-family:var(--font-head);margin:12px 0 8px">Shop <small style="color:var(--muted);font-size:14px">· ${shop.length - left.length} of ${shop.length}</small></h3>
       <div class="igrid">${shop.map(card).join("")}</div>
+      ${mine.length ? `<h3 style="font-family:var(--font-head);margin:18px 0 8px">🧵 Made for you</h3><div class="igrid">${mine.map(it => `<button class="item ${wearing===it.id ? "wearing" : "owned"}" data-item="${it.id}" data-st="${wearing===it.id ? "wearing" : "owned"}"><img class="pic" src="${DRESS.wave[it.id]}" alt="" loading="lazy"><b>${esc(it.name)}</b><small>${wearing===it.id ? "✓ Wearing" : "Tap to wear"}</small></button>`).join("")}</div>` : ""}
       <h3 style="font-family:var(--font-head);margin:18px 0 8px">Badge prizes <small style="color:var(--muted);font-size:14px">· ${prizes.filter(i => has(i.id)).length} of ${prizes.length}</small></h3>
       <div class="igrid">${prizes.map(prize).join("")}</div>
       <p class="note" style="margin-top:12px">Items open one at a time. Badge prizes are a surprise: win a badge to find out what they are!</p>
@@ -1074,8 +1401,9 @@ function wardrobeScreen(){
   const gb = $("#galBtn"); if (gb) gb.onclick = sceneGallery;
   const tb = $("#tryBtn"); if (tb) tb.onclick = () => { tryOn = tryOn ? null : next.id; sfx.pop(); if (tryOn) sfx.giggle(); wardrobeScreen(); window.scrollTo({top:0, behavior:"smooth"}); };
   const bb = $("#buyBtn"); if (bb) bb.onclick = () => buyItem(next);
+  if (!P.tryAll) wsWire();
   app.querySelectorAll("[data-item]").forEach(b => b.onclick = () => {
-    const it = ITEMS.find(i => i.id===b.dataset.item), st = b.dataset.st;
+    const it = ITEMS.find(i => i.id===b.dataset.item) || CUSTOM_ITEMS.find(i => i.id===b.dataset.item), st = b.dataset.st;
     if (st==="wearing"){ setWear(null); tryOn = null; return wardrobeScreen(); }
     if (st==="owned"){ tryOn = null; setWear(it.id); sfx.pop(); sfx.giggle(); return wardrobeScreen(); }
     if (st==="next"){ tryOn = it.id; sfx.pop(); sfx.giggle(); wardrobeScreen(); window.scrollTo({top:0, behavior:"smooth"}); return; }
@@ -1999,6 +2327,11 @@ function grownSettings(keep){
     <label class="toggle">Try everything: all of Ми́ша’s items to try on<input type="checkbox" id="tTry" ${P.tryAll?"checked":""}></label>
     <div class="row" style="flex-wrap:wrap;gap:8px;margin-top:8px"><button class="btn small ghost" id="tStarsUp">⭐ +300 stars for ${esc(me().name)}</button><button class="btn small ghost" id="tStarsDn">⭐ −300</button><button class="btn small ghost" id="tParty">🎆 Preview the celebration</button></div>
     <p class="note" style="margin:4px 0 0">For testing. Stars added here don’t count as earned and don’t change the family goal.</p>
+    <h3>Phone notifications</h3>
+    <p class="note" style="text-align:left;margin:0">Get a notification on your phone when a child orders something in Ми́ша’s workshop, and nothing else. Uses the free ntfy app. Enter the same channel on every phone the children use.</p>
+    <label class="field">ntfy channel name<input type="text" id="ntfyTopic" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(P.ntfy||"")}" placeholder="Tap “Make one”, or paste yours"></label>
+    <div class="row" style="flex-wrap:nowrap;gap:8px"><button class="btn small ghost" id="ntfyMake" style="flex:1">Make one</button><button class="btn small" id="ntfySave" style="flex:1">Save</button><button class="btn small ghost" id="ntfyTest" style="flex:1">Test</button></div>
+    <p class="note" id="ntfyStatus">${P.ntfy ? "On: new orders are sent to your channel." : "Off."}</p>
     <h3>Microsoft Speech</h3>
     <p class="note" style="text-align:left;margin:0">Paste your key once. It stays on this device and is shared by all learners. Works from your own web link (GitHub Pages), not inside Claude.</p>
     <label class="field">Key<input type="password" id="azKey" autocomplete="off" placeholder="Paste KEY 1 here" value="${esc(S.azKey||"")}"></label>
@@ -2031,6 +2364,13 @@ function grownSettings(keep){
   $("#rsBtn",bg).onclick = () => $("#rsFile",bg).click();
   $("#rsFile",bg).onchange = e => { const f = e.target.files[0]; if (f){ bg.remove(); importBackup(f, () => { gsDone.rsBtn = "✓ Restored"; grownSettings(true); }); } };
   $("#tAll",bg).onchange = e => { S.unlockAll = e.target.checked; save(); home(); };
+  const nt = $("#ntfyTopic",bg), nst = $("#ntfyStatus",bg), okTopic = v => /^[-_A-Za-z0-9]{6,64}$/.test(v);
+  $("#ntfyMake",bg).onclick = () => { nt.value = "misha-" + Array.from(crypto.getRandomValues(new Uint8Array(9)), b => "abcdefghijkmnpqrstuvwxyz23456789"[b % 32]).join(""); nst.textContent = "Now tap Save, then subscribe to this name in the ntfy app."; };
+  $("#ntfySave",bg).onclick = () => { const v = nt.value.trim(); if (v && !okTopic(v)){ nst.textContent = "Use 6 or more letters, numbers or dashes, no spaces."; return; } P.ntfy = v || null; saveP(); nst.textContent = v ? "Saved. New orders will be sent to your channel." : "Off."; };
+  $("#ntfyTest",bg).onclick = async () => { const v = nt.value.trim(); if (!okTopic(v)){ nst.textContent = "Make or paste a channel name first."; return; }
+    nst.textContent = "Sending…";
+    try { const r = await fetch("https://ntfy.sh/", {method:"POST", body:JSON.stringify({topic:v, title:"🧵 Test from Ми́ша", message:"It works! You’ll get a message like this when a child orders something.", tags:["tada"]})}); nst.textContent = r.ok ? "Sent! Check your phone." : "Couldn’t send. Check the name and try again."; }
+    catch(_){ nst.textContent = "Couldn’t send. Are you online?"; } };
   $("#tStarsUp",bg).onclick = () => { S.stars = (S.stars||0) + 300; S.shownStars = S.stars; save(); toast(`${me().name} now has ⭐ ${S.stars}.`); };
   $("#tStarsDn",bg).onclick = () => { S.stars = Math.max(0, (S.stars||0) - 300); S.shownStars = S.stars; save(); toast(`${me().name} now has ⭐ ${S.stars}.`); };
   $("#tParty",bg).onclick = () => { const it = ITEMS.find(i => i.id===SHOP_LINE.find(id => !(S.owned||[]).includes(id))) || ITEMS.find(i => i.id==="crown"); bg.remove(); buyParty(it, true); };
@@ -3169,7 +3509,7 @@ function whoScreen(){
         return `<button class="pcard" data-id="${p.id}">${avHTML(p.avatar, 78)}<span>${esc(p.name)}</span><small>🔥 ${s.streak||0} · ⭐ ${s.stars||0}</small></button>`; }).join("")}
         <button class="pcard" id="addP"><span class="av" style="width:78px;height:78px;font-size:40px;background:var(--chip);color:var(--primary)">＋</span><span>Add learner</span><small>New child</small></button>
       </div>
-      <div style="margin-top:22px"><button class="btn ghost" id="parentBtn">👪 Parent dashboard</button></div>
+      <div style="margin-top:22px"><button class="btn ghost" id="parentBtn" style="position:relative">👪 Parent dashboard${wsUnseen() ? `<i class="dot" style="position:absolute;top:6px;right:10px"></i>` : ""}</button></div>
     </div>`;
   app.querySelectorAll("[data-id]").forEach(b => b.onclick = () => switchTo(b.dataset.id));
   $("#addP").onclick = () => editLearner(null);
@@ -3280,6 +3620,7 @@ function parentDash(){
     <div style="padding:0 16px 12px"><h2 style="font-family:var(--font-head);margin:0;font-size:28px">Parent dashboard</h2>
       <p class="sub" style="margin:4px 0 0">Saved on this device only.</p></div>
     <div class="dash">
+      ${wsDashHTML()}
       <div class="dcard fold ${dashOpen.fam ? "open" : ""}"><button class="fhd" data-ft="fam"><h3>👪 Family goal</h3><span class="chev">›</span></button><div class="fbody"><p class="sub" style="margin:0 0 8px">Stars all learners earn together each week (Monday to Sunday). This week: ${familyStatus().total}.</p>
         <label class="field">Weekly target<input type="number" inputmode="numeric" id="famT" min="10" max="2000" value="${(P.family||{target:60}).target}"></label><button class="btn small" id="famSave">Save target</button></div></div>
       <div class="dcard fold ${dashOpen.rw ? "open" : ""}"><button class="fhd" data-ft="rw"><h3>🎁 Family rewards</h3><span class="chev">›</span></button><div class="fbody"><p class="sub" style="margin:0 0 8px">Real-life rewards children work towards. They see the next one on their home screen.</p>
@@ -3292,6 +3633,7 @@ function parentDash(){
   $("#back").onclick = whoScreen;
   $("#addP2").onclick = () => editLearner(null);
   const editKid = (pid, fn) => { if (pid===P.current){ fn(S); save(); } else { const s2 = loadS(pid); fn(s2); try { localStorage.setItem(profKey(pid), JSON.stringify(s2)); } catch(_){} } };
+  wsDashWire(editKid);
   app.querySelectorAll("[data-lim]").forEach(b => b.onclick = () => { const [pid, v] = b.dataset.lim.split(":"); editKid(pid, s2 => s2.dayLimit = +v); parentDash(); });
   app.querySelectorAll("[data-acorn]").forEach(b => b.onclick = () => { const pid = b.dataset.acorn; editKid(pid, s2 => s2.acorns = Math.min(9, (s2.acorns||0) + 1)); parentDash(); toast("Acorn given. 🌰"); });
   app.querySelectorAll("[data-ft]").forEach(h => h.onclick = () => { const k = h.dataset.ft; dashOpen[k] = !dashOpen[k]; h.parentElement.classList.toggle("open", dashOpen[k]); });
@@ -3476,7 +3818,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "13.2.1 (November 2, 2026)";
+const APP_VERSION = "13.3 (November 2, 2026)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */

@@ -1,6 +1,6 @@
 /* Ми́ша app helper: when online, always loads the newest version from the web;
    when offline, uses the saved copy. Also keeps fonts and icons for offline use. */
-const CACHE = "misha-app-v30";
+const CACHE = "misha-app-v31";
 const CORE = ["./", "./index.html", "./manifest.json", "./icon2-192.png", "./icon2-512.png", "./icon2-maskable-512.png", "./apple-touch-icon2.png"];
 self.addEventListener("install", e => {
   self.skipWaiting();
