@@ -1861,6 +1861,18 @@ function wsDashHTML(){
         ${!o.readyDay ? `<button class="btn small" data-wsready="${p.id}" ${it ? "" : "disabled"}>🎁 Ready for pickup</button>` : ""}<button class="btn small ghost" data-wscancel="${p.id}">↩️ Cancel and refund</button></div></div>`; }).join("")}
     </div></div>`;
 }
+/* 📚 How many words the app teaches, and how many each child has learned. Counted from the units, so new units are included automatically. */
+function wordsDashHTML(){
+  const total = ALLWORDS.length;
+  const rows = P.profiles.map(p => { const s = p.id===P.current ? S : loadS(p.id);
+    const st = ALLWORDS.map(w => wordStats(s, w)).filter(Boolean), learned = st.length, well = st.filter(x => x.score != null && x.score >= 80).length;
+    return `<div class="wsorder"><div class="wsh">${avHTML(p.avatar, 36)}<div style="flex:1"><b>${esc(p.name)}</b>
+      <div class="prog" style="margin:4px 0 0"><div class="lab"><span>Words learned</span><span>${learned} / ${total}</span></div><div class="bar"><i style="width:${Math.round(100*learned/total)}%"></i></div></div>
+      <small>Known well (grade A or B): ${well} · still to meet: ${total - learned}</small></div></div></div>`; }).join("");
+  return `<div class="dcard fold ${dashOpen.words ? "open" : ""}"><button class="fhd" data-ft="words"><h3>📚 Words</h3><span class="chev">›</span></button><div class="fbody">
+    <p class="sub" style="margin:0 0 6px">The app teaches <b>${total} words</b> in ${UNIT_IDS.length} units, plus the 33 letters. This number grows by itself when a new unit is added.</p>
+    ${rows}</div></div>`;
+}
 function wsDashWire(editKid){
   const all = wsAllOrders(), find = pid => all.find(x => x.p.id===pid);
   app.querySelectorAll("[data-wscopy]").forEach(b => b.onclick = () => { const x = find(b.dataset.wscopy); wsCopy(wsForClaude(x.p, x.o)); });
@@ -3093,7 +3105,7 @@ function practiceScreen(){
       <button class="prow" data-p="weak"><span class="tx"><b>💪 Weak words</b><small>${learnedWords().length >= 3 ? "Learn your 5 weakest words, then say them from memory" : "Learn 3 words first"}</small></span><span class="ic" style="background:#FFE3D6">💪</span></button>
       <button class="prow" data-p="review"><span class="tx"><b>Smart review</b><small>${(() => { const d = dueCount(); return d ? `${d} item${d>1?"s are":" is"} fading. Bring ${d>1?"them":"it"} back!` : "Everything is fresh. Review anyway?"; })()}</small></span><span class="ic" style="background:#FFF1C9">🧠${dueCount()?`<span class="badge">${dueCount()}</span>`:""}</span></button>
       <button class="prow" data-p="mistakes"><span class="tx"><b>Mistakes</b><small>${mist.length ? `Fix ${mist.length} recent mistake${mist.length>1?"s":""}` : "No mistakes to fix. Great!"}</small></span><span class="ic" style="background:#FFE6C7">↻${mist.length?`<span class="badge">${mist.length}</span>`:""}</span></button>
-      <button class="prow" data-p="words"><span class="tx"><b>Words</b><small>${words.length} words learned</small></span><span class="ic" style="background:var(--chip)">🗂️</span></button>
+      <button class="prow" data-p="words"><span class="tx"><b>Words</b><small>${words.length} of ${ALLWORDS.length} words learned</small></span><span class="ic" style="background:var(--chip)">🗂️</span></button>
       <button class="prow" data-p="listen"><span class="tx"><b>Listen</b><small>Train your ears</small></span><span class="ic" style="background:#DDF0FF">🎧</span></button>
       <button class="prow" data-p="speak"><span class="tx"><b>Speak</b><small>${azOn() ? "Pronunciation coach: sound-by-sound scores" : "Say it out loud and compare"}</small></span><span class="ic" style="background:#FFE0EA">🎙️</span></button>
       <p class="note" style="margin:4px 0 0">Ми́ша’s memory engine (Duolingo’s half-life formula) brings words back just before they’d be forgotten, and learns how fast this learner forgets.</p>
@@ -4116,7 +4128,7 @@ function childReport(p){
       <div><b>${st.lessons}</b><small>lessons finished</small></div>
       <div><b>${st.practice}</b><small>practice sessions</small></div>
       <div><b>${acc==null ? "–" : acc + "%"}</b><small>right first time</small></div>
-      <div><b>${wordsLearned}</b><small>words learned</small></div>
+      <div><b>${wordsLearned} / ${ALLWORDS.length}</b><small>words learned</small></div>
       <div><b>${avgG || "–"}</b><small>average grade</small></div>
       <div><b>${lettersMet}</b><small>letters met</small></div>
     </div>`)}
@@ -4140,6 +4152,7 @@ function parentDash(){
       <p class="sub" style="margin:4px 0 0">Saved on this device only.</p></div>
     <div class="dash">
       ${wsDashHTML()}
+      ${wordsDashHTML()}
       <div class="dcard fold ${dashOpen.fam ? "open" : ""}"><button class="fhd" data-ft="fam"><h3>👪 Family goal</h3><span class="chev">›</span></button><div class="fbody"><p class="sub" style="margin:0 0 8px">Stars all learners earn together each week (Monday to Sunday). This week: ${familyStatus().total}.</p>
         <label class="field">Weekly target<input type="number" inputmode="numeric" id="famT" min="10" max="2000" value="${(P.family||{target:60}).target}"></label><button class="btn small" id="famSave">Save target</button></div></div>
       <div class="dcard fold ${dashOpen.rw ? "open" : ""}"><button class="fhd" data-ft="rw"><h3>🎁 Family rewards</h3><span class="chev">›</span></button><div class="fbody"><p class="sub" style="margin:0 0 8px">Real-life rewards children work towards. They see the next one on their home screen.</p>
@@ -4337,7 +4350,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "15.0 (November 2, 2026)";
+const APP_VERSION = "15.1 (November 2, 2026)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */
@@ -4381,7 +4394,7 @@ function statsScreen(pid){
     <div style="padding:0 16px 40px">
       <h2 style="font-family:var(--font-head);margin:6px 0 4px">📊 Statistics</h2>
       ${P.profiles.length > 1 ? `<label class="field">Learner<select id="stWho">${P.profiles.map(x => `<option value="${x.id}" ${x.id===p.id?"selected":""}>${esc(x.name)}</option>`).join("")}</select></label>` : ""}
-      <div class="dstats" style="grid-template-columns:repeat(3,1fr)"><div><b>${total}</b><small>words learned</small></div><div><b>${avg==null ? "–" : gradeOf(avg)}</b><small>average grade</small></div><div><b>${letters}</b><small>letters met</small></div></div>
+      <div class="dstats" style="grid-template-columns:repeat(3,1fr)"><div><b>${total} / ${ALLWORDS.length}</b><small>words learned</small></div><div><b>${avg==null ? "–" : gradeOf(avg)}</b><small>average grade</small></div><div><b>${letters}</b><small>letters met</small></div></div>
       <div class="gdist">${["A","B","C","D","F","N"].map(g => dist[g] ? `<i class="g${g}" style="width:${100*dist[g]/Math.max(1,total)}%"></i>` : "").join("")}</div>
       <small style="color:var(--muted);font-weight:700">A ${dist.A} · B ${dist.B} · C ${dist.C} · D ${dist.D} · F ${dist.F}${dist.N ? ` · not graded yet ${dist.N}` : ""}</small>
       <div class="chipsel" style="margin-top:12px">${["all","A","B","C","D","F"].map(g => `<button data-g="${g}" aria-pressed="${statView.grade===g}">${g==="all" ? "All" : g}</button>`).join("")}</div>
