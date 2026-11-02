@@ -1846,9 +1846,9 @@ function guidebook(u=1){
 const PIN_HASH = 951507841;
 let grownUntil = 0;
 function fnv(s){ let h = 0x811c9dc5; for (const b of new TextEncoder().encode(s)){ h ^= b; h = Math.imul(h, 0x01000193) >>> 0; } return h; }
-function askPin(onOk){
+function askPin(onOk, title){
   if (Date.now() < grownUntil) return onOk();
-  const bg = sheet(`<h2>🔒 Grown-up settings</h2><p class="sub" style="margin:0 0 8px">Enter the PIN to continue.</p>
+  const bg = sheet(`<h2>🔒 ${title || "Grown-up settings"}</h2><p class="sub" style="margin:0 0 8px">Enter the PIN to continue.</p>
     <label class="field">PIN<input type="password" inputmode="numeric" pattern="[0-9]*" maxlength="8" id="pinIn" autocomplete="off" style="font-size:26px;letter-spacing:.4em;text-align:center"></label>
     <div style="display:grid;gap:10px;margin-top:6px"><button class="btn" id="pinGo">Unlock</button><button class="btn ghost" data-close>Cancel</button></div>`, true);
   const go = () => { const v = $("#pinIn",bg).value.trim(); if (fnv("misha-pin:" + v) === PIN_HASH){ grownUntil = Date.now() + 10*60*1000; bg.remove(); onOk(); } else { $("#pinIn",bg).value = ""; toast("That PIN isn’t right."); } };
@@ -1868,8 +1868,6 @@ function settings(){
     ${installPrompt && !isStandalone() ? `<h3>Install</h3><div><button class="btn" id="instBtn">📲 Install Ми́ша as an app</button></div>` : ""}
     <h3>Offline</h3>
     <div><button class="btn ghost" id="offBtn">⬇ Make units work offline</button></div>
-    <h3>Progress</h3>
-    <div><button class="btn ghost" id="statsBtn">📊 Statistics: words and grades</button></div>
     <h3>Grown-ups</h3>
     <div><button class="btn ghost" id="grownBtn">🔒 Grown-up settings</button></div>
     <p class="note" style="margin-top:14px">App version ${APP_VERSION}</p>`);
@@ -1877,7 +1875,6 @@ function settings(){
   $("#tFull",bg).onchange = e => { P.full = e.target.checked; saveP(); if (P.full) goFull(true); else if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); };
   bg.querySelectorAll("[data-theme-btn]").forEach(b => b.onclick = () => { P.theme = b.dataset.themeBtn; saveP(); applyTheme(); bg.querySelectorAll("[data-theme-btn]").forEach(x => x.setAttribute("aria-pressed", x===b)); });
   $("#offBtn",bg).onclick = () => { bg.remove(); offlineSheet(); };
-  $("#statsBtn",bg).onclick = () => { bg.remove(); statsScreen(); };
   const ib = $("#instBtn",bg); if (ib) ib.onclick = async () => { installPrompt.prompt(); try { await installPrompt.userChoice; } catch(_){} installPrompt = null; bg.remove(); };
   $("#tTr",bg).onchange = e => { S.translit = e.target.checked; save(); };
   $("#tSnd",bg).onchange = e => { S.sound = e.target.checked; save(); };
@@ -1898,7 +1895,7 @@ function grownSettings(keep){
     <label class="toggle">Open all levels (for testing)<input type="checkbox" id="tAll" ${S.unlockAll?"checked":""}></label>
     <label class="toggle">Try everything: all of Ми́ша’s items to try on<input type="checkbox" id="tTry" ${P.tryAll?"checked":""}></label>
     <h3>Microsoft Speech</h3>
-    <p class="note" style="text-align:left;margin:0">Paste your key once. It stays on this device and is shared by all learners. Works from your own web link (Netlify), not inside Claude.</p>
+    <p class="note" style="text-align:left;margin:0">Paste your key once. It stays on this device and is shared by all learners. Works from your own web link (GitHub Pages), not inside Claude.</p>
     <label class="field">Key<input type="password" id="azKey" autocomplete="off" placeholder="Paste KEY 1 here" value="${esc(S.azKey||"")}"></label>
     <label class="field">Region<input type="text" id="azRegion" autocomplete="off" value="${esc(S.azRegion||"eastus")}"></label>
     <label class="field">Voice<select id="azVoice">${voices.map(([v,n]) => `<option value="${v}" ${S.azVoice===v?"selected":""}>${n}</option>`).join("")}</select></label>
@@ -3028,14 +3025,7 @@ function deleteLearnerNow(p, after){
   saveP(); toast(`${p.name} was deleted.`); after && after();
 }
 /* ---------- Parent dashboard ---------- */
-function parentGate(){
-  const a = 6 + Math.floor(Math.random()*4), b = 6 + Math.floor(Math.random()*4);
-  const bg = sheet(`<h2>Grown-ups only</h2><p class="sub" style="margin:0 0 8px">To open the parent dashboard, answer:</p>
-    <label class="field">What is ${a} × ${b}?<input type="number" inputmode="numeric" id="gate" autocomplete="off"></label>
-    <div style="display:grid;gap:10px;margin-top:6px"><button class="btn" id="gateGo">Open</button><button class="btn ghost" data-close>Cancel</button></div>`, true);
-  const go = () => { if (+$("#gate",bg).value === a*b){ bg.remove(); parentDash(); } else { $("#gate",bg).value = ""; toast("Not quite. Ask a grown-up!"); } };
-  $("#gateGo",bg).onclick = go; $("#gate",bg).onkeydown = e => { if (e.key==="Enter") go(); }; setTimeout(() => $("#gate",bg).focus(), 50);
-}
+function parentGate(){ askPin(parentDash, "Parent dashboard"); }
 function childReport(p){
   const s = p.id===P.current ? S : loadS(p.id);
   const now = new Date(), dow = (now.getDay()+6)%7, names = ["Mo","Tu","We","Th","Fr","Sa","Su"];
@@ -3048,9 +3038,15 @@ function childReport(p){
   const th = s.hlr || HLR0;
   const hl = it => Math.min(274, Math.max(1/96, Math.pow(2, th.b + th.r*Math.sqrt(1+it.r) + th.w*Math.sqrt(1+it.w))));
   const rec = k => Math.pow(2, -((Date.now() - mem[k].t)/864e5) / hl(mem[k]));
-  const wordsLearned = keys.filter(k => k.startsWith("w:")).length;
   const due = keys.filter(k => rec(k) < 0.5).length;
-  const weakWords = keys.filter(k => k.startsWith("w:") && (mem[k].r + mem[k].w) > 0).sort((x,y) => rec(x) - rec(y)).slice(0,5).map(k => { const w = W(k.slice(2)); return w ? {t:w.ru, b:band(Math.round(rec(k)*100))} : null; }).filter(Boolean);
+  /* Words: the same numbers and grades as the full Statistics list */
+  const wrows = UNIT_IDS.flatMap(u => UNITS[u].words.map(w => ({w, st: wordStats(s, w)}))).filter(r => r.st);
+  const wordsLearned = wrows.length, dist = {A:0,B:0,C:0,D:0,F:0,N:0};
+  wrows.forEach(r => dist[gradeOf(r.st.score)]++);
+  const graded = wrows.filter(r => r.st.score != null);
+  const avgG = graded.length ? gradeOf(Math.round(graded.reduce((a,r) => a + r.st.score, 0) / graded.length)) : null;
+  const lettersMet = keys.filter(k => k.startsWith("l:")).length;
+  const weakWords = graded.slice().sort((a,b) => a.st.score - b.st.score).slice(0,5).map(r => ({t:r.w.ru, g:gradeOf(r.st.score), b:band(r.st.score)}));
   const snd = Object.entries(s.sounds || {}).filter(([,v]) => v.n >= 3).map(([ph,v]) => ({ph, avg:Math.round(v.sum/v.n)})).filter(x => x.avg < 85).sort((a,b) => a.avg - b.avg).slice(0,6);
   const pr = s.pron || [], pavg = pr.length ? Math.round(pr.slice(-20).reduce((a,b) => a+b, 0) / Math.min(20, pr.length)) : null;
   const unitPct = u => { const d = u===2 ? (s.done2||[0,0,0,0,0]) : s.done; const tot = LEVELS.reduce((a,l) => a + l.lessons, 0); return {done: d.reduce((a,v,i) => a + Math.min(v, LEVELS[i].lessons), 0), tot}; };
@@ -3065,16 +3061,21 @@ function childReport(p){
       <div><b>${st.lessons}</b><small>lessons finished</small></div>
       <div><b>${st.practice}</b><small>practice sessions</small></div>
       <div><b>${acc==null ? "–" : acc + "%"}</b><small>right first time</small></div>
-      <div><b>${wordsLearned}</b><small>words met</small></div>
+      <div><b>${wordsLearned}</b><small>words learned</small></div>
+      <div><b>${avgG || "–"}</b><small>average grade</small></div>
+      <div><b>${lettersMet}</b><small>letters met</small></div>
     </div>
     ${bar("Letters", Math.min(s.alpha||0, ALPHA.length), ALPHA.length)}
     ${bar("Unit 1: Make introductions", u1.done, u1.tot)}
     ${bar("Unit 2: What is this?", u2.done, u2.tot)}
+    <div class="dsec">Word grades<small>${wordsLearned ? `A ${dist.A} · B ${dist.B} · C ${dist.C} · D ${dist.D} · F ${dist.F}${dist.N ? ` · not graded yet ${dist.N}` : ""}` : "No words learned yet."}</small></div>
+    ${wordsLearned ? `<div class="gdist">${["A","B","C","D","F","N"].map(g => dist[g] ? `<i class="g${g}" style="width:${100*dist[g]/wordsLearned}%"></i>` : "").join("")}</div>` : ""}
+    ${weakWords.length ? `<div class="dsec" style="margin-top:8px"><small>Weakest words</small></div><div class="chips">${weakWords.map(w => `<span class="${w.b}">${w.t} · ${w.g}</span>`).join("")}</div>` : ""}
     <div class="dsec">Memory<small>${due ? `${due} item${due>1?"s":""} need${due>1?"":"s"} review. Smart review in Practice brings them back.` : "Everything is fresh right now."}</small></div>
-    ${weakWords.length ? `<div class="chips">${weakWords.map(w => `<span class="${w.b}">${w.t}</span>`).join("")}</div>` : ""}
-    <div class="dsec">Pronunciation<small>${pavg==null ? "No scored speaking yet. Connect Microsoft Speech in Settings and use the speaking exercises." : `Average score (last ${Math.min(20, pr.length)} tries): ${pavg} / 100`}</small></div>
+    <div class="dsec">Pronunciation<small>${pavg==null ? "No scored speaking yet. Connect Microsoft Speech in Grown-up settings and use the speaking exercises." : `Average score (last ${Math.min(20, pr.length)} tries): ${pavg} / 100`}</small></div>
     ${snd.length ? `<div class="dsec" style="margin-top:8px"><small>Sounds to practise (average score)</small></div><div class="chips">${snd.map(x => `<span class="${band(x.avg)}">${esc(x.ph)} · ${x.avg}</span>`).join("")}</div>` : ""}
     <div class="dsec">Recent mistakes<small>${(s.mistakes||[]).length} to fix · the Mistakes practice uses these</small></div>
+    <button class="btn ghost" data-stats="${p.id}" style="margin-top:12px">📊 All words and grades</button>
   </div>`;
 }
 function parentDash(){
@@ -3094,6 +3095,7 @@ function parentDash(){
       <button class="btn ghost" id="addP2">＋ Add learner</button></div>`;
   $("#back").onclick = whoScreen;
   $("#addP2").onclick = () => editLearner(null);
+  app.querySelectorAll("[data-stats]").forEach(b => b.onclick = () => statsScreen(b.dataset.stats));
   $("#famSave").onclick = e => { P.family = {target: Math.max(10, +$("#famT").value || 60)}; saveP(); doneBtn(e.currentTarget, "✓ Saved"); toast("Family goal saved."); };
   app.querySelectorAll("[data-delr]").forEach(b => b.onclick = () => askConfirm("Delete this reward?", "Yes, delete", () => { P.rewards = (P.rewards||[]).filter(r => r.id!==b.dataset.delr); saveP(); parentDash(); }));
   app.querySelectorAll("[data-give]").forEach(b => b.onclick = () => { const [rid, pid] = b.dataset.give.split(":"); const r = P.rewards.find(x => x.id===rid); r.given = r.given || {}; r.given[pid] = todayKey(); saveP(); parentDash(); });
@@ -3274,7 +3276,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "12.7 (November 1, 2026)";
+const APP_VERSION = "12.8 (November 1, 2026)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */
@@ -3329,7 +3331,7 @@ function statsScreen(pid){
             <div class="sdet" id="d-${r.w.id}">${bar("Pronunciation", r.st.pron)}${bar("Memory now", r.st.memory)}${bar("Accuracy", r.st.accuracy)}<small style="color:var(--muted);font-weight:700">${r.st.right} right · ${r.st.wrong} wrong</small> <button class="btn small ghost" data-say="${esc(r.w.ru)}" style="margin-left:6px">🔊</button></div>`; }).join("") : `<p class="note" style="padding:10px">No words here yet.</p>`}</div></div>`; }).join("")}
       <p class="note" style="text-align:left;margin-top:14px">How grades work: pronunciation (Microsoft’s average for the word) 40%, memory now 35%, accuracy 25%. Without speaking scores: memory 55%, accuracy 45%. Memory drops when a word isn’t practised, so grades can fall and climb again with review. A 90+ · B 80–89 · C 70–79 · D 60–69 · F below 60.</p>
     </div>`;
-  $("#back").onclick = home;
+  $("#back").onclick = parentDash;
   const sw = $("#stWho"); if (sw) sw.onchange = e => statsScreen(e.target.value);
   app.querySelectorAll("[data-g]").forEach(b => b.onclick = () => { statView.grade = b.dataset.g; statsScreen(p.id); });
   app.querySelectorAll("[data-sort]").forEach(b => b.onclick = () => { statView.sort = b.dataset.sort; statsScreen(p.id); });
