@@ -237,7 +237,9 @@ img.chip.papa{filter:brightness(.8) saturate(.85)}
 @keyframes spin{to{transform:rotate(360deg)}}
 /* Alphabet */
 .unitcard.u2{background:#13A38A;box-shadow:0 6px 0 #0D7A67}
+.unitcard.u3{background:#8A5CD1;box-shadow:0 6px 0 #6A43A8}
 .popcard.u2{background:#13A38A;box-shadow:0 6px 0 #0D7A67}.popcard.u2::before{background:#13A38A}.popcard.u2 button{color:#0D7A67}
+.popcard.u3{background:#8A5CD1;box-shadow:0 6px 0 #6A43A8}.popcard.u3::before{background:#8A5CD1}.popcard.u3 button{color:#6A43A8}
 .unitcard.alpha{background:var(--leaf);box-shadow:0 6px 0 var(--leaf-lip)}
 .lgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
 .ltile{appearance:none;background:var(--surface);color:var(--ink);border:2px solid var(--line);border-bottom-width:4px;border-radius:14px;padding:8px 2px 10px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer}
@@ -618,6 +620,7 @@ img.chip.wobble{animation:wobble .6s ease-in-out 1, breathe 3.4s ease-in-out .6s
 .path{--uc:#D9692B;--ucd:#A64E1C;--ucl:#F2C6AC;--ucld:#D4A486;--ucf:rgba(217,105,43,.22)}
 .path.pa{--uc:#6E9F45;--ucd:#557D33;--ucl:#C9DDB8;--ucld:#A7BD93;--ucf:rgba(110,159,69,.24)}
 .path.p2{--uc:#13A38A;--ucd:#0D7A67;--ucl:#A6DDD3;--ucld:#7FBDB2;--ucf:rgba(19,163,138,.22)}
+.path.p3{--uc:#8A5CD1;--ucd:#6A43A8;--ucl:#D6C6F2;--ucld:#B6A2DA;--ucf:rgba(138,92,209,.22)}
 .node .ring{background:none!important;position:relative}
 .node .ring svg.segring{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
 .node button{background:var(--ucl);box-shadow:0 6px 0 var(--ucld)}
@@ -737,6 +740,8 @@ const GLOSS = {
   "как":"how / what", "тебя":"you · «как тебя зовут?» = what is your name?",
   "что":"what (said «што»)", "кто":"who", "кот":"cat", "собака":"dog", "дом":"house", "книга":"book", "мяч":"ball",
   "телефон":"phone", "школа":"school", "и":"and", "не":"not",
+  "хлеб":"bread", "сыр":"cheese", "сок":"juice", "чай":"tea", "молоко":"milk (said «малако»)", "яблоко":"apple",
+  "вкусно":"tasty!", "спасибо":"thank you", "я":"I", "ты":"you", "хочу":"I want", "хочешь":"you want", "ой":"oops!",
   "аня":"Anya (a girl’s name)", "миша":"Misha (a boy’s name)", "тима":"Tima (a boy’s name)"
 };
 function tapify(ru){
@@ -793,17 +798,67 @@ const UNIT2 = {
     {q:"Which word asks about people and animals?", options:["Кто","Что","Э́то"], answer:0}
   ]
 };
+/* ---------- Unit 3, “Я хочу́ сок!” (Food and drink) ---------- */
+const UNIT3 = {
+  words:[
+    {id:"hleb", ru:"хлеб", en:"bread", tr:"khlyep", pic:"🍞"},
+    {id:"syr", ru:"сыр", en:"cheese", tr:"syr", pic:"🧀"},
+    {id:"sok", ru:"сок", en:"juice", tr:"sok", pic:"🧃"},
+    {id:"chay", ru:"чай", en:"tea", tr:"chay", pic:"🍵"},
+    {id:"moloko", ru:"молоко́", en:"milk", tr:"malako", pic:"🥛"},
+    {id:"yabloko", ru:"я́блоко", en:"apple", tr:"yablaka", pic:"🍎"},
+    {id:"vkusno", ru:"вку́сно", en:"tasty!", tr:"fkusna", pic:"😋"},
+    {id:"spasibo", ru:"спаси́бо", en:"thank you", tr:"spasiba", pic:"🙏"},
+    {id:"ya", ru:"я", en:"I", tr:"ya", pic:"🧒"},
+    {id:"ty", ru:"ты", en:"you", tr:"ty", pic:"🫵"},
+    {id:"hochu", ru:"хочу́", en:"I want", tr:"khachu", pic:"🤲"},
+    {id:"hochesh", ru:"хо́чешь", en:"you want", tr:"khochish", pic:"❓"}
+  ],
+  groups:[["hleb","syr","sok","chay"],["moloko","yabloko","vkusno","spasibo"],["ya","ty","hochu","hochesh"]],
+  sentences:[
+    {ru:"Э́то хлеб.", en:"This is bread.", set:0},
+    {ru:"Э́то сыр и сок.", en:"This is cheese and juice.", set:0},
+    {ru:"Что э́то? Э́то чай.", en:"What is this? This is tea.", set:0},
+    {ru:"Э́то молоко́?", en:"Is this milk?", set:0},
+    {ru:"Да, э́то молоко́.", en:"Yes, this is milk.", set:0},
+    {ru:"Э́то я́блоко.", en:"This is an apple.", set:0},
+    {ru:"Я хочу́ сок.", en:"I want juice.", set:1},
+    {ru:"Ты хо́чешь чай?", en:"Do you want tea?", set:1},
+    {ru:"Да, хочу́.", en:"Yes, I do.", set:1},
+    {ru:"Нет, спаси́бо.", en:"No, thank you.", set:1},
+    {ru:"Я хочу́ хлеб и сыр.", en:"I want bread and cheese.", set:1},
+    {ru:"Ма́ма, э́то вку́сно!", en:"Mom, this is tasty!", set:1}
+  ],
+  blankable:["хлеб","сыр","сок","чай","молоко́","я́блоко","вку́сно","спаси́бо","хочу́","хо́чешь","я","ты","э́то","да","нет","и","ма́ма"],
+  story:[
+    {who:"tima", ru:"Приве́т, Ми́ша! Что э́то?", en:"Hi, Misha! What is this?"},
+    {who:"misha", ru:"Э́то хлеб и сыр. Ты хо́чешь сок?", en:"This is bread and cheese. Do you want juice?"},
+    {who:"tima", ru:"Нет, спаси́бо. Я хочу́ чай.", en:"No, thank you. I want tea."},
+    {q:"What does Tima want?", options:["tea","juice","milk"], answer:0},
+    {who:"misha", ru:"Я хочу́ я́блоко!", en:"I want an apple!"},
+    {who:"tima", ru:"Ми́ша, э́то не я́блоко! Э́то мяч!", en:"Misha, this is not an apple! This is a ball!"},
+    {q:"What did Misha almost eat?", options:["a ball","a book","a cat"], answer:0},
+    {who:"misha", ru:"Ой! Э́то я́блоко?", en:"Oops! Is this an apple?"},
+    {who:"tima", ru:"Да, э́то я́блоко.", en:"Yes, this is an apple."},
+    {who:"misha", ru:"Вку́сно! Спаси́бо, Ти́ма!", en:"Tasty! Thank you, Tima!"},
+    {q:"How do you say “No, thank you”?", options:["Нет, спаси́бо.","Да, хочу́.","Э́то вку́сно."], answer:0}
+  ]
+};
 const UNITS = {
-  1:{title:"Make introductions", cls:"", storyTitle:"Ми́ша meets a new friend", doneLine:"You can say hello and introduce yourself in Russian. Молоде́ц!",
+  1:{title:"Make introductions", cls:"", icon:"👋", storyTitle:"Ми́ша meets a new friend", doneLine:"You can say hello and introduce yourself in Russian. Молоде́ц!",
      words:WORDS, groups:GROUPS, sentences:SENTENCES, blankable:BLANKABLE, story:STORY,
      chat:[["l","Приве́т! Меня́ зову́т Ми́ша.","Hi! My name is Misha."],["r","Приве́т! Меня́ зову́т А́ня.","Hi! My name is Anya."],["l","Как тебя́ зову́т?","What is your name?"],["r","Здра́вствуйте! Меня́ зову́т Ти́ма.","Hello! My name is Tima."],["l","Э́то ма́ма?","Is this Mom?"],["r","Да, э́то ма́ма.","Yes, this is Mom."],["l","Э́то па́па?","Is this Dad?"],["r","Нет, э́то Ми́ша.","No, this is Misha."]],
      tips:["Russian doesn’t say “is” here. “This is Mom” is just «Э́то ма́ма».","«Здра́вствуйте» is the polite hello for grown-ups and teachers. «Приве́т» is for friends and family.","«Меня́ зову́т…» literally means “they call me…”. It’s how Russians say “my name is…”.","The little mark over a vowel (á) shows which part of the word is said strongest. Normal Russian books leave it out."]},
-  2:{title:"What is this?", cls:"u2", storyTitle:"Ми́ша shows Ти́ма around", doneLine:"You can ask «Что э́то?» and «Кто э́то?» and name things around you!",
+  2:{title:"What is this?", cls:"u2", icon:"🐱", storyTitle:"Ми́ша shows Ти́ма around", doneLine:"You can ask «Что э́то?» and «Кто э́то?» and name things around you!",
      words:UNIT2.words, groups:UNIT2.groups, sentences:UNIT2.sentences, blankable:UNIT2.blankable, story:UNIT2.story,
      chat:[["l","Что э́то?","What is this?"],["r","Э́то кот.","This is a cat."],["l","Кто э́то?","Who is this?"],["r","Э́то ма́ма.","This is Mom."],["l","Э́то телефо́н?","Is this a phone?"],["r","Нет, э́то не телефо́н. Э́то кни́га.","No, this is not a phone. This is a book."]],
-     tips:["«Кто э́то?» asks about people and animals. «Что э́то?» asks about things.","Russian has no words for “a” or “the”. «Э́то кот» means “This is a cat” or “This is the cat”.","«Что» is said like «што» (shto).","«Не» means “not” and goes right before the word: «не кот» = not a cat.","«И» means “and”: «мяч и кни́га» = a ball and a book."]}
+     tips:["«Кто э́то?» asks about people and animals. «Что э́то?» asks about things.","Russian has no words for “a” or “the”. «Э́то кот» means “This is a cat” or “This is the cat”.","«Что» is said like «што» (shto).","«Не» means “not” and goes right before the word: «не кот» = not a cat.","«И» means “and”: «мяч и кни́га» = a ball and a book."]},
+  3:{title:"Food and drink", cls:"u3", icon:"🍎", storyTitle:"Ми́ша’s picnic", doneLine:"You can ask for food and drink and say «Спаси́бо»!",
+     words:UNIT3.words, groups:UNIT3.groups, sentences:UNIT3.sentences, blankable:UNIT3.blankable, story:UNIT3.story,
+     chat:[["l","Ты хо́чешь сок?","Do you want juice?"],["r","Да, хочу́. Спаси́бо!","Yes, I do. Thank you!"],["l","Ты хо́чешь чай?","Do you want tea?"],["r","Нет, спаси́бо. Я хочу́ молоко́.","No, thank you. I want milk."],["l","Что э́то?","What is this?"],["r","Э́то сыр. Вку́сно!","This is cheese. Tasty!"]],
+     tips:["«Хочу́» means “I want” and «хо́чешь» means “you want”. The ending changes with the person.","«Нет, спаси́бо» is the polite “No, thank you”.","An «о» without the stress mark sounds like «а»: молоко́ is said “malako”.","«Вку́сно!» on its own means “Tasty!”","«Ты хо́чешь чай?» is a question only because of your voice: it goes up at the end."]}
 };
-const UNIT_IDS = [1, 2];
+const UNIT_IDS = [1, 2, 3];
 /* “Answer Ми́ша” role-plays: he asks, the child answers out loud */
 UNITS[1].qa = [
   {q:"Как тебя́ зову́т?", hint:"Pretend you are Аня", pic:"👧", a:"Меня́ зову́т А́ня."},
@@ -812,6 +867,16 @@ UNITS[1].qa = [
   {q:"Э́то ма́ма?", pic:"👨", a:"Нет, э́то па́па."},
   {q:"Э́то па́па?", pic:"👨", a:"Да, э́то па́па."},
   {q:"Приве́т!", hint:"Say hi back", pic:"👋", a:"Приве́т!"}
+];
+UNITS[3].qa = [
+  {q:"Что э́то?", pic:"🍞", a:"Э́то хлеб."},
+  {q:"Что э́то?", pic:"🧀", a:"Э́то сыр."},
+  {q:"Что э́то?", pic:"🍎", a:"Э́то я́блоко."},
+  {q:"Ты хо́чешь сок?", hint:"Say yes", pic:"🧃", a:"Да, хочу́."},
+  {q:"Ты хо́чешь чай?", hint:"Say no, thank you", pic:"🍵", a:"Нет, спаси́бо."},
+  {q:"Э́то молоко́?", pic:"🥛", a:"Да, э́то молоко́."},
+  {q:"Э́то сок?", pic:"🍵", a:"Нет, э́то чай."},
+  {q:"Что ты хо́чешь?", hint:"Ask for juice", pic:"🧃", a:"Я хочу́ сок."}
 ];
 UNITS[2].qa = [
   {q:"Что э́то?", pic:"🐱", a:"Э́то кот."},
@@ -1594,10 +1659,10 @@ function rewardsFor(pid){ return (P.rewards||[]).filter(r => r.who==="all" || r.
 function rewardProgress(r, s){
   if (r.kind==="stars") return {have: s.earned||0, need: r.value};
   if (r.kind==="letters") return {have: Math.min(s.alpha||0, ALPHA.length), need: ALPHA.length};
-  const u = r.kind==="unit2" ? 2 : 1, d = u===2 ? (s.done2||[0,0,0,0,0]) : (s.done||[0,0,0,0,0]);
+  const u = +(r.kind.slice(4)) || 1, d = s[doneKey(u)] || [0,0,0,0,0];
   return {have: d.reduce((a,v,i) => a + Math.min(v, LEVELS[i].lessons), 0), need: LEVELS.reduce((a,l) => a + l.lessons, 0)};
 }
-function rewardLabel(r){ return r.kind==="stars" ? `${r.value} ⭐` : r.kind==="letters" ? "Finish the letters" : r.kind==="unit2" ? "Finish Unit 2" : "Finish Unit 1"; }
+function rewardLabel(r){ return r.kind==="stars" ? `${r.value} ⭐` : r.kind==="letters" ? "Finish the letters" : `Finish Unit ${+(r.kind.slice(4)) || 1}`; }
 function nextReward(){
   const list = rewardsFor(P.current).filter(r => !(r.earned||{})[P.current]);
   return list.map(r => ({r, pr: rewardProgress(r, S)})).sort((a,b) => (b.pr.have/b.pr.need) - (a.pr.have/a.pr.need))[0] || null;
@@ -2135,7 +2200,8 @@ function buildLesson(level, n){
 const app = $("#app");
 let L = null; // current lesson run
 
-function D(u){ if (u===2){ S.done2 = S.done2 || [0,0,0,0,0]; return S.done2; } return S.done; }
+const doneKey = u => u===1 ? "done" : "done" + u;
+function D(u){ const k = doneKey(u); S[k] = S[k] || [0,0,0,0,0]; return S[k]; }
 function curLevelU(u){ const d = D(u); for (let i=0;i<LEVELS.length;i++){ if (d[i] < LEVELS[i].lessons) return i; } return -1; }
 function prereq(u){ return u===1 ? alphaDone() : curLevelU(u-1)===-1; }
 function unlockedU(u, i){ return S.unlockAll || (prereq(u) && (i===0 || D(u)[i-1] >= LEVELS[i-1].lessons)); }
@@ -2163,7 +2229,7 @@ function unitBlock(u){
       <div class="t"><small>Unit ${u}${open ? "" : (u===1 ? " · opens after the letters" : ` · opens after Unit ${u-1}`)}</small><h1>${esc(un.title)}</h1></div>
       <button class="gb" data-guide="${u}">Guidebook</button>
     </div>
-    <div class="path ${u===2 ? "p2" : ""}">
+    <div class="path ${u > 1 ? "p" + u : ""}">
       ${LEVELS.map((lv,i) => {
         const p = Math.round(100*d[i]/lv.lessons), lock = !unlockedU(u,i), done = d[i] >= lv.lessons;
         const cls = ["node", lock?"locked":"", done?"done":"", i===cur && !lock && u===firstOpen ? "current":"", resumeFor(`u${u}:${i}:${d[i]}`) ? "cont" : ""].join(" ");
@@ -3591,9 +3657,8 @@ function childReport(p){
   const weakWords = graded.slice().sort((a,b) => a.st.score - b.st.score).slice(0,5).map(r => ({t:r.w.ru, g:gradeOf(r.st.score), b:band(r.st.score)}));
   const snd = Object.entries(s.sounds || {}).filter(([,v]) => v.n >= 3).map(([ph,v]) => ({ph, avg:Math.round(v.sum/v.n)})).filter(x => x.avg < 85).sort((a,b) => a.avg - b.avg).slice(0,6);
   const pr = s.pron || [], pavg = pr.length ? Math.round(pr.slice(-20).reduce((a,b) => a+b, 0) / Math.min(20, pr.length)) : null;
-  const unitPct = u => { const d = u===2 ? (s.done2||[0,0,0,0,0]) : s.done; const tot = LEVELS.reduce((a,l) => a + l.lessons, 0); return {done: d.reduce((a,v,i) => a + Math.min(v, LEVELS[i].lessons), 0), tot}; };
+  const unitPct = u => { const d = s[doneKey(u)] || [0,0,0,0,0]; const tot = LEVELS.reduce((a,l) => a + l.lessons, 0); return {done: d.reduce((a,v,i) => a + Math.min(v, LEVELS[i].lessons), 0), tot}; };
   const bar = (label, done, tot) => `<div class="prog"><div class="lab"><span>${label}</span><span>${done} / ${tot}</span></div><div class="bar"><i style="width:${Math.round(100*done/tot)}%"></i></div></div>`;
-  const u1 = unitPct(1), u2 = unitPct(2);
   const id = p.id, fs = (k, title, html) => { const key = id + ":" + k; return `<div class="fsec ${dashOpen[key] ? "open" : ""}"><button class="fhd2" data-ft="${key}"><span class="t">${title}</span><span class="chev">›</span></button><div class="fbody">${html}</div></div>`; };
   return `<div class="dcard fold ${dashOpen[id] ? "open" : ""}">
     <button class="fhd" data-ft="${id}">${avHTML(p.avatar, 48)}<h3>${esc(p.name)}</h3><span class="chev">›</span></button>
@@ -3613,8 +3678,7 @@ function childReport(p){
       <div><b>${lettersMet}</b><small>letters met</small></div>
     </div>`)}
     ${fs("prog", "📚 Letters and units", `${bar("Letters", Math.min(s.alpha||0, ALPHA.length), ALPHA.length)}
-    ${bar("Unit 1: Make introductions", u1.done, u1.tot)}
-    ${bar("Unit 2: What is this?", u2.done, u2.tot)}`)}
+    ${UNIT_IDS.map(u => { const x = unitPct(u); return bar(`Unit ${u}: ${UNITS[u].title}`, x.done, x.tot); }).join("")}`)}
     ${fs("grades", "🔤 Word grades", `<div class="dsec" style="margin-top:0"><small>${wordsLearned ? `A ${dist.A} · B ${dist.B} · C ${dist.C} · D ${dist.D} · F ${dist.F}${dist.N ? ` · not graded yet ${dist.N}` : ""}` : "No words learned yet."}</small></div>
     ${wordsLearned ? `<div class="gdist">${["A","B","C","D","F","N"].map(g => dist[g] ? `<i class="g${g}" style="width:${100*dist[g]/wordsLearned}%"></i>` : "").join("")}</div>` : ""}
     ${weakWords.length ? `<div class="dsec" style="margin-top:8px"><small>Weakest words</small></div><div class="chips">${weakWords.map(w => `<span class="${w.b}">${w.t} · ${w.g}</span>`).join("")}</div>` : ""}<button class="btn ghost" data-stats="${p.id}" style="margin-top:12px">📊 All words and grades</button>`)}
@@ -3658,7 +3722,7 @@ function parentDash(){
     const bg = sheet(`<h2>New family reward</h2>
       <label class="field">Reward<input type="text" id="rwT" maxlength="40" placeholder="e.g. Ice cream after school"></label>
       <div class="emo">${emojis.map(e => `<button data-em="${e}" aria-pressed="${e===em}">${e}</button>`).join("")}</div>
-      <label class="field">Earned when<select id="rwK"><option value="stars">reaching a number of stars</option><option value="letters">finishing the letters</option><option value="unit1">finishing Unit 1</option><option value="unit2">finishing Unit 2</option></select></label>
+      <label class="field">Earned when<select id="rwK"><option value="stars">reaching a number of stars</option><option value="letters">finishing the letters</option>${UNIT_IDS.map(u => `<option value="unit${u}">finishing Unit ${u}</option>`).join("")}</select></label>
       <label class="field" id="rwVf">Stars needed (lifetime)<input type="number" inputmode="numeric" id="rwV" value="100" min="5"></label>
       <label class="field">For<select id="rwW"><option value="all">Every learner</option>${P.profiles.map(p => `<option value="${p.id}">${esc(p.name)}</option>`).join("")}</select></label>
       <div style="display:grid;gap:10px;margin-top:6px"><button class="btn" id="rwGo">Add reward</button><button class="btn ghost" data-close>Cancel</button></div>`, true);
@@ -3709,14 +3773,14 @@ function progressManager(pid){
   pid = pid || P.current;
   const p = P.profiles.find(x => x.id===pid) || me();
   const s = p.id===P.current ? S : loadS(p.id);
-  s.done2 = s.done2 || [0,0,0,0,0];
+  UNIT_IDS.forEach(u => { s[doneKey(u)] = s[doneKey(u)] || [0,0,0,0,0]; });
   const store = () => { if (p.id===P.current){ S = s; save(); } else { try { localStorage.setItem(profKey(p.id), JSON.stringify(s)); } catch(_){} } };
-  const D2 = u => u===2 ? s.done2 : s.done;
+  const D2 = u => s[doneKey(u)];
   const stChip = (d, n) => d >= n ? `<span class="st done">✓ Done</span>` : d > 0 ? `<span class="st part">${d} of ${n}</span>` : `<span class="st none">Not started</span>`;
   const sections = [
     {id:"alpha", icon:"🔤", title:"Russian letters", done:Math.min(s.alpha||0, ALPHA.length), total:ALPHA.length,
      rows:ALPHA.map((a,i) => ({key:"a:"+i, icon:a.icon, title:a.title, d:(s.alpha||0) > i ? 1 : 0, n:1}))},
-    ...UNIT_IDS.map(u => { const d = D2(u); return {id:"u"+u, icon:u===1 ? "👋" : "🐱", title:`Unit ${u}: ${UNITS[u].title}`,
+    ...UNIT_IDS.map(u => { const d = D2(u); return {id:"u"+u, icon:UNITS[u].icon, title:`Unit ${u}: ${UNITS[u].title}`,
       done:d.reduce((a,v,i) => a + Math.min(v, LEVELS[i].lessons), 0), total:LEVELS.reduce((a,l) => a + l.lessons, 0),
       rows:LEVELS.map((lv,i) => ({key:`u${u}:${i}`, icon:lv.icon, title:lv.title, d:Math.min(d[i], lv.lessons), n:lv.lessons}))}; })
   ];
@@ -3795,8 +3859,8 @@ function importBackup(file, after){
   r.onload = () => {
     let d; try { d = JSON.parse(r.result); } catch(e){ toast("That file isn’t a Ми́ша backup."); return; }
     if (!d || d.app!=="misha-russian" || !Array.isArray(d.learners) || !d.learners.length){ toast("That file isn’t a Ми́ша backup."); return; }
-    const summary = d.learners.map(x => { const s = x.state || {}, d1 = (s.done||[]).reduce((a,b) => a+b, 0), d2 = (s.done2||[]).reduce((a,b) => a+b, 0);
-      return `<div class="wordrow"><div class="p">${x.profile.avatar}</div><div class="w"><b>${esc(x.profile.name)}</b><small>⭐ ${s.stars||0} · letters ${s.alpha||0}/6 · Unit 1: ${d1}/10 · Unit 2: ${d2}/10</small></div></div>`; }).join("");
+    const summary = d.learners.map(x => { const s = x.state || {}, us = UNIT_IDS.map(u => `Unit ${u}: ${(s[doneKey(u)]||[]).reduce((a,b) => a+b, 0)}/10`).join(" · ");
+      return `<div class="wordrow"><div class="p">${x.profile.avatar}</div><div class="w"><b>${esc(x.profile.name)}</b><small>⭐ ${s.stars||0} · letters ${s.alpha||0}/6 · ${us}</small></div></div>`; }).join("");
     const bg = sheet(`<h2>Restore backup?</h2><p class="sub" style="margin:0 0 8px">Saved ${new Date(d.saved).toLocaleString()} (app version ${esc(d.version||"?")}). It contains:</p>${summary}
       <p class="note" style="text-align:left;margin:12px 0 0">This replaces all learners on this device. Your Microsoft key stays as it is.</p>
       <div style="display:grid;gap:10px;margin-top:12px"><button class="btn" id="rsGo">Replace and restore</button><button class="btn ghost" data-close>Cancel</button></div>`, true);
@@ -3830,7 +3894,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "13.5 (November 2, 2026)";
+const APP_VERSION = "14.0 (November 2, 2026)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */
@@ -3880,7 +3944,7 @@ function statsScreen(pid){
       <div class="chipsel" style="margin-top:12px">${["all","A","B","C","D","F"].map(g => `<button data-g="${g}" aria-pressed="${statView.grade===g}">${g==="all" ? "All" : g}</button>`).join("")}</div>
       <div class="chipsel" style="margin-top:8px">${[["weak","Weakest first"],["best","Best first"],["abc","А–Я"]].map(([v,n]) => `<button data-sort="${v}" aria-pressed="${statView.sort===v}">${n}</button>`).join("")}</div>
       ${groups.map(g => { const rows = g.rows.filter(r => statView.grade==="all" || gradeOf(r.st.score)===statView.grade).sort(sortFn);
-        return `<div class="pmc ${statView.open[g.u] ? "open" : ""}" style="margin-top:14px"><div class="hd" data-tg="${g.u}"><span class="ic">${g.u===1 ? "👋" : "🐱"}</span><span class="tx"><b>${esc(g.title)}</b><small>${g.rows.length} of ${UNITS[g.u].words.length} words learned</small></span><span class="chev">›</span></div>
+        return `<div class="pmc ${statView.open[g.u] ? "open" : ""}" style="margin-top:14px"><div class="hd" data-tg="${g.u}"><span class="ic">${UNITS[g.u].icon}</span><span class="tx"><b>${esc(g.title)}</b><small>${g.rows.length} of ${UNITS[g.u].words.length} words learned</small></span><span class="chev">›</span></div>
           <div class="body2">${rows.length ? rows.map(r => { const gr = gradeOf(r.st.score); return `<button class="srow" data-w="${r.w.id}"><span class="grade g${gr}">${gr==="N" ? "new" : gr}</span><span class="w"><b>${r.w.ru}</b><small>${esc(r.w.en)}</small></span><span style="font-weight:800;color:var(--muted)">${r.st.score ?? "–"}</span></button>
             <div class="sdet" id="d-${r.w.id}">${bar("Pronunciation", r.st.pron)}${bar("Memory now", r.st.memory)}${bar("Accuracy", r.st.accuracy)}<small style="color:var(--muted);font-weight:700">${r.st.right} right · ${r.st.wrong} wrong</small> <button class="btn small ghost" data-say="${esc(r.w.ru)}" style="margin-left:6px">🔊</button></div>`; }).join("") : `<p class="note" style="padding:10px">No words here yet.</p>`}</div></div>`; }).join("")}
       <p class="note" style="text-align:left;margin-top:14px">How grades work: pronunciation (Microsoft’s average for the word) 40%, memory now 35%, accuracy 25%. Without speaking scores: memory 55%, accuracy 45%. Memory drops when a word isn’t practised, so grades can fall and climb again with review. A 90+ · B 80–89 · C 70–79 · D 60–69 · F below 60.</p>
