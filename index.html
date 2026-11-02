@@ -987,7 +987,7 @@ function questsScreen(){
   app.innerHTML = `<div class="phead2" style="background:#7A5BD6">${chip("pointing-happy")}<div><h2>Daily quests</h2><p>New quests in ${left} hour${left>1?"s":""}</p></div></div>
     <div style="padding:16px;display:grid;gap:12px">
       ${q.list.map(it => { const d = qdef(it.id); return `<div class="qcard ${it.done ? "done" : ""}"><span class="ic">${it.done ? "✅" : d.icon}</span><span class="tx">${esc(d.label)}<div class="qbar"><i style="width:${Math.round(100*it.prog/d.target)}%"></i><em>${it.prog} / ${d.target}</em></div></span></div>`; }).join("")}
-      <div class="qcard" style="justify-content:center;text-align:center;flex-direction:column;gap:4px"><span style="font-size:40px">${q.chest ? "✨" : "🎁"}</span><b>${q.chest ? "Quest chest opened today!" : "Finish all 3 quests to win the quest chest"}</b></div>
+      <div class="qcard" style="justify-content:center;text-align:center;flex-direction:column;gap:4px"><span style="font-size:40px">${q.chest ? "✨" : "🎁"}</span><b>${q.chest ? "Quest chest opened today!" : "Finish all 3 quests to win the quest chest and a 🌰 acorn"}</b></div>
       <h3 style="font-family:var(--font-head);margin:8px 0 0">Daily goal</h3>
       <div class="today" style="margin:0;cursor:default"><div class="goalring">${ringSVG(mins/goal)}<span>🎯</span></div><div class="tx"><b>${Math.min(mins, goal)} of ${goal} minutes today</b><small>${mins >= goal ? "Goal reached! Молоде́ц!" : "Lessons and practice both count."}</small></div></div>
       <div class="goalpick">${[[5,"Casual"],[10,"Regular"],[15,"Serious"],[20,"Intense"]].map(([m,n]) => `<button data-goal="${m}" aria-pressed="${goal===m}">${m} min<small>${n}</small></button>`).join("")}</div>
@@ -1737,7 +1737,7 @@ function unitBlock(u){
         const cls = ["node", lock?"locked":"", done?"done":"", i===cur && !lock && u===firstOpen ? "current":"", resumeFor(`u${u}:${i}:${d[i]}`) ? "cont" : ""].join(" ");
         return `<div class="${cls}" style="transform:translateX(${zig[i]}px)">
           <div class="ring">${!lock && !done ? segRing((Math.min(d[i], lv.lessons) + resumeFrac(`u${u}:${i}:${d[i]}`)) / lv.lessons) : ""}<button data-unit="${u}" data-level="${i}" aria-label="Unit ${u}, ${esc(lv.title)}, ${d[i]} of ${lv.lessons} lessons done${lock?", locked":""}">${lock?"🔒":lv.icon}</button></div>
-          <div class="lbl">${esc(lv.title)}<span>${Math.min(d[i],lv.lessons)} of ${lv.lessons} ${lv.lessons===1?"lesson":"lessons"}</span></div>
+          <div class="lbl">${esc(lv.title)}<span>${!lock && resting(u, i) ? "🌙 Opens tomorrow" : `${Math.min(d[i],lv.lessons)} of ${lv.lessons} ${lv.lessons===1?"lesson":"lessons"}`}</span></div>
         </div>`;
       }).join("")}
     </div>`;
@@ -1782,7 +1782,7 @@ function home(){
         const cls = ["node", lock?"locked":"", done?"done":"", cur && !lock?"current":"", resumeFor("a:" + i) ? "cont" : ""].join(" ");
         return `<div class="${cls}" style="transform:translateX(${[0,70,0,-70,0,70][i]}px)">
           <div class="ring">${!lock && !done ? segRing(resumeFrac("a:" + i)) : ""}<button data-alpha="${i}" aria-label="${esc(a.title)}${lock?", locked":""}">${lock?"🔒":a.icon}</button></div>
-          <div class="lbl">${esc(a.title)}<span>Lesson ${i+1} of ${ALPHA.length}</span></div>
+          <div class="lbl">${esc(a.title)}<span>${!lock && resting(0, i) ? "🌙 Opens tomorrow" : `Lesson ${i+1} of ${ALPHA.length}`}</span></div>
         </div>`;
       }).join("")}
     </div>`}
@@ -1794,7 +1794,7 @@ function home(){
     e.stopPropagation(); const u = +b.dataset.unit, i = +b.dataset.level, lv = LEVELS[i], d = D(u), pc = UNITS[u].cls;
     if (!unlockedU(u, i)){ nodePop(b, lv.title, !prereq(u) ? (u===1 ? "Learn the letters first to open Unit 1." : `Finish Unit ${u-1} to open Unit ${u}.`) : "Finish the level above to open this.", "Locked", () => {}, pc); return; }
     const done = d[i] >= lv.lessons, n = Math.min(d[i]+1, lv.lessons), rf = done ? 0 : resumeFrac(`u${u}:${i}:${d[i]}`);
-    nodePop(b, lv.title, done ? "Level complete! Practise it again?" : `Lesson ${n} of ${lv.lessons}` + (rf ? ` · ${Math.round(rf*100)}% done` : ""), done ? "Review" : rf ? "Continue" : "Start", () => startLesson(i, u), pc);
+    nodePop(b, lv.title, done ? "Level complete! Practise it again?" : resting(u, i) ? "🌙 A new circle opens tomorrow." : `Lesson ${n} of ${lv.lessons}` + (rf ? ` · ${Math.round(rf*100)}% done` : ""), done ? "Review" : rf ? "Continue" : "Start", () => startLesson(i, u), pc);
   });
   wireNav();
   const td = $("#todayCard"); if (td) td.onclick = questsScreen;
@@ -1819,7 +1819,7 @@ function home(){
     e.stopPropagation(); const i = +b.dataset.alpha, a = ALPHA[i];
     if (!(S.unlockAll || i <= (S.alpha||0))){ nodePop(b, a.title, "Finish the lesson above first.", "Locked", () => {}, "alpha"); return; }
     const rf = (S.alpha||0) > i ? 0 : resumeFrac("a:" + i);
-    nodePop(b, a.title, (S.alpha||0) > i ? "Done! Practise again?" : `Letters lesson ${i+1} of ${ALPHA.length}` + (rf ? ` · ${Math.round(rf*100)}% done` : ""), (S.alpha||0) > i ? "Review" : rf ? "Continue" : "Start", () => startAlpha(i), "alpha");
+    nodePop(b, a.title, (S.alpha||0) > i ? "Done! Practise again?" : resting(0, i) ? "🌙 A new circle opens tomorrow." : `Letters lesson ${i+1} of ${ALPHA.length}` + (rf ? ` · ${Math.round(rf*100)}% done` : ""), (S.alpha||0) > i ? "Review" : rf ? "Continue" : "Start", () => startAlpha(i), "alpha");
   });
   $("#lettersBtn").onclick = lettersScreen;
   app.querySelectorAll("[data-guide]").forEach(b => b.onclick = () => guidebook(+b.dataset.guide));
@@ -2333,11 +2333,35 @@ function lettersScreen(){
     const w = bg.querySelector("[data-w]"); w.onclick = () => speak(l.word);
   });
 }
+/* ---------- One new level a day: new circles are limited, review and practice never are ---------- */
+const lvKey = (u, i) => u===0 ? "a:" + i : `u${u}:${i}`;
+function lvStarted(u, i){
+  if ((S.lvStarted||[]).includes(lvKey(u, i))) return true;
+  if (u===0) return (S.alpha||0) > i || !!resumeFor("a:" + i);
+  const d = D(u); return d[i] > 0 || !!resumeFor(`u${u}:${i}:${d[i]}`);
+}
+const dayLimit = (s = S) => s.dayLimit == null ? 1 : s.dayLimit;          /* 0 means no limit */
+const newToday = (s = S) => s.lvDay && s.lvDay.d===todayKey() ? s.lvDay : {d:todayKey(), n:0, extra:0};
+function canStartNew(){ if (S.unlockAll || dayLimit()===0) return true; const x = newToday(); return x.n < dayLimit() + x.extra; }
+const resting = (u, i) => !lvStarted(u, i) && !canStartNew();
+function noteStart(u, i){ if (lvStarted(u, i)) return; const x = newToday(); x.n++; S.lvDay = x; S.lvStarted = (S.lvStarted||[]).concat(lvKey(u, i)); save(); }
+function sleepySheet(go){
+  const ac = S.acorns||0;
+  const bg = sheet(`<div style="text-align:center">${chip("sleepy").replace('class="chip ', 'style="width:130px;margin:0 auto" class="chip ')}
+      <h2 style="margin:8px 0 4px">Today’s new circle is done!</h2>
+      <p class="sub" style="margin:0">Ми́ша is sleepy. A new circle opens tomorrow. You can still practise and replay everything you’ve learned.</p>
+      <p class="sub" style="margin:10px 0 0">${ac ? `You have 🌰 ${ac} acorn${ac>1?"s":""}. An acorn opens one bonus circle today.` : "Finish all 3 daily quests to earn a 🌰 acorn. An acorn opens one bonus circle."}</p></div>
+    <div style="display:grid;gap:12px;margin-top:16px">${ac ? `<button class="btn" id="useAc">Use a 🌰 acorn</button>` : ""}<button class="btn ${ac ? "ghost" : ""}" id="goPr">🏋️ Practise instead</button><button class="btn ghost" data-close>OK</button></div>`, true);
+  const u = $("#useAc", bg); if (u) u.onclick = () => { S.acorns = Math.max(0, (S.acorns||0) - 1); const x = newToday(); x.extra++; S.lvDay = x; save(); bg.remove(); sfx.pop(); go(); };
+  $("#goPr", bg).onclick = () => { bg.remove(); startPractice("review"); };
+}
 function startAlpha(n){
+  if (!lvStarted(0, n)){ if (!canStartNew()) return sleepySheet(() => startAlpha(n)); noteStart(0, n); }
   const r = resumeFor("a:" + n); if (r) return restoreLesson(r, {kind:"alpha", level:-1, n});
   runQueue(buildAlpha(n), {kind:"alpha", level:-1, n});
 }
 function startLesson(level, u=CU){
+  if (!lvStarted(u, level)){ if (!canStartNew()) return sleepySheet(() => startLesson(level, u)); noteStart(u, level); }
   setUnit(u);
   const n = Math.min(D(u)[level], LEVELS[level].lessons-1);
   const r = resumeFor(`u${u}:${level}:${n}`); if (r) return restoreLesson(r, {level, n, unit:u});
@@ -2831,7 +2855,7 @@ function finishLesson(){
   if (levelDone && !isP){ chestStars = 5 + Math.floor(Math.random()*6); chain.push(chestScreen({stars:chestStars}, "You earned a chest for finishing the level!")); }
   else if (!isP && Math.random() < 0.2) chain.push(chestScreen(surpriseReward(), "A surprise chest! 🎉"));
   if (goalHit) chain.push(goalScreen());
-  if ((S.newQuests||[]).length){ const ids = S.newQuests; S.newQuests = []; chain.push(questDoneScreen(ids)); const q = questsToday(); if (q.list.every(x => x.done) && !q.chest){ q.chest = true; chain.push(chestScreen({stars:10 + Math.floor(Math.random()*11)}, "All 3 daily quests done! Here’s your quest chest.")); } }
+  if ((S.newQuests||[]).length){ const ids = S.newQuests; S.newQuests = []; chain.push(questDoneScreen(ids)); const q = questsToday(); if (q.list.every(x => x.done) && !q.chest){ q.chest = true; chain.push(chestScreen({stars:10 + Math.floor(Math.random()*11), acorn:true}, "All 3 daily quests done! Here’s your quest chest.")); } }
   chain.push(badgeCheckStep());
   chain.push(familyStep(famBefore));
   chain.push(rewardStep());
@@ -2885,7 +2909,8 @@ function chestScreen(reward, line){
         c.textContent = it.icon; $("#chT").innerHTML = `New for Ми́ша: ${esc(it.name)}!<br><small style="color:var(--muted);font-size:16px">Dress him up in the 🐿️ Ми́ша tab.</small>`;
       } else {
         c.textContent = "✨"; addStars(reward.stars);
-        $("#chT").innerHTML = `⭐ <span id="chN">+0</span> stars!`; countUp($("#chN"), reward.stars, v => "+" + v, 800);
+        $("#chT").innerHTML = `⭐ <span id="chN">+0</span> stars!` + (reward.acorn ? `<br><small style="color:var(--muted);font-size:16px">and a 🌰 acorn: it opens one bonus circle!</small>` : ""); countUp($("#chN"), reward.stars, v => "+" + v, 800);
+        if (reward.acorn) S.acorns = Math.min(9, (S.acorns||0) + 1);
       }
       save(); confetti(30); $("#goC").textContent = "Continue";
     };
@@ -3068,6 +3093,10 @@ function childReport(p){
   return `<div class="dcard fold ${dashOpen[id] ? "open" : ""}">
     <button class="fhd" data-ft="${id}">${avHTML(p.avatar, 48)}<h3>${esc(p.name)}</h3><span class="chev">›</span></button>
     <div class="fbody">
+    ${fs("limit", "🌙 New circles per day", `<p class="sub" style="margin:0 0 8px">Practice and replaying finished circles are always open. ${s.unlockAll ? "<b>“Open all levels” is on in Grown-up settings, so there is no limit right now.</b>" : ""}</p>
+      <div class="seg" role="group" aria-label="New circles per day">${[[1,"1"],[2,"2"],[3,"3"],[0,"No limit"]].map(([v,n]) => `<button data-lim="${id}:${v}" aria-pressed="${dayLimit(s)===v}">${n}</button>`).join("")}</div>
+      <small style="display:block;color:var(--muted);font-weight:700;margin-top:8px">${dayLimit(s) ? `Today: ${newToday(s).n} of ${dayLimit(s) + newToday(s).extra} new circle${dayLimit(s) + newToday(s).extra===1?"":"s"} started` : "No daily limit"} · 🌰 ${s.acorns||0} acorn${(s.acorns||0)===1?"":"s"}</small>
+      <button class="btn small ghost" data-acorn="${id}" style="margin-top:8px">🌰 Give an acorn</button>`)}
     ${fs("week", "📅 This week", `<div class="dsec" style="margin-top:0"><small>${daysWeek} day${daysWeek===1?"":"s"} practised · ${minWeek} min in total</small></div>
     <div class="week7">${week.map(w => `<div><i style="height:${w.future ? 0 : Math.max(3, Math.round(56*w.min/maxMin))}px;${w.min ? "" : "background:var(--line)"}"></i>${w.nm}</div>`).join("")}</div>`)}
     ${fs("sum", "📈 Summary", `<small style="color:var(--muted);font-weight:700">🔥 ${s.streak||0}-day streak · ⭐ ${s.stars||0} stars</small><div class="dstats">
@@ -3109,6 +3138,9 @@ function parentDash(){
       <button class="btn ghost" id="addP2">＋ Add learner</button></div>`;
   $("#back").onclick = whoScreen;
   $("#addP2").onclick = () => editLearner(null);
+  const editKid = (pid, fn) => { if (pid===P.current){ fn(S); save(); } else { const s2 = loadS(pid); fn(s2); try { localStorage.setItem(profKey(pid), JSON.stringify(s2)); } catch(_){} } };
+  app.querySelectorAll("[data-lim]").forEach(b => b.onclick = () => { const [pid, v] = b.dataset.lim.split(":"); editKid(pid, s2 => s2.dayLimit = +v); parentDash(); });
+  app.querySelectorAll("[data-acorn]").forEach(b => b.onclick = () => { const pid = b.dataset.acorn; editKid(pid, s2 => s2.acorns = Math.min(9, (s2.acorns||0) + 1)); parentDash(); toast("Acorn given. 🌰"); });
   app.querySelectorAll("[data-ft]").forEach(h => h.onclick = () => { const k = h.dataset.ft; dashOpen[k] = !dashOpen[k]; h.parentElement.classList.toggle("open", dashOpen[k]); });
   app.querySelectorAll("[data-stats]").forEach(b => b.onclick = () => { statView.open = {}; statsScreen(b.dataset.stats); window.scrollTo(0, 0); });
   $("#famSave").onclick = e => { P.family = {target: Math.max(10, +$("#famT").value || 60)}; saveP(); doneBtn(e.currentTarget, "✓ Saved"); toast("Family goal saved."); };
@@ -3291,7 +3323,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "12.9 (November 1, 2026)";
+const APP_VERSION = "13.0 (November 1, 2026)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */
