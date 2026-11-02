@@ -332,7 +332,7 @@ img.chip.papa{filter:brightness(.8) saturate(.85)}
 .offbadge{display:inline-block;margin-left:6px;background:rgba(255,255,255,.25);border-radius:8px;padding:0 6px;font-size:12px}
 /* Hide anything the web host injects (badges, toolbars) */
 netlify-badge,[id*="netlify" i],[class*="netlify" i]{display:none!important}
-body > *:not(#app):not(.sheet-bg):not(.toast):not(.wpop):not(.confetti):not(.flystar):not(.peek):not(.perfect):not(script):not(style):not(link){display:none!important;visibility:hidden!important;pointer-events:none!important}
+body > *:not(#app):not(.sheet-bg):not(.toast):not(.wpop):not(.confetti):not(.flystar):not(.peek):not(.perfect):not(.party):not(script):not(style):not(link){display:none!important;visibility:hidden!important;pointer-events:none!important}
 html > *:not(head):not(body){display:none!important}
 /* Living Миша */
 img.chip{transform-origin:50% 100%;animation:breathe 3.4s ease-in-out infinite}
@@ -514,6 +514,29 @@ img.chip.wobble{animation:wobble .6s ease-in-out 1, breathe 3.4s ease-in-out .6s
 .wprev{display:flex;justify-content:center;padding:6px 0 0}
 .wprev .live{width:190px}
 .igrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.item.next{border-color:var(--accent,#D9692B);box-shadow:0 0 0 3px rgba(217,105,43,.18);animation:nextGlow 2.2s ease-in-out infinite}
+@keyframes nextGlow{50%{box-shadow:0 0 0 6px rgba(217,105,43,.10)}}
+.item.hint .pic{opacity:.38;filter:saturate(.55)}.item.hint b{color:var(--muted)}
+.item.mystery{background:var(--line);border-color:var(--line)}
+.item.mystery .pic{filter:grayscale(1) brightness(0);opacity:.13}.item.mystery b{font-size:20px;color:var(--muted)}
+.nextcard{margin:10px 16px 0;padding:12px;border-radius:20px;background:var(--surface);border:2px solid var(--line);border-bottom-width:4px;display:flex;gap:12px;align-items:center}
+.nextcard>img{width:86px;height:86px;object-fit:contain;flex:none}
+.nextcard .tx{flex:1;min-width:0}.nextcard small{color:var(--muted);font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+.nextcard b{display:block;font-family:var(--font-head);font-size:20px}
+.nbar{position:relative;height:20px;border-radius:10px;background:var(--line);overflow:hidden;margin:6px 0 8px}
+.nbar i{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,#FFC43D,#FF9A3D);border-radius:10px;transition:width .6s}
+.nbar em{position:relative;display:block;text-align:center;font-style:normal;font-weight:800;font-size:12px;line-height:20px}
+.nbtns{display:flex;gap:8px}.nbtns .btn{flex:1;padding-left:6px;padding-right:6px}
+.party{position:fixed;inset:0;z-index:200;background:radial-gradient(circle at 50% 40%,#3B2A6B,#140C2E);display:grid;place-items:center;animation:pIn .35s ease-out}
+.party.out{opacity:0;transition:opacity .3s}
+.party canvas{position:absolute;inset:0;width:100%;height:100%}
+.party .pin{position:relative;text-align:center;color:#fff;padding:20px}
+.party .ptitle{font-family:var(--font-head);font-size:30px;font-weight:800;color:#FFD66B;text-shadow:0 3px 0 rgba(0,0,0,.25);animation:pPop .6s .2s both}
+.party .pmisha{width:230px;margin:6px auto 0;display:block;animation:pPop .7s .35s both}
+.party h2{font-family:var(--font-head);font-size:28px;margin:4px 0 18px;animation:pPop .6s .6s both}
+.party .btn{min-width:220px;animation:pPop .5s 1s both}
+@keyframes pIn{from{opacity:0}}
+@keyframes pPop{0%{opacity:0;transform:scale(.4)}70%{transform:scale(1.08)}100%{opacity:1;transform:scale(1)}}
 .item{appearance:none;cursor:pointer;background:var(--surface);color:var(--ink);border:2px solid var(--line);border-bottom-width:4px;border-radius:16px;padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:2px;font:inherit}
 .item .e{font-size:40px;line-height:1.1}.item b{font-size:13px}.item small{font-size:12px;font-weight:800;color:var(--muted)}
 .item.wearing{border-color:var(--good);background:var(--good-bg)}
@@ -940,12 +963,17 @@ const ITEMS = [
   {id:"mic", slot:"hand", icon:"🎤", name:"Microphone", badge:"voice"},
   {id:"gem", slot:"hand", icon:"💎", name:"Gem", badge:"perfect"}
 ];
+/* Shop line: bought in this order. Price belongs to the place in the line:
+   1 day of play, 2 days, 4 days, then 1 week for every item after (about 40 stars a day). */
+const SHOP_LINE = ["star","flower","bow","balloon","cap","icecream","scarf","lantern","backpack","tophat","ushanka","matryoshka","crown"];
+const PRICE_STEPS = [40, 80, 160], WEEK_PRICE = 280;
+const shopPrice = id => { const i = SHOP_LINE.indexOf(id); return i < 0 ? WEEK_PRICE : (PRICE_STEPS[i] ?? WEEK_PRICE); };
 /* old saves wore one item per slot; now Миша wears one item */
 function migrateWear(o){ if (o && typeof o === "object") return o.head || o.neck || o.hand || null; return o || null; }
 function currentWear(){ return P.tryAll ? migrateWear(P.tryWear) : migrateWear(S.wear); }
 /* A Миша who blinks and moves his mouth while he talks (eyelids and mouth drawn over Galina’s “neutral” pose). */
-function liveMisha(cls="", kind="stand"){
-  const id = currentWear(), c = id && DCAL[kind + ":" + id];
+function liveMisha(cls="", kind="stand", over){
+  const id = over !== undefined ? over : currentWear(), c = id && DCAL[kind + ":" + id];
   if (c && DRESS[kind] && DRESS[kind][id]){
     const pc = v => (v*100).toFixed(2) + "%", m = c.mouth;
     const lids = c.eyes.map(e => `<i class="lid" style="left:${pc(e[0])};top:${pc(e[1])};width:${pc(e[2])};height:${pc(e[3])};background:${c.skin}"></i>`).join("");
@@ -1006,33 +1034,95 @@ function badgesScreen(){
   wireNav();
 }
 
+let tryOn = null;   /* the next item, tried on but not bought */
 function wardrobeScreen(){
   ensureFields(S); S.owned = S.owned || []; S.wear = migrateWear(S.wear); if (P.tryAll) P.tryWear = migrateWear(P.tryWear); save();
-  const slots = [["head","Hats"],["neck","Neck and back"],["hand","In his paw"]];
-  const wearing = currentWear();
-  const state = it => wearing===it.id ? "wearing" : (P.tryAll || S.owned.includes(it.id)) ? "owned" : it.badge ? "locked" : "shop";
+  const wearing = currentWear(), has = id => P.tryAll || S.owned.includes(id);
   const setWear = id => { if (P.tryAll){ P.tryWear = id; saveP(); } else { S.wear = id; save(); } };
-  app.innerHTML = `<div class="phead2" style="background:#B86A2E"><div><h2>Ми́ша’s wardrobe</h2><p>⭐ ${S.stars} stars to spend · one item at a time</p></div></div>
+  const shop = SHOP_LINE.map(id => ITEMS.find(i => i.id===id)).filter(Boolean);
+  const left = shop.filter(it => !has(it.id)), next = left[0], hint = left[1];
+  const prizes = ITEMS.filter(i => i.badge);
+  if (tryOn && (!next || tryOn !== next.id)) tryOn = null;
+  const shown = tryOn || wearing;
+  const pct = next ? Math.min(100, Math.round(100*S.stars/shopPrice(next.id))) : 100;
+  const card = it => {
+    const st = wearing===it.id ? "wearing" : has(it.id) ? "owned" : it===next ? "next" : it===hint ? "hint" : "mystery";
+    const label = st==="wearing" ? "✓ Wearing" : st==="owned" ? "Tap to wear" : st==="next" ? `⭐ ${shopPrice(it.id)}` : st==="hint" ? "Coming next" : `⭐ ${shopPrice(it.id)}`;
+    return `<button class="item ${st}" data-item="${it.id}" data-st="${st}"><img class="pic" src="${DRESS.wave[it.id]}" alt="" loading="lazy"><b>${st==="mystery" ? "?" : esc(it.name)}</b><small>${label}</small></button>`;
+  };
+  const prize = it => { const st = wearing===it.id ? "wearing" : has(it.id) ? "owned" : "mystery";
+    return `<button class="item ${st}" data-item="${it.id}" data-st="${st==="mystery" ? "prize" : st}"><img class="pic" src="${DRESS.wave[it.id]}" alt="" loading="lazy"><b>${st==="mystery" ? "?" : esc(it.name)}</b><small>${st==="wearing" ? "✓ Wearing" : st==="owned" ? "Tap to wear" : "🏅 Win a badge"}</small></button>`; };
+  app.innerHTML = `<div class="phead2" style="background:#B86A2E"><div><h2>Ми́ша’s wardrobe</h2><p>⭐ ${S.stars} stars · one item at a time</p></div></div>
     ${P.tryAll ? `<div class="trybar">🔓 Try-everything mode (grown-up): try anything on. Nothing is bought or saved for the children.</div>` : ""}
-    <div class="wprev">${liveMisha("", "wave")}</div>
-    ${wearing ? `<div style="text-align:center"><button class="btn small ghost" id="takeOff">Take it off</button></div>` : ""}
-    <div style="padding:6px 16px 16px">${slots.map(([sl,lab]) => `<h3 style="font-family:var(--font-head);margin:12px 0 8px">${lab}</h3><div class="igrid">${ITEMS.filter(i => i.slot===sl).map(it => { const st = state(it), b = it.badge ? BADGES.find(x => x.id===it.badge) : null;
-      return `<button class="item ${st}" data-item="${it.id}"><img class="pic" src="${DRESS.wave[it.id]}" alt="" loading="lazy"><b>${esc(it.name)}</b><small>${st==="wearing" ? "✓ Wearing" : st==="owned" ? "Tap to wear" : st==="locked" ? `🔒 ${esc(b.name)} 3` : `⭐ ${it.price}`}</small></button>`; }).join("")}</div>`).join("")}
-      <p class="note" style="margin-top:12px">Badge items unlock when that badge reaches level 3. Surprise chests can contain items too!</p>
+    <div class="wprev">${liveMisha("", "wave", shown || null)}</div>
+    ${tryOn ? `<p class="note" style="text-align:center;margin:0">Trying on: ${esc(next.name)}</p>` : wearing ? `<div style="text-align:center"><button class="btn small ghost" id="takeOff">Take it off</button></div>` : ""}
+    ${next && !P.tryAll ? `<div class="nextcard">
+      <img src="${DRESS.wave[next.id]}" alt="">
+      <div class="tx"><small>Next for Ми́ша</small><b>${esc(next.name)}</b>
+        <div class="nbar"><i style="width:${pct}%"></i><em>⭐ ${Math.min(S.stars, shopPrice(next.id))} / ${shopPrice(next.id)}</em></div>
+        <div class="nbtns"><button class="btn small ghost" id="tryBtn">${tryOn ? "Take off" : "👀 Try on"}</button><button class="btn small" id="buyBtn" ${S.stars >= shopPrice(next.id) ? "" : "disabled"}>${S.stars >= shopPrice(next.id) ? "Buy it!" : `${shopPrice(next.id) - S.stars} ⭐ to go`}</button></div>
+      </div></div>` : !next && !P.tryAll ? `<p class="note" style="text-align:center">Ми́ша has every item in the shop. New ones are coming!</p>` : ""}
+    <div style="padding:6px 16px 16px">
+      <h3 style="font-family:var(--font-head);margin:12px 0 8px">Shop <small style="color:var(--muted);font-size:14px">· ${shop.length - left.length} of ${shop.length}</small></h3>
+      <div class="igrid">${shop.map(card).join("")}</div>
+      <h3 style="font-family:var(--font-head);margin:18px 0 8px">Badge prizes <small style="color:var(--muted);font-size:14px">· ${prizes.filter(i => has(i.id)).length} of ${prizes.length}</small></h3>
+      <div class="igrid">${prizes.map(prize).join("")}</div>
+      <p class="note" style="margin-top:12px">Items open one at a time. Badge prizes are a surprise: win a badge to find out what they are!</p>
       ${P.tryAll ? `<div style="margin-top:12px"><button class="btn ghost" id="galBtn">🎬 See all 30 results scenes</button></div>` : ""}</div>${navHTML("misha")}`;
   wireNav();
   const tk = $("#takeOff"); if (tk) tk.onclick = () => { setWear(null); sfx.pop(); wardrobeScreen(); };
   const gb = $("#galBtn"); if (gb) gb.onclick = sceneGallery;
+  const tb = $("#tryBtn"); if (tb) tb.onclick = () => { tryOn = tryOn ? null : next.id; sfx.pop(); if (tryOn) sfx.giggle(); wardrobeScreen(); window.scrollTo({top:0, behavior:"smooth"}); };
+  const bb = $("#buyBtn"); if (bb) bb.onclick = () => buyItem(next);
   app.querySelectorAll("[data-item]").forEach(b => b.onclick = () => {
-    const it = ITEMS.find(i => i.id===b.dataset.item), st = state(it);
-    if (st==="wearing"){ setWear(null); return wardrobeScreen(); }
-    if (st==="owned"){ setWear(it.id); sfx.pop(); sfx.giggle(); return wardrobeScreen(); }
-    if (st==="locked"){ const bd = BADGES.find(x => x.id===it.badge); toast(`Reach level 3 of “${bd.name}” to unlock this.`); return; }
-    if (S.stars < it.price){ toast(`You need ${it.price - S.stars} more stars. Keep learning!`); return; }
-    const bg = sheet(`<div style="text-align:center"><img src="${DRESS.wave[it.id]}" alt="" style="width:170px"><h2>${esc(it.name)}</h2><p class="sub" style="margin:0">Buy for ⭐ ${it.price}? You have ${S.stars}.</p></div>
-      <div style="display:grid;gap:10px;margin-top:14px"><button class="btn" id="buyGo">Buy and wear</button><button class="btn ghost" data-close>Not now</button></div>`, true);
-    $("#buyGo",bg).onclick = () => { S.stars -= it.price; S.owned.push(it.id); S.wear = it.id; S.shownStars = S.stars; save(); bg.remove(); sfx.chestOpen(); sfx.giggle(); buzz([20,40,20]); confetti(30); wardrobeScreen(); };
+    const it = ITEMS.find(i => i.id===b.dataset.item), st = b.dataset.st;
+    if (st==="wearing"){ setWear(null); tryOn = null; return wardrobeScreen(); }
+    if (st==="owned"){ tryOn = null; setWear(it.id); sfx.pop(); sfx.giggle(); return wardrobeScreen(); }
+    if (st==="next"){ tryOn = it.id; sfx.pop(); sfx.giggle(); wardrobeScreen(); window.scrollTo({top:0, behavior:"smooth"}); return; }
+    if (st==="hint"){ toast(`Coming after the ${next.name}. Keep collecting stars!`); return; }
+    if (st==="prize"){ toast("A badge prize! Get a badge to level 3 to find out what it is."); return; }
+    toast("A surprise for later. Items open one at a time!");
   });
+}
+function buyItem(it){
+  const price = shopPrice(it.id);
+  if (S.stars < price){ toast(`You need ${price - S.stars} more stars. Keep learning!`); return; }
+  S.stars -= price; S.owned = (S.owned||[]).concat(it.id); S.wear = it.id; S.shownStars = S.stars; tryOn = null; save();
+  buyParty(it);
+}
+/* ---------- 🎆 The big moment: a new item for Миша ---------- */
+function buyParty(it){
+  const ov = document.createElement("div"); ov.className = "party";
+  ov.innerHTML = `<canvas></canvas><div class="pin"><div class="ptitle">New for Ми́ша!</div>${liveMisha("pmisha", "wave", it.id)}<h2>${esc(it.name)}</h2><button class="btn" id="pDone">Wear it! 🎉</button></div>`;
+  document.body.appendChild(ov);
+  const cv = ov.querySelector("canvas"), cx = cv.getContext("2d"), dpr = Math.min(2, devicePixelRatio||1);
+  const fit = () => { cv.width = innerWidth*dpr; cv.height = innerHeight*dpr; cx.setTransform(dpr,0,0,dpr,0,0); }; fit();
+  const cols = ["#FFC43D","#FF7A45","#E8507A","#7FD3FF","#9BE36D","#FFFFFF","#C59BFF"], parts = [], stars = [];
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const burst = () => { const x = innerWidth*(.15 + Math.random()*.7), y = innerHeight*(.12 + Math.random()*.38), c = cols[Math.floor(Math.random()*cols.length)];
+    for (let k = 0; k < 46; k++){ const a = Math.random()*Math.PI*2, v = 2 + Math.random()*4.5; parts.push({x, y, vx:Math.cos(a)*v, vy:Math.sin(a)*v, life:1, c}); }
+    try { sfx.pop(); } catch(_){} };
+  const star = () => stars.push({x:Math.random()*innerWidth, y:innerHeight + 30, vy:-(3 + Math.random()*4), vx:(Math.random()-.5)*1.5, r:12 + Math.random()*16, rot:Math.random()*6, vr:(Math.random()-.5)*.2});
+  let t = 0, raf = 0, alive = true;
+  const draw5 = (x, y, r, rot) => { cx.save(); cx.translate(x, y); cx.rotate(rot); cx.beginPath();
+    for (let i = 0; i < 10; i++){ const rr = i%2 ? r*.45 : r, a = i*Math.PI/5 - Math.PI/2; cx.lineTo(Math.cos(a)*rr, Math.sin(a)*rr); }
+    cx.closePath(); cx.fillStyle = "#FFC43D"; cx.fill(); cx.lineWidth = 2; cx.strokeStyle = "#E89A00"; cx.stroke(); cx.restore(); };
+  const loop = () => {
+    if (!alive) return; t++;
+    cx.clearRect(0, 0, innerWidth, innerHeight);
+    if (t % 38 === 1 && t < 420) burst();
+    if (t < 160 && t % 3 === 0) star(); else if (t % 14 === 0) star();
+    for (let i = parts.length-1; i >= 0; i--){ const q = parts[i]; q.x += q.vx; q.y += q.vy; q.vy += .05; q.vx *= .985; q.life -= .012;
+      if (q.life <= 0){ parts.splice(i,1); continue; } cx.globalAlpha = q.life; cx.fillStyle = q.c; cx.beginPath(); cx.arc(q.x, q.y, 2.6, 0, 7); cx.fill(); }
+    cx.globalAlpha = 1;
+    for (let i = stars.length-1; i >= 0; i--){ const q = stars[i]; q.y += q.vy; q.x += q.vx; q.rot += q.vr; if (q.y < -40){ stars.splice(i,1); continue; } draw5(q.x, q.y, q.r, q.rot); }
+    raf = requestAnimationFrame(loop);
+  };
+  if (!still){ burst(); loop(); }
+  try { sfx.chestOpen(); setTimeout(() => sfx.giggle(), 700); setTimeout(() => sfx.goal && sfx.goal(), 1200); } catch(_){}
+  buzz([30,40,30,40,80]);
+  const close = () => { alive = false; cancelAnimationFrame(raf); ov.classList.add("out"); setTimeout(() => ov.remove(), 300); wardrobeScreen(); };
+  ov.querySelector("#pDone").onclick = close;
 }
 
 /* ---------- Results scenes (Tikhon’s idea): Миша’s costume matches how the lesson went ---------- */
@@ -2951,8 +3041,6 @@ function levelUpScreen(isA, un, lv, unitDone){
   });
 }
 function surpriseReward(){
-  const free = (typeof ITEMS !== "undefined") ? ITEMS.filter(i => i.price && !(S.owned||[]).includes(i.id)) : [];
-  if (free.length && Math.random() < 0.3) return {item: free[Math.floor(Math.random()*free.length)].id};
   return {stars: 5 + Math.floor(Math.random()*11)};
 }
 function chestScreen(reward, line){
@@ -3374,7 +3462,7 @@ window.addEventListener("appinstalled", () => { installPrompt = null; toast("М�
 /* ---------- Remove host-injected badges (e.g. “Powered by Netlify”) ---------- */
 function stripHostBadges(){
   /* The app only ever puts these directly on the page; anything else was added by the web host. */
-  const ours = el => el.id==="app" || (el.matches && el.matches(".sheet-bg,.toast,.wpop,.confetti,.flystar,.peek,.perfect,script,style,link,noscript,meta,title"));
+  const ours = el => el.id==="app" || (el.matches && el.matches(".sheet-bg,.toast,.wpop,.confetti,.flystar,.peek,.perfect,.party,script,style,link,noscript,meta,title"));
   [...document.body.children].forEach(el => { if (!ours(el)) el.remove(); });
   [...document.documentElement.children].forEach(el => { if (el!==document.head && el!==document.body) el.remove(); });
 }
@@ -3382,7 +3470,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "13.1 (November 2, 2026)";
+const APP_VERSION = "13.2 (November 2, 2026)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */
