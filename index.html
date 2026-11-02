@@ -240,6 +240,20 @@ img.chip.papa{filter:brightness(.8) saturate(.85)}
 .unitcard.u3{background:#8A5CD1;box-shadow:0 6px 0 #6A43A8}
 .popcard.u2{background:#13A38A;box-shadow:0 6px 0 #0D7A67}.popcard.u2::before{background:#13A38A}.popcard.u2 button{color:#0D7A67}
 .popcard.u3{background:#8A5CD1;box-shadow:0 6px 0 #6A43A8}.popcard.u3::before{background:#8A5CD1}.popcard.u3 button{color:#6A43A8}
+.unitcard.u4{background:#D9547A;box-shadow:0 6px 0 #A83A5C}
+.popcard.u4{background:#D9547A;box-shadow:0 6px 0 #A83A5C}.popcard.u4::before{background:#D9547A}.popcard.u4 button{color:#A83A5C}
+.unitcard.u5{background:#C9862A;box-shadow:0 6px 0 #9A6418}
+.popcard.u5{background:#C9862A;box-shadow:0 6px 0 #9A6418}.popcard.u5::before{background:#C9862A}.popcard.u5 button{color:#9A6418}
+.unitcard.u6{background:#2B9FD0;box-shadow:0 6px 0 #1D7AA2}
+.popcard.u6{background:#2B9FD0;box-shadow:0 6px 0 #1D7AA2}.popcard.u6::before{background:#2B9FD0}.popcard.u6 button{color:#1D7AA2}
+.unitcard.u7{background:#6DAA2C;box-shadow:0 6px 0 #507F1E}
+.popcard.u7{background:#6DAA2C;box-shadow:0 6px 0 #507F1E}.popcard.u7::before{background:#6DAA2C}.popcard.u7 button{color:#507F1E}
+.unitcard.u8{background:#4B5BD1;box-shadow:0 6px 0 #3443A3}
+.popcard.u8{background:#4B5BD1;box-shadow:0 6px 0 #3443A3}.popcard.u8::before{background:#4B5BD1}.popcard.u8 button{color:#3443A3}
+.unitcard.u9{background:#C24DB8;box-shadow:0 6px 0 #963A8E}
+.popcard.u9{background:#C24DB8;box-shadow:0 6px 0 #963A8E}.popcard.u9::before{background:#C24DB8}.popcard.u9 button{color:#963A8E}
+.unitcard.u10{background:#8B5A3C;box-shadow:0 6px 0 #6A412A}
+.popcard.u10{background:#8B5A3C;box-shadow:0 6px 0 #6A412A}.popcard.u10::before{background:#8B5A3C}.popcard.u10 button{color:#6A412A}
 .unitcard.alpha{background:var(--leaf);box-shadow:0 6px 0 var(--leaf-lip)}
 .lgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
 .ltile{appearance:none;background:var(--surface);color:var(--ink);border:2px solid var(--line);border-bottom-width:4px;border-radius:14px;padding:8px 2px 10px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer}
@@ -621,6 +635,13 @@ img.chip.wobble{animation:wobble .6s ease-in-out 1, breathe 3.4s ease-in-out .6s
 .path.pa{--uc:#6E9F45;--ucd:#557D33;--ucl:#C9DDB8;--ucld:#A7BD93;--ucf:rgba(110,159,69,.24)}
 .path.p2{--uc:#13A38A;--ucd:#0D7A67;--ucl:#A6DDD3;--ucld:#7FBDB2;--ucf:rgba(19,163,138,.22)}
 .path.p3{--uc:#8A5CD1;--ucd:#6A43A8;--ucl:#D6C6F2;--ucld:#B6A2DA;--ucf:rgba(138,92,209,.22)}
+.path.p4{--uc:#D9547A;--ucd:#A83A5C;--ucl:#F5C6D4;--ucld:#D9A3B4;--ucf:rgba(217,84,122,.22)}
+.path.p5{--uc:#C9862A;--ucd:#9A6418;--ucl:#F0D3A6;--ucld:#D3B482;--ucf:rgba(201,134,42,.24)}
+.path.p6{--uc:#2B9FD0;--ucd:#1D7AA2;--ucl:#B7E1F2;--ucld:#93C3D8;--ucf:rgba(43,159,208,.22)}
+.path.p7{--uc:#6DAA2C;--ucd:#507F1E;--ucl:#D3E9B8;--ucld:#B1CB93;--ucf:rgba(109,170,44,.22)}
+.path.p8{--uc:#4B5BD1;--ucd:#3443A3;--ucl:#C5CBF2;--ucld:#A2A9D9;--ucf:rgba(75,91,209,.22)}
+.path.p9{--uc:#C24DB8;--ucd:#963A8E;--ucl:#EEC3EA;--ucld:#D3A1CE;--ucf:rgba(194,77,184,.22)}
+.path.p10{--uc:#8B5A3C;--ucd:#6A412A;--ucl:#E2CDBF;--ucld:#C4AA99;--ucf:rgba(139,90,60,.24)}
 .node .ring{background:none!important;position:relative}
 .node .ring svg.segring{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
 .node button{background:var(--ucl);box-shadow:0 6px 0 var(--ucld)}
@@ -742,6 +763,23 @@ const GLOSS = {
   "телефон":"phone", "школа":"school", "и":"and", "не":"not",
   "хлеб":"bread", "сыр":"cheese", "сок":"juice", "чай":"tea", "молоко":"milk (said «малако»)", "яблоко":"apple",
   "вкусно":"tasty!", "спасибо":"thank you", "я":"I", "ты":"you", "хочу":"I want", "хочешь":"you want", "ой":"oops!",
+  "мой":"my (he-words)", "моя":"my (she-words)", "мое":"my (it-words)", "твой":"your (he-words)", "твоя":"your (she-words)",
+  "семья":"family", "брат":"brother", "сестра":"sister", "бабушка":"grandma", "дедушка":"grandpa", "друг":"friend (boy)", "подруга":"friend (girl)",
+  "вот":"here is", "а":"and, but",
+  "бурундук":"chipmunk", "еж":"hedgehog", "медведь":"bear", "лиса":"fox", "волк":"wolf", "заяц":"hare, bunny", "птица":"bird", "рыба":"fish",
+  "корова":"cow", "лошадь":"horse", "большой":"big", "большая":"big (she-words)", "маленький":"small", "маленькая":"small (she-words)",
+  "где":"where", "здесь":"here", "там":"there", "дома":"at home", "в":"in, at", "на":"on", "школе":"school · «в школе» = at school", "парк":"park",
+  "парке":"park · «в парке» = in the park", "стол":"table", "столе":"table · «на столе» = on the table", "сумка":"bag", "сумке":"bag · «в сумке» = in the bag", "комната":"room",
+  "дела":"things · «как дела?» = how are you?", "хорошо":"good, fine", "отлично":"great", "нормально":"okay", "плохо":"bad", "тоже":"too, also",
+  "пока":"bye", "до":"«до свидания» = goodbye", "свидания":"«до свидания» = goodbye", "доброе":"good · «доброе утро» = good morning", "утро":"morning",
+  "спокойной":"«спокойной ночи» = good night", "ночи":"«спокойной ночи» = good night", "извини":"sorry",
+  "один":"one", "два":"two", "три":"three", "четыре":"four", "пять":"five", "шесть":"six", "семь":"seven", "восемь":"eight", "девять":"nine", "десять":"ten",
+  "плюс":"plus", "сколько":"how many · «сколько тебе лет?» = how old are you?", "тебе":"(to) you · «сколько тебе лет?» = how old are you?", "мне":"(to) me · «мне … лет» = I’m … years old", "лет":"years",
+  "красный":"red", "красная":"red (she-words)", "красное":"red (it-words)", "синий":"blue", "синяя":"blue (she-words)", "зеленый":"green", "зеленое":"green (it-words)",
+  "желтый":"yellow", "белый":"white", "белая":"white (she-words)", "черный":"black", "розовый":"pink", "розовая":"pink (she-words)", "оранжевый":"orange", "оранжевая":"orange (she-words)",
+  "цвет":"colour", "любимый":"favourite", "какого":"«какого цвета?» = what colour?", "цвета":"«какого цвета?» = what colour?",
+  "люблю":"I love, I like", "любишь":"you love, you like", "любит":"he / she loves", "очень":"very much", "играть":"to play", "читать":"to read", "рисовать":"to draw",
+  "шоколад":"chocolate", "мороженое":"ice cream", "торт":"cake", "футбол":"football", "мультфильмы":"cartoons", "маму":"mom (after «люблю»)", "папу":"dad (after «люблю»)",
   "аня":"Anya (a girl’s name)", "миша":"Misha (a boy’s name)", "тима":"Tima (a boy’s name)"
 };
 function tapify(ru){
@@ -844,6 +882,327 @@ const UNIT3 = {
     {q:"How do you say “No, thank you”?", options:["Нет, спаси́бо.","Да, хочу́.","Э́то вку́сно."], answer:0}
   ]
 };
+/* ---------- Units 4 to 10 ---------- */
+const UNIT4 = {
+  words:[
+    {id:"moy", ru:"мой", en:"my (he-words)", tr:"moy", pic:"🙋‍♂️"},
+    {id:"moya", ru:"моя́", en:"my (she-words)", tr:"maya", pic:"🙋‍♀️"},
+    {id:"moyo", ru:"моё", en:"my (it-words)", tr:"mayo", pic:"🙋"},
+    {id:"tvoy", ru:"твой", en:"your (he-words)", tr:"tvoy", pic:"🫵"},
+    {id:"tvoya", ru:"твоя́", en:"your (she-words)", tr:"tvaya", pic:"🫴"},
+    {id:"semya", ru:"семья́", en:"family", tr:"simya", pic:"👨‍👩‍👧‍👦"},
+    {id:"brat", ru:"брат", en:"brother", tr:"brat", pic:"👦"},
+    {id:"sestra", ru:"сестра́", en:"sister", tr:"sistra", pic:"👧"},
+    {id:"babushka", ru:"ба́бушка", en:"grandma", tr:"babushka", pic:"👵"},
+    {id:"dedushka", ru:"де́душка", en:"grandpa", tr:"dyedushka", pic:"👴"},
+    {id:"drug", ru:"друг", en:"friend (boy)", tr:"druk", pic:"🤝"},
+    {id:"podruga", ru:"подру́га", en:"friend (girl)", tr:"padruga", pic:"👭"},
+    {id:"vot", ru:"вот", en:"here is", tr:"vot", pic:"🎁"},
+    {id:"a_conj", ru:"а", en:"and, but", tr:"a", pic:"↔️"}
+  ],
+  groups:[["semya","brat","sestra","babushka","dedushka"],["moy","moya","moyo","vot","a_conj"],["tvoy","tvoya","drug","podruga"]],
+  sentences:[
+    {ru:"Э́то моя́ семья́.", en:"This is my family.", set:0},
+    {ru:"Вот мой па́па.", en:"Here is my dad.", set:0},
+    {ru:"Вот моя́ ма́ма.", en:"Here is my mom.", set:0},
+    {ru:"Э́то мой брат.", en:"This is my brother.", set:0},
+    {ru:"Э́то моя́ сестра́.", en:"This is my sister.", set:0},
+    {ru:"Вот ба́бушка и де́душка.", en:"Here are Grandma and Grandpa.", set:0},
+    {ru:"Э́то твой брат?", en:"Is this your brother?", set:1},
+    {ru:"Нет, э́то мой друг.", en:"No, this is my friend.", set:1},
+    {ru:"Э́то твоя́ кни́га?", en:"Is this your book?", set:1},
+    {ru:"Да, э́то моя́ кни́га.", en:"Yes, this is my book.", set:1},
+    {ru:"Э́то моё я́блоко!", en:"This is my apple!", set:1},
+    {ru:"Моя́ подру́га — А́ня.", en:"My friend is Anya.", set:1}
+  ],
+  blankable:["мой","моя́","моё","твой","твоя́","семья́","брат","сестра́","ба́бушка","де́душка","друг","подру́га","вот","э́то","кни́га","я́блоко"],
+  story:[
+    {who:"tima", ru:"Ми́ша, что э́то?", en:"Misha, what is this?"},
+    {who:"misha", ru:"Э́то моя́ семья́! Вот мой па́па и моя́ ма́ма.", en:"This is my family! Here are my dad and my mom."},
+    {who:"tima", ru:"А э́то твой брат?", en:"And is this your brother?"},
+    {who:"misha", ru:"Да, э́то мой брат. А э́то моя́ сестра́.", en:"Yes, this is my brother. And this is my sister."},
+    {q:"Who is in the photo with Misha’s mom?", options:["his dad","his grandpa","Tima"], answer:0},
+    {who:"tima", ru:"Кто э́то? Э́то твой па́па?", en:"Who is this? Is this your dad?"},
+    {who:"misha", ru:"Нет! Э́то моя́ ба́бушка!", en:"No! This is my grandma!"},
+    {q:"Who was it really?", options:["Misha’s grandma","Misha’s dad","Misha’s friend"], answer:0},
+    {who:"tima", ru:"Ой! Приве́т, ба́бушка!", en:"Oops! Hi, Grandma!"},
+    {q:"How do you say “my sister”?", options:["моя́ сестра́","мой сестра́","моё сестра́"], answer:0}
+  ]
+};
+const UNIT5 = {
+  words:[
+    {id:"burunduk", ru:"бурунду́к", en:"chipmunk", tr:"burunduk", pic:"🐿️"},
+    {id:"yozh", ru:"ёж", en:"hedgehog", tr:"yosh", pic:"🦔"},
+    {id:"medved", ru:"медве́дь", en:"bear", tr:"midvyet'", pic:"🐻"},
+    {id:"lisa", ru:"лиса́", en:"fox", tr:"lisa", pic:"🦊"},
+    {id:"volk", ru:"волк", en:"wolf", tr:"volk", pic:"🐺"},
+    {id:"zayats", ru:"за́яц", en:"hare (bunny)", tr:"zayits", pic:"🐰"},
+    {id:"ptitsa", ru:"пти́ца", en:"bird", tr:"ptitsa", pic:"🐦"},
+    {id:"ryba", ru:"ры́ба", en:"fish", tr:"ryba", pic:"🐟"},
+    {id:"korova", ru:"коро́ва", en:"cow", tr:"karova", pic:"🐄"},
+    {id:"loshad", ru:"ло́шадь", en:"horse", tr:"loshat'", pic:"🐴"},
+    {id:"bolshoy", ru:"большо́й", en:"big (he-words)", tr:"bal'shoy", pic:"🐘"},
+    {id:"bolshaya", ru:"больша́я", en:"big (she-words)", tr:"bal'shaya", pic:"🐋"},
+    {id:"malenkiy", ru:"ма́ленький", en:"small (he-words)", tr:"malin'kiy", pic:"🐜"},
+    {id:"malenkaya", ru:"ма́ленькая", en:"small (she-words)", tr:"malin'kaya", pic:"🐞"}
+  ],
+  groups:[["burunduk","yozh","medved","lisa","volk"],["zayats","ptitsa","ryba","korova","loshad"],["bolshoy","bolshaya","malenkiy","malenkaya"]],
+  sentences:[
+    {ru:"Ми́ша — бурунду́к.", en:"Misha is a chipmunk.", set:0},
+    {ru:"Ти́ма — ёж.", en:"Tima is a hedgehog.", set:0},
+    {ru:"Кто э́то? Э́то медве́дь.", en:"Who is this? This is a bear.", set:0},
+    {ru:"Медве́дь большо́й.", en:"The bear is big.", set:0},
+    {ru:"Ёж ма́ленький.", en:"The hedgehog is small.", set:0},
+    {ru:"Ры́ба ма́ленькая.", en:"The fish is small.", set:0},
+    {ru:"Коро́ва больша́я.", en:"The cow is big.", set:1},
+    {ru:"Лиса́ ма́ленькая?", en:"Is the fox small?", set:1},
+    {ru:"Нет, лиса́ больша́я.", en:"No, the fox is big.", set:1},
+    {ru:"Э́то не волк. Э́то соба́ка!", en:"This is not a wolf. This is a dog!", set:1},
+    {ru:"Вот моя́ пти́ца.", en:"Here is my bird.", set:1},
+    {ru:"Мой за́яц ма́ленький.", en:"My bunny is small.", set:1}
+  ],
+  blankable:["бурунду́к","ёж","медве́дь","лиса́","волк","за́яц","пти́ца","ры́ба","коро́ва","большо́й","больша́я","ма́ленький","ма́ленькая","соба́ка"],
+  story:[
+    {who:"misha", ru:"Ти́ма, э́то лиса́.", en:"Tima, this is a fox."},
+    {who:"tima", ru:"Лиса́ ма́ленькая!", en:"The fox is small!"},
+    {who:"misha", ru:"А э́то за́яц.", en:"And this is a hare."},
+    {q:"Which animal did they see first?", options:["a fox","a wolf","a cow"], answer:0},
+    {who:"tima", ru:"Ой! Кто э́то? Э́то медве́дь?!", en:"Oh! Who is this? Is this a bear?!"},
+    {who:"misha", ru:"Нет! Э́то не медве́дь. Э́то мой брат!", en:"No! This is not a bear. This is my brother!"},
+    {q:"Who was the “bear”?", options:["Misha’s brother","a real bear","a dog"], answer:0},
+    {who:"tima", ru:"Твой брат большо́й!", en:"Your brother is big!"},
+    {who:"misha", ru:"Да, мой брат большо́й, а я ма́ленький.", en:"Yes, my brother is big, and I am small."},
+    {q:"Which word means “big” for a he-word?", options:["большо́й","больша́я","ма́ленький"], answer:0}
+  ]
+};
+const UNIT6 = {
+  words:[
+    {id:"gde", ru:"где", en:"where", tr:"gdye", pic:"🔎"},
+    {id:"zdes", ru:"здесь", en:"here", tr:"zdyes'", pic:"📍"},
+    {id:"tam", ru:"там", en:"there", tr:"tam", pic:"🔭"},
+    {id:"doma", ru:"до́ма", en:"at home", tr:"doma", pic:"🏡"},
+    {id:"v_shkole", ru:"в шко́ле", en:"at school", tr:"f shkolye", pic:"🎒"},
+    {id:"park", ru:"парк", en:"park", tr:"park", pic:"🌳"},
+    {id:"v_parke", ru:"в па́рке", en:"in the park", tr:"f parkye", pic:"🛝"},
+    {id:"stol", ru:"стол", en:"table", tr:"stol", pic:"🍽️"},
+    {id:"na_stole", ru:"на столе́", en:"on the table", tr:"na stalye", pic:"🧁"},
+    {id:"sumka", ru:"су́мка", en:"bag", tr:"sumka", pic:"👜"},
+    {id:"v_sumke", ru:"в су́мке", en:"in the bag", tr:"f sumkye", pic:"🛍️"},
+    {id:"komnata", ru:"ко́мната", en:"room", tr:"komnata", pic:"🛏️"}
+  ],
+  groups:[["gde","zdes","tam","doma"],["v_shkole","park","v_parke","komnata"],["stol","na_stole","sumka","v_sumke"]],
+  sentences:[
+    {ru:"Где ма́ма?", en:"Where is Mom?", set:0},
+    {ru:"Ма́ма до́ма.", en:"Mom is at home.", set:0},
+    {ru:"Где па́па? Па́па в па́рке.", en:"Where is Dad? Dad is in the park.", set:0},
+    {ru:"Мой брат в шко́ле.", en:"My brother is at school.", set:0},
+    {ru:"Где мой телефо́н?", en:"Where is my phone?", set:0},
+    {ru:"Твой телефо́н здесь.", en:"Your phone is here.", set:0},
+    {ru:"Где моя́ кни́га?", en:"Where is my book?", set:1},
+    {ru:"Кни́га на столе́.", en:"The book is on the table.", set:1},
+    {ru:"Я́блоко в су́мке.", en:"The apple is in the bag.", set:1},
+    {ru:"Где Ти́ма? Ти́ма там.", en:"Where is Tima? Tima is there.", set:1},
+    {ru:"Где ты? Я до́ма.", en:"Where are you? I’m at home.", set:1},
+    {ru:"Э́то моя́ ко́мната.", en:"This is my room.", set:1}
+  ],
+  blankable:["где","здесь","там","до́ма","шко́ле","па́рке","столе́","су́мке","ко́мната","телефо́н","кни́га"],
+  story:[
+    {who:"misha", ru:"Где мой телефо́н?", en:"Where is my phone?"},
+    {who:"tima", ru:"Твой телефо́н в су́мке?", en:"Is your phone in the bag?"},
+    {who:"misha", ru:"Нет, в су́мке я́блоко и кни́га.", en:"No, there’s an apple and a book in the bag."},
+    {q:"What is in the bag?", options:["an apple and a book","the phone","a cat"], answer:0},
+    {who:"tima", ru:"Телефо́н на столе́?", en:"Is the phone on the table?"},
+    {who:"misha", ru:"Нет, на столе́ хлеб и сыр.", en:"No, there’s bread and cheese on the table."},
+    {who:"tima", ru:"Где твоя́ ко́мната?", en:"Where is your room?"},
+    {who:"misha", ru:"Там.", en:"There."},
+    {who:"tima", ru:"Ми́ша, вот твой телефо́н! И кот!", en:"Misha, here is your phone! And the cat!"},
+    {q:"Where was the phone?", options:["in Misha’s room","in the bag","on the table"], answer:0},
+    {who:"misha", ru:"Спаси́бо, Ти́ма!", en:"Thank you, Tima!"},
+    {q:"How do you say “on the table”?", options:["на столе́","в су́мке","до́ма"], answer:0}
+  ]
+};
+const UNIT7 = {
+  words:[
+    {id:"kak_dela", ru:"как дела́?", en:"how are you?", tr:"kak dila?", pic:"💬"},
+    {id:"horosho", ru:"хорошо́", en:"good, fine", tr:"kharasho", pic:"🙂"},
+    {id:"otlichno", ru:"отли́чно", en:"great", tr:"atlichna", pic:"🤩"},
+    {id:"normalno", ru:"норма́льно", en:"okay", tr:"narmal'na", pic:"😐"},
+    {id:"ploho", ru:"пло́хо", en:"bad", tr:"plokha", pic:"😞"},
+    {id:"a_ty", ru:"а ты?", en:"and you?", tr:"a ty?", pic:"🔄"},
+    {id:"tozhe", ru:"то́же", en:"too, also", tr:"tozhe", pic:"👯"},
+    {id:"poka", ru:"пока́", en:"bye (friends)", tr:"paka", pic:"🤚"},
+    {id:"do_svidaniya", ru:"до свида́ния", en:"goodbye (polite)", tr:"da svidaniya", pic:"🎩"},
+    {id:"dobroe_utro", ru:"до́брое у́тро", en:"good morning", tr:"dobraye utra", pic:"🌅"},
+    {id:"spokoynoy_nochi", ru:"споко́йной но́чи", en:"good night", tr:"spakoynay nochi", pic:"🌙"},
+    {id:"izvini", ru:"извини́", en:"sorry", tr:"izvini", pic:"🙇"}
+  ],
+  groups:[["kak_dela","horosho","otlichno","normalno"],["ploho","a_ty","tozhe","izvini"],["poka","do_svidaniya","dobroe_utro","spokoynoy_nochi"]],
+  sentences:[
+    {ru:"Приве́т! Как дела́?", en:"Hi! How are you?", set:0},
+    {ru:"Хорошо́, спаси́бо. А ты?", en:"Fine, thank you. And you?", set:0},
+    {ru:"То́же хорошо́!", en:"Fine too!", set:0},
+    {ru:"Отли́чно!", en:"Great!", set:0},
+    {ru:"Как дела́, Ти́ма? Норма́льно.", en:"How are you, Tima? Okay.", set:0},
+    {ru:"Пло́хо…", en:"Bad…", set:0},
+    {ru:"До́брое у́тро, ма́ма!", en:"Good morning, Mom!", set:1},
+    {ru:"Споко́йной но́чи, па́па!", en:"Good night, Dad!", set:1},
+    {ru:"Пока́, Ми́ша!", en:"Bye, Misha!", set:1},
+    {ru:"До свида́ния, ба́бушка!", en:"Goodbye, Grandma!", set:1},
+    {ru:"Извини́!", en:"Sorry!", set:1},
+    {ru:"Я то́же хочу́ сок.", en:"I want juice too.", set:1}
+  ],
+  blankable:["дела́","хорошо́","отли́чно","норма́льно","пло́хо","то́же","пока́","свида́ния","у́тро","но́чи","извини́","ты"],
+  story:[
+    {who:"mama", ru:"До́брое у́тро, Ми́ша!", en:"Good morning, Misha!"},
+    {who:"misha", ru:"До́брое у́тро, ма́ма!", en:"Good morning, Mom!"},
+    {who:"misha", ru:"Приве́т, Ти́ма! Как дела́?", en:"Hi, Tima! How are you?"},
+    {who:"tima", ru:"Пло́хо…", en:"Bad…"},
+    {q:"How is Tima at first?", options:["bad","great","okay"], answer:0},
+    {who:"misha", ru:"Ой! Ты хо́чешь я́блоко?", en:"Oh! Do you want an apple?"},
+    {who:"tima", ru:"Да, хочу́! Спаси́бо! Вку́сно! Отли́чно!", en:"Yes, I do! Thank you! Tasty! Great!"},
+    {q:"What made Tima feel great?", options:["an apple","tea","a ball"], answer:0},
+    {who:"misha", ru:"Я то́же хочу́ я́блоко!", en:"I want an apple too!"},
+    {who:"tima", ru:"Пока́, Ми́ша!", en:"Bye, Misha!"},
+    {who:"misha", ru:"Пока́! Споко́йной но́чи!", en:"Bye! Good night!"},
+    {q:"Which one is the friendly “bye”?", options:["Пока́","До свида́ния","Извини́"], answer:0}
+  ]
+};
+const UNIT8 = {
+  words:[
+    {id:"odin", ru:"оди́н", en:"one", tr:"adin", pic:"1️⃣"},
+    {id:"dva", ru:"два", en:"two", tr:"dva", pic:"2️⃣"},
+    {id:"tri", ru:"три", en:"three", tr:"tri", pic:"3️⃣"},
+    {id:"chetyre", ru:"четы́ре", en:"four", tr:"chityri", pic:"4️⃣"},
+    {id:"pyat", ru:"пять", en:"five", tr:"pyat'", pic:"5️⃣"},
+    {id:"shest", ru:"шесть", en:"six", tr:"shest'", pic:"6️⃣"},
+    {id:"sem", ru:"семь", en:"seven", tr:"syem'", pic:"7️⃣"},
+    {id:"vosem", ru:"во́семь", en:"eight", tr:"vosim'", pic:"8️⃣"},
+    {id:"devyat", ru:"де́вять", en:"nine", tr:"dyevit'", pic:"9️⃣"},
+    {id:"desyat", ru:"де́сять", en:"ten", tr:"dyesit'", pic:"🔟"},
+    {id:"plyus", ru:"плюс", en:"plus", tr:"plyus", pic:"🧮"},
+    {id:"skolko", ru:"ско́лько?", en:"how many?", tr:"skol'ka?", pic:"🔢"},
+    {id:"skolko_let", ru:"Ско́лько тебе́ лет?", en:"How old are you?", tr:"skol'ka tibye lyet?", pic:"🎈"},
+    {id:"mne_let", ru:"Мне … лет.", en:"I’m … years old.", tr:"mnye … lyet", pic:"🕯️"}
+  ],
+  groups:[["odin","dva","tri","chetyre","pyat"],["shest","sem","vosem","devyat","desyat"],["plyus","skolko","skolko_let","mne_let"]],
+  sentences:[
+    {ru:"Оди́н, два, три!", en:"One, two, three!", set:0},
+    {ru:"Ско́лько тебе́ лет?", en:"How old are you?", set:0},
+    {ru:"Мне де́вять лет.", en:"I’m nine years old.", set:0},
+    {ru:"Мне де́сять лет.", en:"I’m ten years old.", set:0},
+    {ru:"А тебе́? Мне семь лет.", en:"And you? I’m seven.", set:0},
+    {ru:"Ско́лько? Шесть.", en:"How many? Six.", set:0},
+    {ru:"Два плюс два — четы́ре.", en:"Two plus two is four.", set:1},
+    {ru:"Три плюс пять — во́семь.", en:"Three plus five is eight.", set:1},
+    {ru:"Пять плюс пять — де́сять.", en:"Five plus five is ten.", set:1},
+    {ru:"Де́сять, де́вять, во́семь… оди́н!", en:"Ten, nine, eight… one!", set:1},
+    {ru:"Ско́лько? Оди́н, два, три… де́сять!", en:"How many? One, two, three… ten!", set:1},
+    {ru:"Ско́лько тебе́ лет? Мне во́семь лет.", en:"How old are you? I’m eight.", set:1}
+  ],
+  blankable:["оди́н","два","три","четы́ре","пять","шесть","семь","во́семь","де́вять","де́сять","плюс","ско́лько","лет","мне"],
+  story:[
+    {who:"tima", ru:"Ми́ша, ско́лько тебе́ лет?", en:"Misha, how old are you?"},
+    {who:"misha", ru:"Оди́н, два, три, четы́ре, пять! Мне пять лет!", en:"One, two, three, four, five! I’m five!"},
+    {q:"How old is Misha?", options:["five","four","ten"], answer:0},
+    {who:"tima", ru:"А мне шесть лет.", en:"And I’m six."},
+    {who:"misha", ru:"Ско́лько? Шесть?", en:"How many? Six?"},
+    {who:"tima", ru:"Да, шесть!", en:"Yes, six!"},
+    {q:"How old is Tima?", options:["six","five","seven"], answer:0},
+    {who:"misha", ru:"Ты хо́чешь сок?", en:"Do you want juice?"},
+    {who:"tima", ru:"Да, спаси́бо!", en:"Yes, thank you!"},
+    {who:"misha", ru:"Три плюс три — шесть!", en:"Three plus three is six!"},
+    {q:"Three plus three is…", options:["шесть","пять","во́семь"], answer:0}
+  ]
+};
+const UNIT9 = {
+  words:[
+    {id:"krasny", ru:"кра́сный", en:"red", tr:"krasny", pic:"🟥"},
+    {id:"siniy", ru:"си́ний", en:"blue", tr:"siniy", pic:"🟦"},
+    {id:"zelyony", ru:"зелёный", en:"green", tr:"zilyony", pic:"🟩"},
+    {id:"zhyolty", ru:"жёлтый", en:"yellow", tr:"zholty", pic:"🟨"},
+    {id:"bely", ru:"бе́лый", en:"white", tr:"byely", pic:"⬜"},
+    {id:"chyorny", ru:"чёрный", en:"black", tr:"chorny", pic:"⬛"},
+    {id:"rozovy", ru:"ро́зовый", en:"pink", tr:"rozavy", pic:"🩷"},
+    {id:"oranzhevy", ru:"ора́нжевый", en:"orange", tr:"aranzhivy", pic:"🟧"},
+    {id:"tsvet", ru:"цвет", en:"colour", tr:"tsvyet", pic:"🎨"},
+    {id:"lyubimy", ru:"люби́мый", en:"favourite", tr:"lyubimy", pic:"💖"},
+    {id:"kakogo_tsveta", ru:"Како́го цве́та?", en:"What colour?", tr:"kakova tsvyeta?", pic:"🖍️"}
+  ],
+  groups:[["krasny","siniy","zelyony","zhyolty"],["bely","chyorny","rozovy","oranzhevy"],["tsvet","lyubimy","kakogo_tsveta"]],
+  sentences:[
+    {ru:"Мяч кра́сный.", en:"The ball is red.", set:0},
+    {ru:"Су́мка кра́сная.", en:"The bag is red.", set:0},
+    {ru:"Я́блоко зелёное.", en:"The apple is green.", set:0},
+    {ru:"Мой кот чёрный.", en:"My cat is black.", set:0},
+    {ru:"Моя́ соба́ка бе́лая.", en:"My dog is white.", set:0},
+    {ru:"Ры́ба ора́нжевая.", en:"The fish is orange.", set:0},
+    {ru:"Како́го цве́та твой телефо́н?", en:"What colour is your phone?", set:1},
+    {ru:"Мой телефо́н ро́зовый.", en:"My phone is pink.", set:1},
+    {ru:"Э́то жёлтый дом.", en:"This is a yellow house.", set:1},
+    {ru:"Ёж не зелёный!", en:"A hedgehog isn’t green!", set:1},
+    {ru:"Мой люби́мый цвет — си́ний.", en:"My favourite colour is blue.", set:1},
+    {ru:"А твой?", en:"And yours?", set:1}
+  ],
+  blankable:["кра́сный","кра́сная","зелёное","чёрный","бе́лая","ора́нжевая","ро́зовый","жёлтый","зелёный","люби́мый","цвет","си́ний"],
+  story:[
+    {who:"tima", ru:"Ми́ша, вот твоя́ семья́!", en:"Misha, here is your family!"},
+    {who:"misha", ru:"Ой! Па́па не зелёный!", en:"Oh! Dad isn’t green!"},
+    {who:"tima", ru:"Па́па зелёный, ма́ма кра́сная, а ба́бушка си́няя!", en:"Dad is green, Mom is red, and Grandma is blue!"},
+    {q:"What colour did Tima paint Dad?", options:["green","red","blue"], answer:0},
+    {who:"misha", ru:"Ба́бушка не си́няя! Како́го цве́та моя́ ба́бушка?", en:"Grandma isn’t blue! What colour is my grandma?"},
+    {who:"tima", ru:"Ора́нжевая?", en:"Orange?"},
+    {who:"misha", ru:"Да! И я ора́нжевый!", en:"Yes! And I’m orange!"},
+    {q:"What colour is Misha’s family really?", options:["orange","green","pink"], answer:0},
+    {who:"tima", ru:"Мой люби́мый цвет — зелёный!", en:"My favourite colour is green!"},
+    {q:"Which one means “My favourite colour is green”?", options:["Мой люби́мый цвет — зелёный.","Мой кот зелёный.","Э́то зелёный дом."], answer:0}
+  ]
+};
+const UNIT10 = {
+  words:[
+    {id:"lyublyu", ru:"люблю́", en:"I love, I like", tr:"lyublyu", pic:"❤️"},
+    {id:"lyubish", ru:"лю́бишь", en:"you love, you like", tr:"lyubish", pic:"💞"},
+    {id:"lyubit", ru:"лю́бит", en:"he / she loves", tr:"lyubit", pic:"💘"},
+    {id:"ochen", ru:"о́чень", en:"very much", tr:"ochin'", pic:"💯"},
+    {id:"igrat", ru:"игра́ть", en:"to play", tr:"igrat'", pic:"🎮"},
+    {id:"chitat", ru:"чита́ть", en:"to read", tr:"chitat'", pic:"📖"},
+    {id:"risovat", ru:"рисова́ть", en:"to draw", tr:"risavat'", pic:"✏️"},
+    {id:"shokolad", ru:"шокола́д", en:"chocolate", tr:"shakalat", pic:"🍫"},
+    {id:"morozhenoe", ru:"моро́женое", en:"ice cream", tr:"marozhinaye", pic:"🍦"},
+    {id:"tort", ru:"торт", en:"cake", tr:"tort", pic:"🎂"},
+    {id:"futbol", ru:"футбо́л", en:"football", tr:"futbol", pic:"🥅"},
+    {id:"multfilmy", ru:"мультфи́льмы", en:"cartoons", tr:"mul'tfil'my", pic:"📺"},
+    {id:"v_futbol", ru:"в футбо́л", en:"(play) football", tr:"f futbol", pic:"🏃"}
+  ],
+  groups:[["lyublyu","lyubish","lyubit","ochen"],["shokolad","morozhenoe","tort","multfilmy"],["igrat","chitat","risovat","futbol","v_futbol"]],
+  sentences:[
+    {ru:"Я люблю́ шокола́д.", en:"I love chocolate.", set:0},
+    {ru:"Ты лю́бишь моро́женое?", en:"Do you like ice cream?", set:0},
+    {ru:"Да, о́чень люблю́!", en:"Yes, I love it!", set:0},
+    {ru:"Я о́чень люблю́ мультфи́льмы.", en:"I really love cartoons.", set:0},
+    {ru:"Ми́ша лю́бит торт.", en:"Misha loves cake.", set:0},
+    {ru:"Я то́же люблю́ торт!", en:"I love cake too!", set:0},
+    {ru:"Я люблю́ чита́ть.", en:"I love reading.", set:1},
+    {ru:"Ты лю́бишь рисова́ть?", en:"Do you like drawing?", set:1},
+    {ru:"Нет, я люблю́ игра́ть.", en:"No, I like playing.", set:1},
+    {ru:"Я люблю́ игра́ть в футбо́л.", en:"I love playing football.", set:1},
+    {ru:"Я люблю́ ма́му и па́пу.", en:"I love Mom and Dad.", set:1},
+    {ru:"Ти́ма лю́бит сыр?", en:"Does Tima like cheese?", set:1}
+  ],
+  blankable:["люблю́","лю́бишь","лю́бит","о́чень","игра́ть","чита́ть","рисова́ть","шокола́д","моро́женое","торт","футбо́л","мультфи́льмы","ма́му","па́пу"],
+  story:[
+    {who:"misha", ru:"Ти́ма, ты лю́бишь футбо́л?", en:"Tima, do you like football?"},
+    {who:"tima", ru:"Нет. Я люблю́ рисова́ть. А ты?", en:"No. I like drawing. And you?"},
+    {who:"misha", ru:"Я люблю́ игра́ть в футбо́л.", en:"I love playing football."},
+    {q:"What does Tima like?", options:["drawing","football","cartoons"], answer:0},
+    {who:"tima", ru:"Ты лю́бишь мультфи́льмы?", en:"Do you like cartoons?"},
+    {who:"misha", ru:"Да, о́чень люблю́!", en:"Yes, I love them!"},
+    {who:"tima", ru:"Я то́же!", en:"Me too!"},
+    {q:"What do they both love?", options:["cartoons","football","reading"], answer:0},
+    {who:"misha", ru:"И я о́чень люблю́ торт!", en:"And I really love cake!"},
+    {who:"tima", ru:"Я то́же люблю́ торт! Вку́сно!", en:"I love cake too! Tasty!"},
+    {q:"How do you say “I love cake”?", options:["Я люблю́ торт.","Ты лю́бишь торт?","Ми́ша лю́бит торт."], answer:0}
+  ]
+};
 const UNITS = {
   1:{title:"Make introductions", cls:"", icon:"👋", storyTitle:"Ми́ша meets a new friend", doneLine:"You can say hello and introduce yourself in Russian. Молоде́ц!",
      words:WORDS, groups:GROUPS, sentences:SENTENCES, blankable:BLANKABLE, story:STORY,
@@ -856,9 +1215,37 @@ const UNITS = {
   3:{title:"Food and drink", cls:"u3", icon:"🍎", storyTitle:"Ми́ша’s picnic", doneLine:"You can ask for food and drink and say «Спаси́бо»!",
      words:UNIT3.words, groups:UNIT3.groups, sentences:UNIT3.sentences, blankable:UNIT3.blankable, story:UNIT3.story,
      chat:[["l","Ты хо́чешь сок?","Do you want juice?"],["r","Да, хочу́. Спаси́бо!","Yes, I do. Thank you!"],["l","Ты хо́чешь чай?","Do you want tea?"],["r","Нет, спаси́бо. Я хочу́ молоко́.","No, thank you. I want milk."],["l","Что э́то?","What is this?"],["r","Э́то сыр. Вку́сно!","This is cheese. Tasty!"]],
-     tips:["«Хочу́» means “I want” and «хо́чешь» means “you want”. The ending changes with the person.","«Нет, спаси́бо» is the polite “No, thank you”.","An «о» without the stress mark sounds like «а»: молоко́ is said “malako”.","«Вку́сно!» on its own means “Tasty!”","«Ты хо́чешь чай?» is a question only because of your voice: it goes up at the end."]}
+     tips:["«Хочу́» means “I want” and «хо́чешь» means “you want”. The ending changes with the person.","«Нет, спаси́бо» is the polite “No, thank you”.","An «о» without the stress mark sounds like «а»: молоко́ is said “malako”.","«Вку́сно!» on its own means “Tasty!”","«Ты хо́чешь чай?» is a question only because of your voice: it goes up at the end."]},
+  4:{title:"My family", cls:"u4", icon:"👪", storyTitle:"Ми́ша’s family album", doneLine:"You can show your family and say «мой», «моя́» and «моё»!",
+     words:UNIT4.words, groups:UNIT4.groups, sentences:UNIT4.sentences, blankable:UNIT4.blankable, story:UNIT4.story,
+     chat:[["l","Э́то твой брат?","Is this your brother?"],["r","Нет, э́то мой друг.","No, this is my friend."],["l","Э́то твоя́ кни́га?","Is this your book?"],["r","Да, э́то моя́ кни́га.","Yes, this is my book."],["l","Вот моя́ семья́!","Here is my family!"]],
+     tips:["Russian words are he-words, she-words or it-words: мой кот, моя́ кни́га, моё я́блоко.","Words ending in «-а» are usually she-words: моя́ ма́ма. But па́па and де́душка are boys, so: мой па́па, мой де́душка.","«Вот» points at something: «Вот моя́ ма́ма» = Here is my mom.","«А» joins two things that differ: «Э́то брат, а э́то сестра́» = This is my brother, and this is my sister."]},
+  5:{title:"Animals", cls:"u5", icon:"🐻", storyTitle:"A walk in the forest", doneLine:"You can name animals and say if they are big or small!",
+     words:UNIT5.words, groups:UNIT5.groups, sentences:UNIT5.sentences, blankable:UNIT5.blankable, story:UNIT5.story,
+     chat:[["l","Кто э́то?","Who is this?"],["r","Э́то медве́дь.","This is a bear."],["l","Медве́дь большо́й?","Is the bear big?"],["r","Да, медве́дь большо́й.","Yes, the bear is big."],["l","А ры́ба?","And the fish?"],["r","Ры́ба ма́ленькая.","The fish is small."]],
+     tips:["Describing words change for he-words and she-words: большо́й медве́дь, but больша́я коро́ва.","«Ло́шадь» is a she-word even without «-а»: моя́ ло́шадь.","«Ми́ша — бурунду́к» means “Misha is a chipmunk”. The dash stands where English says “is”.","Animals use «Кто э́то?», like people."]},
+  6:{title:"Where is it?", cls:"u6", icon:"📍", storyTitle:"Where is Ми́ша’s phone?", doneLine:"You can ask «Где?» and say where things are!",
+     words:UNIT6.words, groups:UNIT6.groups, sentences:UNIT6.sentences, blankable:UNIT6.blankable, story:UNIT6.story,
+     chat:[["l","Где ма́ма?","Where is Mom?"],["r","Ма́ма до́ма.","Mom is at home."],["l","Где моя́ кни́га?","Where is my book?"],["r","Кни́га на столе́.","The book is on the table."],["l","Где ты?","Where are you?"],["r","Я в па́рке.","I’m in the park."]],
+     tips:["«в» means in or at, «на» means on.","After «в» and «на» the word’s ending changes: шко́ла → в шко́ле, стол → на столе́. Learn them as pairs.","«До́ма» means “at home”. No «в» needed.","No “is” here either: «Ма́ма до́ма» = Mom is at home."]},
+  7:{title:"How are you?", cls:"u7", icon:"😊", storyTitle:"Ми́ша’s day", doneLine:"You can ask «Как дела́?» and say hello and goodbye all day long!",
+     words:UNIT7.words, groups:UNIT7.groups, sentences:UNIT7.sentences, blankable:UNIT7.blankable, story:UNIT7.story,
+     chat:[["l","Приве́т! Как дела́?","Hi! How are you?"],["r","Хорошо́, спаси́бо. А ты?","Fine, thank you. And you?"],["l","Отли́чно!","Great!"],["r","Пока́!","Bye!"],["l","Пока́! Споко́йной но́чи!","Bye! Good night!"]],
+     tips:["«Пока́» is for friends and family, «До свида́ния» for grown-ups, just like «Приве́т» and «Здра́вствуйте».","«Как дела́?» literally means “How are things?”","«Хорошо́» is said “kharasho”: the first two «о» sound like «а».","«То́же» means too: «Я то́же!» = Me too!"]},
+  8:{title:"Numbers 1 to 10", cls:"u8", icon:"🔢", storyTitle:"Ми́ша’s birthday", doneLine:"You can count to ten and say how old you are!",
+     words:UNIT8.words, groups:UNIT8.groups, sentences:UNIT8.sentences, blankable:UNIT8.blankable, story:UNIT8.story,
+     chat:[["l","Ско́лько тебе́ лет?","How old are you?"],["r","Мне де́сять лет. А тебе́?","I’m ten. And you?"],["l","Мне семь лет.","I’m seven."],["r","Два плюс два?","Two plus two?"],["l","Четы́ре!","Four!"]],
+     tips:["For ages 5 to 20 you always say «лет»: «Мне де́вять лет».","«Мне … лет» and «Ско́лько тебе́ лет?» are set phrases: learn them whole.","«Оди́н» is said “adin”: the first «о» sounds like «а».","The dash in «Два плюс два — четы́ре» stands for “is”."]},
+  9:{title:"Colours", cls:"u9", icon:"🎨", storyTitle:"Ти́ма paints a picture", doneLine:"You can say the colours of everything around you!",
+     words:UNIT9.words, groups:UNIT9.groups, sentences:UNIT9.sentences, blankable:UNIT9.blankable, story:UNIT9.story,
+     chat:[["l","Како́го цве́та твой телефо́н?","What colour is your phone?"],["r","Мой телефо́н чёрный.","My phone is black."],["l","Мой люби́мый цвет — си́ний. А твой?","My favourite colour is blue. And yours?"],["r","Мой люби́мый цвет — зелёный.","My favourite colour is green."]],
+     tips:["Colour words end in «-ый» for he-words, «-ая» for she-words and «-ое» for it-words: кра́сный мяч, кра́сная су́мка, кра́сное я́блоко.","«Си́ний» is a little different: си́ний мяч, си́няя су́мка, си́нее я́блоко.","«Ё» always has the stress, so зелёный and жёлтый need no stress mark.","«Како́го цве́та?» means “What colour?”. Learn it whole."]},
+  10:{title:"I love it!", cls:"u10", icon:"❤️", storyTitle:"A fun day", doneLine:"You can say what you love and what you like to do!",
+     words:UNIT10.words, groups:UNIT10.groups, sentences:UNIT10.sentences, blankable:UNIT10.blankable, story:UNIT10.story,
+     chat:[["l","Ты лю́бишь моро́женое?","Do you like ice cream?"],["r","Да, о́чень люблю́!","Yes, I love it!"],["l","Ты лю́бишь рисова́ть?","Do you like drawing?"],["r","Нет, я люблю́ игра́ть в футбо́л.","No, I like playing football."]],
+     tips:["«Люблю́» means both “love” and “like”.","After «люблю́», words like ма́ма and па́па change «-а» to «-у»: «Я люблю́ ма́му». Words like торт and моро́женое stay the same.","Add a doing word to say what you like to do: «Я люблю́ чита́ть».","«Я люблю́», «ты лю́бишь», «он / она́ лю́бит»: the ending changes with the person, like хочу́ and хо́чешь."]}
 };
-const UNIT_IDS = [1, 2, 3];
+const UNIT_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 /* “Answer Ми́ша” role-plays: he asks, the child answers out loud */
 UNITS[1].qa = [
   {q:"Как тебя́ зову́т?", hint:"Pretend you are Аня", pic:"👧", a:"Меня́ зову́т А́ня."},
@@ -867,6 +1254,62 @@ UNITS[1].qa = [
   {q:"Э́то ма́ма?", pic:"👨", a:"Нет, э́то па́па."},
   {q:"Э́то па́па?", pic:"👨", a:"Да, э́то па́па."},
   {q:"Приве́т!", hint:"Say hi back", pic:"👋", a:"Приве́т!"}
+];
+UNITS[4].qa = [
+  {q:"Кто э́то?", pic:"👵", a:"Э́то ба́бушка."},
+  {q:"Кто э́то?", pic:"👴", a:"Э́то де́душка."},
+  {q:"Э́то твой брат?", hint:"Say yes", pic:"👦", a:"Да, э́то мой брат."},
+  {q:"Э́то твоя́ сестра́?", hint:"Say yes", pic:"👧", a:"Да, э́то моя́ сестра́."},
+  {q:"Э́то твоя́ кни́га?", hint:"Say yes", pic:"📕", a:"Да, э́то моя́ кни́га."},
+  {q:"Э́то твой брат?", hint:"It’s your friend", pic:"🤝", a:"Нет, э́то мой друг."}
+];
+UNITS[5].qa = [
+  {q:"Кто э́то?", pic:"🐻", a:"Э́то медве́дь."},
+  {q:"Кто э́то?", pic:"🦊", a:"Э́то лиса́."},
+  {q:"Кто э́то?", pic:"🐺", a:"Э́то волк."},
+  {q:"Кто э́то?", pic:"🦔", a:"Э́то ёж."},
+  {q:"Медве́дь большо́й?", pic:"🐻", a:"Да, медве́дь большо́й."},
+  {q:"Ры́ба больша́я?", pic:"🐟", a:"Нет, ры́ба ма́ленькая."}
+];
+UNITS[6].qa = [
+  {q:"Где ма́ма?", hint:"She is at home", pic:"🏡", a:"Ма́ма до́ма."},
+  {q:"Где па́па?", hint:"He is in the park", pic:"🌳", a:"Па́па в па́рке."},
+  {q:"Где кни́га?", hint:"On the table", pic:"🍽️", a:"Кни́га на столе́."},
+  {q:"Где я́блоко?", hint:"In the bag", pic:"👜", a:"Я́блоко в су́мке."},
+  {q:"Где ты?", hint:"You are at school", pic:"🏫", a:"Я в шко́ле."},
+  {q:"Где мой телефо́н?", hint:"It’s here", pic:"📍", a:"Твой телефо́н здесь."}
+];
+UNITS[7].qa = [
+  {q:"Приве́т! Как дела́?", hint:"Say: fine, thank you", pic:"🙂", a:"Хорошо́, спаси́бо."},
+  {q:"Как дела́?", hint:"Say: great", pic:"🤩", a:"Отли́чно!"},
+  {q:"До́брое у́тро!", hint:"Say it back", pic:"🌅", a:"До́брое у́тро!"},
+  {q:"Споко́йной но́чи!", hint:"Say it back", pic:"🌙", a:"Споко́йной но́чи!"},
+  {q:"Пока́!", hint:"Say bye back", pic:"🤚", a:"Пока́!"},
+  {q:"Я хочу́ сок. А ты?", hint:"Say: I want juice too", pic:"🧃", a:"Я то́же хочу́ сок."}
+];
+UNITS[8].qa = [
+  {q:"Ско́лько тебе́ лет?", hint:"You are nine", pic:"9️⃣", a:"Мне де́вять лет."},
+  {q:"Ско́лько тебе́ лет?", hint:"You are ten", pic:"🔟", a:"Мне де́сять лет."},
+  {q:"Два плюс два?", pic:"🧮", a:"Четы́ре."},
+  {q:"Три плюс пять?", pic:"🧮", a:"Во́семь."},
+  {q:"Пять плюс пять?", pic:"🧮", a:"Де́сять."},
+  {q:"Ско́лько?", pic:"🖐️", a:"Пять."}
+];
+UNITS[9].qa = [
+  {q:"Како́го цве́та мяч?", pic:"🔴", a:"Мяч кра́сный."},
+  {q:"Како́го цве́та кот?", pic:"🐈‍⬛", a:"Кот чёрный."},
+  {q:"Како́го цве́та я́блоко?", pic:"🍏", a:"Я́блоко зелёное."},
+  {q:"Како́го цве́та дом?", pic:"🏠🟨", a:"Дом жёлтый."},
+  {q:"Како́го цве́та су́мка?", pic:"👜🩷", a:"Су́мка ро́зовая."},
+  {q:"Твой люби́мый цвет?", hint:"Say: blue", pic:"🟦", a:"Мой люби́мый цвет — си́ний."}
+];
+UNITS[10].qa = [
+  {q:"Ты лю́бишь шокола́д?", hint:"Say yes", pic:"🍫", a:"Да, о́чень люблю́!"},
+  {q:"Ты лю́бишь моро́женое?", hint:"Say yes", pic:"🍦", a:"Да, я люблю́ моро́женое."},
+  {q:"Ты лю́бишь чита́ть?", hint:"Say: I love reading", pic:"📖", a:"Я люблю́ чита́ть."},
+  {q:"Ты лю́бишь футбо́л?", hint:"Say: I love playing football", pic:"⚽", a:"Я люблю́ игра́ть в футбо́л."},
+  {q:"Ты лю́бишь торт?", hint:"Say: me too, I love cake", pic:"🎂", a:"Я то́же люблю́ торт."},
+  {q:"Ты лю́бишь ма́му?", hint:"Say yes", pic:"👩", a:"Да, я люблю́ ма́му."}
 ];
 UNITS[3].qa = [
   {q:"Что э́то?", pic:"🍞", a:"Э́то хлеб."},
@@ -3894,7 +4337,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "14.0 (November 2, 2026)";
+const APP_VERSION = "15.0 (November 2, 2026)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */
