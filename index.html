@@ -78,9 +78,10 @@ button{font:inherit;color:inherit}
 .unitcard .gb{background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.4);color:#fff;border-radius:16px;padding:10px 12px;font-weight:800;cursor:pointer;font-family:var(--font-head)}
 .path{position:relative;padding:44px 0 40px;display:flex;flex-direction:column;align-items:center;gap:22px}
 .node{display:flex;flex-direction:column;align-items:center;gap:8px;position:relative}
-.node .ring{width:94px;height:94px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--sun) calc(var(--p)*1%), var(--line) 0)}
+.node .ring{width:106px;height:106px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--sun) calc(var(--p)*1%), var(--line) 0)}
 .node button{width:76px;height:76px;border-radius:50%;border:0;cursor:pointer;font-size:32px;background:var(--primary);box-shadow:0 6px 0 var(--primary-lip);transition:transform .06s,box-shadow .06s}
-.node button:active{transform:translateY(6px);box-shadow:none}
+.node .ring>button{transform:translateY(-3px)}
+.node button:active,.node .ring>button:active{transform:translateY(3px);box-shadow:none}
 .node.done button{background:var(--sun);box-shadow:0 6px 0 var(--sun-lip)}
 .node.locked button{background:var(--lock);box-shadow:0 6px 0 var(--line);cursor:default;filter:grayscale(1)}
 .node .lbl{font-family:var(--font-head);font-weight:700;font-size:15px;text-align:center}
@@ -906,8 +907,15 @@ const AVCOL = ["#FFD9C2","#E3E8F0","#DCEBF5","#FFE3B3","#FBE3A4","#D6F2C9","#EBD
 let P = (() => { try { return JSON.parse(localStorage.getItem(PKEY)); } catch(e){ return null; } })();
 function saveP(){ try { localStorage.setItem(PKEY, JSON.stringify(P)); } catch(e){} }
 const profKey = id => KEY + ":" + id;
+function itemsReset(s){
+  if (!s || s.itemsReset1) return s;
+  const prize = new Set(["gradcap","medal","book","mic","gem"]);
+  s.owned = (s.owned||[]).filter(id => prize.has(id));
+  if (s.wear && !s.owned.includes(s.wear)) s.wear = null;
+  s.itemsReset1 = true; return s;
+}
 function loadS(id){
-  try { const v = JSON.parse(localStorage.getItem(profKey(id))); const d = clone(DEFAULT); return v ? Object.assign(d, v) : d; }
+  try { const v = JSON.parse(localStorage.getItem(profKey(id))); const d = clone(DEFAULT); return v ? itemsReset(Object.assign(d, v)) : Object.assign(d, {itemsReset1:true}); }
   catch(e){ return clone(DEFAULT); }
 }
 if (!P){
@@ -2132,7 +2140,7 @@ function currentLevel(){ return curLevelU(CU); }
 /* segmented progress ring: one segment per lesson, filled segments in the bright unit colour */
 function segRing(frac){
   const n = 12, k = frac > 0 ? Math.max(1, Math.floor(frac*n + 1e-6)) : 0;
-  const r = 43, c = 47, gap = 9, span = 360/n;
+  const r = 49.5, c = 53, gap = 8, span = 360/n;
   let out = "";
   for (let i = 0; i < n; i++){
     const a0 = (-90 + i*span + gap/2) * Math.PI/180, a1 = (-90 + (i+1)*span - gap/2) * Math.PI/180;
@@ -2141,7 +2149,7 @@ function segRing(frac){
     const d = `M ${x0.toFixed(2)} ${y0.toFixed(2)} A ${r} ${r} 0 ${large} 1 ${x1.toFixed(2)} ${y1.toFixed(2)}`;
     out += `<path d="${d}" fill="none" stroke-width="7" stroke-linecap="round" stroke="${i < k ? "var(--uc)" : "var(--ucf)"}"/>`;
   }
-  return `<svg class="segring" viewBox="0 0 94 94" aria-hidden="true">${out}</svg>`;
+  return `<svg class="segring" viewBox="0 0 106 106" aria-hidden="true">${out}</svg>`;
 }
 function unitBlock(u){
   const un = UNITS[u], d = D(u), cur = curLevelU(u), open = prereq(u) || S.unlockAll;
@@ -3818,7 +3826,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "13.3 (November 2, 2026)";
+const APP_VERSION = "13.4 (November 2, 2026)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */
