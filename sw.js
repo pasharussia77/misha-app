@@ -1,7 +1,7 @@
-/* Ми́ша app helper: when online, always loads the newest version from the web;
+/* Mishaling helper: when online, always loads the newest version from the web;
    when offline, uses the saved copy. Also keeps fonts and icons for offline use. */
-const CACHE = "misha-app-v39";
-const CORE = ["./", "./index.html", "./manifest.json", "./icon2-192.png", "./icon2-512.png", "./icon2-maskable-512.png", "./apple-touch-icon2.png"];
+const CACHE = "misha-app-v40";
+const CORE = ["./", "./index.html", "./manifest.json", "./mishaling-192.png", "./mishaling-512.png", "./mishaling-maskable-512.png", "./mishaling-apple-touch.png"];
 self.addEventListener("install", e => {
   self.skipWaiting();
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).catch(() => {}));
