@@ -272,6 +272,7 @@ img.chip.papa{filter:brightness(.8) saturate(.85)}
 .lc-b small{color:var(--muted);font-weight:800;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
 .lc-b b{font-size:20px;font-family:var(--font-head);line-height:1.15}
 .lc-b i{font-style:normal;font-size:18px}
+.lc-quiet{background:var(--bg)}
 .lc-b:active,.lc-row:active,.lc-word:active{transform:translateY(2px)}
 .lc-ex{margin:0;font-weight:700;font-size:17px;line-height:1.35}
 .lc-more{display:grid;gap:8px;text-align:left}
@@ -2014,8 +2015,8 @@ let LETTERS = [
   {u:"Ё",sndShow:"yo / o",l:"ё",snd:"yo",hint:"Ё has two sounds.",name:"ё",word:"ёж",wen:"hedgehog",pic:"🦔",g:4,ss:"ё",two:[{snd:"yo",when:"at the start of a word or after a vowel",word:"ёж",wen:"hedgehog",pic:"🦔"},{snd:"o",when:"after a consonant, and the letter before it goes soft",word:"мёд",wen:"honey",pic:"🍯"}]},
   {u:"Ю",sndShow:"yu / oo",l:"ю",snd:"yu",hint:"Ю has two sounds.",name:"ю",word:"ю́бка",wen:"skirt",pic:"👗",g:4,ss:"ю",two:[{snd:"yu",when:"at the start of a word or after a vowel",word:"ю́бка",wen:"skirt",pic:"👗"},{snd:"oo",when:"after a consonant, and the letter before it goes soft",word:"тюле́нь",wen:"seal",pic:"🦭"}]},
   {u:"Я",sndShow:"ya / a",l:"я",snd:"ya",hint:"Я has two sounds.",name:"я",word:"я́блоко",wen:"apple",pic:"🍎",g:4,ss:"я",two:[{snd:"ya",when:"at the start of a word or after a vowel",word:"я́блоко",wen:"apple",pic:"🍎"},{snd:"a",when:"after a consonant, and the letter before it goes soft",word:"мяч",wen:"ball",pic:"⚽"}]},
-  {u:"Ь",l:"ь",snd:"soft sign",hint:"The soft sign has no sound of its own. It makes the letter before it soft.",name:"мя́гкий знак",word:"соль",wen:"salt",pic:"🧂",g:4,ss:"брат, брать",sndShow:"no sound",more:"Listen to брат and брать: the т at the end goes soft.",pair:[{word:"брат",wen:"brother"},{word:"брать",wen:"to take"}]},
-  {u:"Ъ",l:"ъ",snd:"hard sign",hint:"The hard sign has no sound of its own. It makes a tiny stop before the next vowel.",name:"твёрдый знак",word:"подъе́зд",wen:"entrance hall",pic:"🏢",g:4,ss:"сел, съел",sndShow:"no sound",more:"Listen to сел and съел: a tiny stop before the е.",pair:[{word:"сел",wen:"sat down"},{word:"съел",wen:"ate"}]}
+  {u:"Ь",l:"ь",snd:"soft sign",hint:"The soft sign has no sound of its own. It makes the letter before it soft.",name:"мя́гкий знак",word:"соль",wen:"salt",pic:"🧂",g:4,ss:"",sndShow:"no sound",more:"Listen to брат and брать: the т at the end goes soft.",pair:[{word:"брат",wen:"brother"},{word:"брать",wen:"to take"}]},
+  {u:"Ъ",l:"ъ",snd:"hard sign",hint:"The hard sign has no sound of its own. It makes a tiny stop before the next vowel.",name:"твёрдый знак",word:"подъе́зд",wen:"entrance hall",pic:"🏢",g:4,ss:"",sndShow:"no sound",more:"Listen to сел and съел: a tiny stop before the е.",pair:[{word:"сел",wen:"sat down"},{word:"съел",wen:"ate"}]}
 ];
 let ABC = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
 let ALPHA = [
@@ -2035,11 +2036,20 @@ function letterCardHTML(l){
   if (l.two) extra = `<div class="lc-more"><b>When does it make each sound?</b>${l.two.map(t => `<button class="lc-row" data-say="${esc(t.word)}"><span class="lc-pic">${t.pic}</span><span class="lc-tx"><b class="lc-s">${esc(t.snd)}</b><span class="lc-when">${esc(t.when)}</span><span class="ru">${hl(t.word, l)}</span> <small>${esc(t.wen)}</small></span><span class="lc-sp">🔊</span></button>`).join("")}</div>`;
   else if (l.pair) extra = `<div class="lc-more"><b>Listen to the difference</b><div class="lc-pairs">${l.pair.map(t => `<button class="lc-row" data-say="${esc(t.word)}"><span class="lc-tx"><span class="ru">${hl(t.word, l)}</span><br><small>${esc(t.wen)}</small></span><span class="lc-sp">🔊</span></button>`).join("")}</div></div>`;
   return `<div class="lcard"><div class="bigletter">${LP(l)}</div>
-    <div class="lc-btns"><button class="lc-b" data-say="${esc(l.name)}" aria-label="Hear the letter’s name"><small>Name</small><b class="ru">${l.name}</b><i>🔊</i></button><button class="lc-b" data-say="${esc(l.ss || l.name)}" aria-label="Hear the letter’s sound"><small>Sound</small><b>${esc(l.sndShow || l.snd)}</b><i>🔊</i></button></div>
+    <div class="lc-btns"><button class="lc-b" data-say="${esc(l.name)}" aria-label="Hear the letter’s name"><small>Name</small><b class="ru">${l.name}</b><i>🔊</i></button>${l.pair ? `<button class="lc-b lc-quiet" data-quiet="1" aria-label="This letter makes no sound"><small>Sound</small><b>${esc(l.sndShow || l.snd)}</b><i>🤫</i></button>` : `<button class="lc-b" data-say="${esc(l.ss || l.name)}" aria-label="Hear the letter’s sound"><small>Sound</small><b>${esc(l.sndShow || l.snd)}</b><i>🔊</i></button>`}</div>
     <p class="lc-ex">${esc(l.hint.charAt(0).toUpperCase() + l.hint.slice(1))}${l.more ? " " + esc(l.more) : ""}</p>${extra}</div>`;
 }
 function letterWordHTML(l){ if ((l.two||[]).concat(l.pair||[]).some(t => t.word===l.word)) return ""; return `<button class="card lc-word" data-say="${esc(l.word)}"><span style="font-size:44px">${l.pic}</span><span style="text-align:left"><span class="ru" style="font-size:28px">${hl(l.word, l)}</span><br><span class="sub" style="margin:0">${esc(l.wen)}</span></span><span class="lc-sp">🔊</span></button>`; }
-function wireLetterCard(root){ root.querySelectorAll("[data-say]").forEach(b => b.onclick = e => { e.stopPropagation(); speak(b.dataset.say); }); }
+function autoLetter(l, still){
+  const p = say(l.name), g = sayGen;
+  if (l.pair || !l.ss || l.ss === l.name) return;
+  /* the name finished on its own (not cut off by a tap), so now the sound */
+  p.then(() => { if (sayGen !== g) return; setTimeout(() => { if (sayGen === g && still()) speak(l.ss); }, 350); });
+}
+function wireLetterCard(root){
+  root.querySelectorAll("[data-say]").forEach(b => b.onclick = e => { e.stopPropagation(); speak(b.dataset.say); });
+  root.querySelectorAll("[data-quiet]").forEach(b => b.onclick = e => { e.stopPropagation(); sayGen++; stopAudio(); if (window.speechSynthesis) speechSynthesis.cancel(); setTalking(false); toast("🤫 No sound. Listen to the two words below: they sound the same, or almost."); });
+}
 
 /* ---------- Helpers ---------- */
 const $ = (s, r=document) => r.querySelector(s);
@@ -3072,27 +3082,41 @@ function playUrl(url, rate=1){
     a.onended = done; a.onerror = done; a.play().catch(done);
   });
 }
-function localSay(text, slow){
+function localSay(text, slow, my, wasTalking){
   return new Promise(res => {
     if (!("speechSynthesis" in window)) return res();
+    const stale = () => my != null && my !== sayGen;
     speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(plain(text));
-    u.lang = COURSE_LANG[CC]; const v = CC==="es" ? esVoice : ruVoice; if (v) u.voice = v;
-    u.rate = slow ? 0.55 : 0.85;
-    u.onstart = () => setTalking(true);
-    u.onend = () => { setTalking(false); res(); }; u.onerror = () => { setTalking(false); res(); };
-    speechSynthesis.speak(u);
+    const go = () => {
+      if (stale() || document.hidden) return res();
+      const u = new SpeechSynthesisUtterance(plain(text));
+      u.lang = COURSE_LANG[CC]; const v = CC==="es" ? esVoice : ruVoice; if (v) u.voice = v;
+      u.rate = slow ? 0.55 : 0.85;
+      u.onstart = () => { if (stale()){ speechSynthesis.cancel(); return; } setTalking(true); };
+      u.onend = () => { if (!stale()) setTalking(false); res(); }; u.onerror = () => { if (!stale()) setTalking(false); res(); };
+      speechSynthesis.speak(u);
+    };
+    /* Android's own voice can repeat or overlap if a new sentence starts the instant the old one is
+       cancelled, so give it a short breath first */
+    wasTalking ? setTimeout(go, 150) : go();
   });
 }
+/* Every request to talk gets a number. Fetching a voice takes a moment, so two taps close together
+   used to both play (one cutting into the other, or both at once). Now a request that has been
+   overtaken by a newer one stays silent. */
+let sayGen = 0;
 async function say(text, slow=false){
   if (document.hidden) return;          /* never talk while the app is off screen */
+  const my = ++sayGen;
+  const wasTalking = !!(window.speechSynthesis && (speechSynthesis.speaking || speechSynthesis.pending));
   if (window.speechSynthesis) speechSynthesis.cancel();
   stopAudio();
   if (azOn()){
-    try { return await playUrl(await azureTTS(text), slow ? 0.7 : 1); }
-    catch(e){ if (!azWarned){ azWarned = true; toast(azExplain(e)); } }
+    try { const url = await azureTTS(text); if (my !== sayGen || document.hidden) return; return await playUrl(url, slow ? 0.7 : 1); }
+    catch(e){ if (my !== sayGen) return; if (!azWarned){ azWarned = true; toast(azExplain(e)); } }
   }
-  return localSay(text, slow);
+  if (my !== sayGen) return;
+  return localSay(text, slow, my, wasTalking);
 }
 const sayQueue = []; let queueBusy = false;
 function speak(text, slow=false){ sayQueue.length = 0; say(text, slow); }
@@ -4207,7 +4231,7 @@ function lettersScreen(){
   app.querySelectorAll(".ltile").forEach(b => b.onclick = () => {
     const l = LETTERS.find(x => x.u===b.dataset.u);
     const bg = sheet(`<div class="lsheet">${letterCardHTML(l)}${letterWordHTML(l)}</div>`);
-    wireLetterCard(bg); say(l.name).then(() => setTimeout(() => { if (bg.isConnected) speak(l.ss || l.name); }, 350));
+    wireLetterCard(bg); autoLetter(l, () => bg.isConnected);
   });
 }
 /* ---------- New lessons a day: 3 by default; replays and practice never count ---------- */
@@ -4374,7 +4398,7 @@ const RENDER = {
   },
   pickPic(ex){
     const w = ex.word;
-    lessonShell(`<p class="prompt">Which one is «${w.ru}»?</p>
+    lessonShell(`<p class="prompt">Which one is ${CC==="es" ? `“${w.ru}”` : `«${w.ru}»`}?</p>
       <div class="say">${sayBtns(w.ru)}${trHTML(w)}</div>
       <div class="opts grid2">${ex.options.map((o,k) => `<button class="opt" data-k="${k}" aria-pressed="false"><span class="pic">${o.pic}</span><span class="en">${esc(o.en)}</span></button>`).join("")}</div>`, checkFooter());
     wireSay(); speak(w.ru); choice(ex.options, o => o===w, () => `${w.ru} = ${esc(w.en)}`);
@@ -4528,7 +4552,7 @@ const RENDER = {
     const onHush = () => { if (!btn.isConnected){ window.removeEventListener("mishahush", onHush); return; } if (!rec) return; rec = null; clearTimeout(timer); recUI(false); note.textContent = "Tap the microphone and try again."; };
     window.addEventListener("mishahush", onHush);
     $("#mine").onclick = () => { if (url) playUrl(url); };
-    $("#both").onclick = async () => { if (!url) return; await say(ex.text); setTimeout(() => playUrl(url), 250); };
+    $("#both").onclick = async () => { if (!url) return; await say(ex.text); const g = sayGen; setTimeout(() => { if (sayGen === g) playUrl(url); }, 250); };
     const again = () => { $("#recLbl").textContent = "Tap to speak"; $("#result").innerHTML = ""; ["#judge","#judgeAz","#playRow"].forEach(s => $(s).classList.add("hidden")); $("#skip").classList.remove("hidden"); note.textContent = "Tap the microphone and try again."; };
     $("#again").onclick = again; $("#againAz").onclick = again;
     $("#right").onclick = () => { grade(true); sfx.good(); advance(); };
@@ -4540,7 +4564,7 @@ const RENDER = {
     const l = ex.l;
     lessonShell(`${letterCardHTML(l)}${letterWordHTML(l)}`,
       `${stageHTML()}<button class="btn" id="go">Continue</button>`);
-    wireLetterCard(app.querySelector(".body")); memSeen("l:" + l.u); startIdle(); say(l.name).then(() => setTimeout(() => { if (L && L.queue[L.i] === ex) speak(l.ss || l.name); }, 350));
+    wireLetterCard(app.querySelector(".body")); memSeen("l:" + l.u); startIdle(); autoLetter(l, () => L && L.queue[L.i] === ex);
     $("#go").onclick = advance;
   },
   ltip(){
@@ -5343,7 +5367,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "16.4 (November 8, 2026)";
+const APP_VERSION = "16.4.1 (November 8, 2026)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */
@@ -5412,7 +5436,10 @@ function statsScreen(pid, c){
 /* ---------- 7b: every button visibly reacts; action buttons confirm ---------- */
 document.addEventListener("pointerdown", e => {
   const b = e.target.closest && e.target.closest("button, .opt, .tile, .ltile, .pcard, .prow, .item, .pml, .srow, [role=button]");
-  if (!b) return; b.classList.remove("tapfx"); void b.offsetWidth; b.classList.add("tapfx"); setTimeout(() => b.classList.remove("tapfx"), 260);
+  if (!b) return;
+  /* a separate short animation on top, so a card's own pop-in animation is never restarted */
+  if (b.animate){ try { b.animate([{filter:"brightness(.88)", transform:"scale(.95)"}, {filter:"none", transform:"none"}], {duration:250, easing:"ease-out"}); return; } catch(_){} }
+  b.classList.remove("tapfx"); void b.offsetWidth; b.classList.add("tapfx"); setTimeout(() => b.classList.remove("tapfx"), 260);
 }, true);
 function doneBtn(btn, text){ if (!btn) return; const old = btn.textContent; btn.classList.add("done"); btn.textContent = text || "✓ Done"; setTimeout(() => { if (btn.isConnected){ btn.classList.remove("done"); btn.textContent = old; } }, 1600); }
 
@@ -5464,7 +5491,7 @@ const ES_LETTERS = [
   {u:"I",l:"i",snd:"ee",hint:"ee, as in “see”, but short",name:"i",word:"isla",wen:"island",pic:"🏝️",g:0,ss:"i"},
   {u:"O",l:"o",snd:"oh",hint:"oh, as in “more”, short and round",name:"o",word:"oso",wen:"bear",pic:"🐻",g:0,ss:"o"},
   {u:"U",l:"u",snd:"oo",hint:"oo, as in “moon”",name:"u",word:"uva",wen:"grape",pic:"🍇",g:0,ss:"u"},
-  {u:"H",l:"h",snd:"silent",hint:"H is a silent letter: it never makes a sound.",name:"hache",word:"hola",wen:"hello",pic:"👋",g:1,ss:"ha, he, hi",more:"The words hola and ola (a wave) sound exactly the same.",pair:[{word:"hola",wen:"hello"},{word:"ola",wen:"wave"}]},
+  {u:"H",l:"h",snd:"silent",hint:"H is a silent letter: it never makes a sound.",name:"hache",word:"hola",wen:"hello",pic:"👋",g:1,ss:"",more:"The words hola and ola (a wave) sound exactly the same.",pair:[{word:"hola",wen:"hello"},{word:"ola",wen:"wave"}]},
   {u:"J",l:"j",snd:"breathy h",hint:"a strong breathy h, like a cat’s hiss",name:"jota",word:"jugo",wen:"juice",pic:"🧃",g:1,ss:"ja, jo, ju"},
   {u:"G",l:"g",snd:"g / h",hint:"G has two sounds.",name:"ge",word:"gato",wen:"cat",pic:"🐱",g:1,ss:"ga, go, gu. ge, gi",two:[{snd:"g, as in “go”",when:"before a, o and u",word:"gato",wen:"cat",pic:"🐱"},{snd:"breathy h, like j",when:"before e and i",word:"girasol",wen:"sunflower",pic:"🌻"}]},
   {u:"LL",l:"ll",snd:"y",hint:"y, as in “yes”",more:"In Latin American Spanish, ll and y sound the same: llave, yoyó.",name:"doble ele",word:"llave",wen:"key",pic:"🔑",g:1,ss:"lla, llo, llu",du:"Ll"},
