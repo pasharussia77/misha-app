@@ -3069,17 +3069,77 @@ async function azureTTS(text){
   const url = URL.createObjectURL(new Blob([buf], {type:"audio/mpeg"}));
   ttsCache.set(k, url); return url;
 }
+/* ---------- Mishaling voices: real recorded voices (ElevenLabs) shipped with the app as small audio files.
+   Teacher says words, sentences and letters (normal and extremely slow); Misha, Tima, Mama and Papa say
+   their own story lines. Every clip is saved on the phone in the background, so it all works offline.
+   Anything without a recording falls back to Microsoft (if set up) or the phone's own voice. */
+const VKEY = t => String(t).normalize("NFC").toLowerCase().replace(/[«»“”"'()¿¡.,:;…]/g, "").replace(/\s+/g, " ").trim();
+const VCACHE = "mishaling-voices-v1";
+const VP = {};
+const vVariants = k => { const a = [k, k.replace(/[?!]/g, "").trim()]; return a.concat(a.map(x => x.replace(/\u0301/g, ""))); };
+function vpLoad(c){
+  if (VP[c]) return VP[c].ready;
+  const o = VP[c] = {maps:null, ids:null};
+  o.ready = fetch(`audio/${c}/index.json`, {cache:"no-cache"}).then(r => r.ok ? r.json() : null).catch(() => null).then(async j => {
+    if (!j && "caches" in window){ try { const r = await caches.match(new URL(`audio/${c}/index.json`, location.href).href, {ignoreSearch:true}); if (r) j = await r.json(); } catch(_){} }
+    if (!j || !j.clips){ delete VP[c]; return; }
+    const maps = {};
+    for (const role in j.clips){ const m = new Map(); for (const k in j.clips[role]){ const id = j.clips[role][k]; vVariants(k).forEach(v => { if (!m.has(v)) m.set(v, id); }); } maps[role] = m; }
+    o.maps = maps; o.ids = [...new Set(Object.values(j.clips).flatMap(x => Object.values(x)))]; o.mb = j.mb || 0;
+  });
+  return o.ready;
+}
+function vpFind(text, slow, who){
+  const o = VP[CC]; if (!o || !o.maps) return null;
+  const ks = vVariants(VKEY(text));
+  const look = role => { const m = o.maps[role]; if (!m) return null; for (const k of ks){ const id = m.get(k); if (id) return id; } return null; };
+  if (slow){ const id = look("teacher_slow"); if (id) return id; }   /* sounds and story lines have no slow version: normal speed */
+  if (who && who !== "teacher"){ const id = look(who); if (id) return id; }
+  return look("teacher");
+}
+const vUrl = (c, id) => new URL(`audio/${c}/${id}.mp3`, location.href).href;
+/* save every clip of a course on this phone, quietly, a few at a time */
+const vdl = {};
+async function voicesDownload(c, onProg){
+  if (!("caches" in window)) return null;
+  if (vdl[c]){ if (onProg) vdl[c].listeners.push(onProg); return vdl[c].p; }
+  const run = vdl[c] = {listeners: onProg ? [onProg] : []};
+  run.p = (async () => {
+    await vpLoad(c); const o = VP[c]; if (!o || !o.ids) return null;
+    try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch(_){}
+    const cache = await caches.open(VCACHE);
+    const have = new Set((await cache.keys()).map(r => r.url.split("?")[0]));
+    const todo = o.ids.filter(id => !have.has(vUrl(c, id)));
+    let done = o.ids.length - todo.length, i = 0;
+    const tell = () => run.listeners.forEach(f => { try { f(done, o.ids.length); } catch(_){} });
+    tell();
+    const worker = async () => { while (i < todo.length && navigator.onLine){ const u = vUrl(c, todo[i++]); try { const r = await fetch(u); if (r.ok){ await cache.put(u, r); done++; if (done % 25 === 0 || done === o.ids.length) tell(); } } catch(_){} } };
+    await Promise.all([worker(), worker(), worker(), worker()]); tell();
+    return {done, total:o.ids.length};
+  })().finally(() => { delete vdl[c]; });
+  return run.p;
+}
+async function voicesStatus(c){
+  await vpLoad(c); const o = VP[c]; if (!o || !o.ids || !("caches" in window)) return null;
+  const cache = await caches.open(VCACHE), have = new Set((await cache.keys()).map(r => r.url.split("?")[0]));
+  return {done: o.ids.filter(id => have.has(vUrl(c, id))).length, total: o.ids.length, mb: o.mb};
+}
+let vAutoDone = {};
+function voicesAuto(){
+  const c = CC; if (vAutoDone[c] || !navigator.onLine || !/^https?:/.test(location.protocol)) return;
+  vAutoDone[c] = true; setTimeout(() => voicesDownload(c), 3000);
+}
 let curDone = null;
 function stopAudio(){ if (curAudio){ curAudio.pause(); curAudio = null; } if (curDone){ const d = curDone; curDone = null; d(); } }
 function playUrl(url, rate=1){
   return new Promise(res => {
     stopAudio();
-    const a = new Audio(url); curAudio = a;
-    const done = () => { if (curDone === done) curDone = null; setTalking(false); res(); };
+    const a = new Audio(url); curAudio = a; let started = false;
+    const done = ok => { if (curDone === done) curDone = null; setTalking(false); res(ok !== false || started); };
     curDone = done;
     a.playbackRate = rate; a.preservesPitch = true;
-    a.onplay = () => setTalking(true);
-    a.onended = done; a.onerror = done; a.play().catch(done);
+    a.onplay = () => { started = true; setTalking(true); };
+    a.onended = () => done(true); a.onerror = () => done(false); a.play().catch(e => done(e && e.name === "NotAllowedError" ? true : false));
   });
 }
 function localSay(text, slow, my, wasTalking){
@@ -3104,13 +3164,23 @@ function localSay(text, slow, my, wasTalking){
 /* Every request to talk gets a number. Fetching a voice takes a moment, so two taps close together
    used to both play (one cutting into the other, or both at once). Now a request that has been
    overtaken by a newer one stays silent. */
-let sayGen = 0;
-async function say(text, slow=false){
+let sayGen = 0, lastSay = Promise.resolve();
+function say(text, slow=false, who){ const p = sayInner(text, slow, who); lastSay = p; return p; }
+async function sayInner(text, slow, who){
   if (document.hidden) return;          /* never talk while the app is off screen */
+  if (!/\p{L}/u.test(String(text||""))) return;   /* a dash or other mark on its own: nothing to say */
   const my = ++sayGen;
   const wasTalking = !!(window.speechSynthesis && (speechSynthesis.speaking || speechSynthesis.pending));
   if (window.speechSynthesis) speechSynthesis.cancel();
   stopAudio();
+  if (!VP[CC]) vpLoad(CC);
+  if (VP[CC] && !VP[CC].maps) await VP[CC].ready;
+  if (my !== sayGen || document.hidden) return;
+  const vid = vpFind(text, slow, who);
+  if (vid){
+    const ok = await playUrl(vUrl(CC, vid), 1);
+    if (ok || my !== sayGen) return;
+  }
   if (azOn()){
     try { const url = await azureTTS(text); if (my !== sayGen || document.hidden) return; return await playUrl(url, slow ? 0.7 : 1); }
     catch(e){ if (my !== sayGen) return; if (!azWarned){ azWarned = true; toast(azExplain(e)); } }
@@ -3119,7 +3189,7 @@ async function say(text, slow=false){
   return localSay(text, slow, my, wasTalking);
 }
 const sayQueue = []; let queueBusy = false;
-function speak(text, slow=false){ sayQueue.length = 0; say(text, slow); }
+function speak(text, slow=false, who){ sayQueue.length = 0; say(text, slow, who); }
 async function speakQ(text){
   sayQueue.push(text);
   if (queueBusy) return;
@@ -3591,7 +3661,7 @@ function home(){
   const td = $("#todayCard"); if (td) td.onclick = questsScreen;
   $("#whoBtn").onclick = whoScreen;
   $("#streakStat").onclick = () => streakCalendar();
-  markOfflineBadges();
+  markOfflineBadges(); voicesAuto();
   /* Stars fly into the counter after a lesson */
   if (S.shownStars != null && S.shownStars < S.stars){
     const from = S.shownStars, gain = S.stars - from, el = $("#starN");
@@ -3691,7 +3761,7 @@ function settings(){
     <div class="seg" role="group" aria-label="Colour theme">${[["light","☀️ Light"],["dark","🌙 Dark"],["auto","📱 Phone"]].map(([v,n]) => `<button data-theme-btn="${v}" aria-pressed="${(P.theme||"light")===v}">${n}</button>`).join("")}</div>
     ${installPrompt && !isStandalone() ? `<h3>Install</h3><div><button class="btn" id="instBtn">📲 Install Mishaling as an app</button></div>` : ""}
     <h3>Offline</h3>
-    <div><button class="btn ghost" id="offBtn">⬇ Make units work offline</button></div>
+    <div><button class="btn ghost" id="offBtn">⬇ Voices for offline</button></div>
     <h3>Grown-ups</h3>
     <div><button class="btn ghost" id="grownBtn">🔒 Grown-up settings</button></div>
     <p class="note" style="margin-top:14px">App version ${APP_VERSION}</p>
@@ -3733,7 +3803,7 @@ function grownSettings(keep){
     <div class="row" style="flex-wrap:nowrap;gap:8px"><button class="btn small ghost" id="syMake" style="flex:1">Make a code</button><button class="btn small" id="syJoin" style="flex:1">${syncOn() ? "Sync now" : "Join"}</button><button class="btn small ghost" id="syOff" style="flex:1">Turn off</button></div>
     <p class="note" id="syStatus">${syncStatus()}</p>
     <h3>Microsoft Speech</h3>
-    <p class="note" style="text-align:left;margin:0">Paste your key once. It stays on this device and is shared by all learners. Works from your own web link (GitHub Pages), not inside Claude.</p>
+    <p class="note" style="text-align:left;margin:0">Lesson voices are built into the app now. Microsoft is used for pronunciation scoring, and as a backup voice for anything without a recording. Paste your key once. It stays on this device and is shared by all learners. Works from your own web link (GitHub Pages), not inside Claude.</p>
     <label class="field">Key<input type="password" id="azKey" autocomplete="off" placeholder="Paste KEY 1 here" value="${esc(S.azKey||"")}"></label>
     <label class="field">Region<input type="text" id="azRegion" autocomplete="off" value="${esc(S.azRegion||"eastus")}"></label>
     <label class="field">🇷🇺 Russian voice<select id="azVoice">${voices.map(([v,n]) => `<option value="${v}" ${(P.az.voice||"ru-RU-SvetlanaNeural")===v?"selected":""}>${n}</option>`).join("")}</select></label>
@@ -4152,27 +4222,27 @@ async function makeOffline(id, onProgress){
   finally { packRunning = false; }
 }
 async function offlineSheet(){
-  const have = await idb.keys();
-  const rows = await Promise.all(packList().map(async ([id, label]) => ({id, label, st: await packStatus(id, have)})));
+  const names = {ru:"🇷🇺 Russian voices", es:"🇲🇽 Spanish voices"};
+  const st = {}; for (const c of ["ru","es"]) st[c] = await voicesStatus(c);
   let est = ""; try { const e = await navigator.storage.estimate(); est = `About ${Math.max(1, Math.round((e.usage||0)/1048576))} MB used on this device.`; } catch(_){}
+  const line = s => !s ? "Opens from your web link (GitHub Pages)" : s.done >= s.total ? "✓ Ready offline" : `${s.done} of ${s.total} clips saved${s.mb ? ` (about ${s.mb} MB in all)` : ""}`;
   const bg = sheet(`<h2>Offline</h2>
-    <p class="note" style="text-align:left;margin:0 0 6px">Save a unit’s Microsoft voice audio so it plays with no internet. Keep this screen open while saving (2 to 4 minutes per unit, because of Microsoft’s free-tier limit). Pronunciation scoring always needs internet.</p>
-    ${rows.map(r => `<div class="offrow"><span class="tx">${esc(r.label)}<small id="st-${r.id}">${r.st.done >= r.st.total ? "✓ Ready offline" : `${r.st.done} of ${r.st.total} sounds saved`}</small></span>
-      <button class="btn small ${r.st.done >= r.st.total ? "ghost" : ""}" data-pack="${r.id}">${r.st.done >= r.st.total ? "Saved" : "Make offline"}</button></div>`).join("")}
-    <p class="note" style="text-align:left;margin:10px 0 0">${est}</p>
-    <div style="margin-top:8px"><button class="btn ghost" id="clearAudio">Delete saved audio</button></div>`);
-  bg.querySelectorAll("[data-pack]").forEach(b => b.onclick = () => {
-    const id = b.dataset.pack === "letters" ? "letters" : +b.dataset.pack, stEl = $("#st-" + b.dataset.pack, bg);
+    <p class="note" style="text-align:left;margin:0 0 6px">Every word, sentence, letter and story line has a real voice. The app saves them on this phone by itself in the background while it’s open, so lessons work with no internet. You can also save them now. Pronunciation scoring always needs internet.</p>
+    ${["ru","es"].map(c => `<div class="offrow"><span class="tx">${names[c]}<small id="st-${c}">${line(st[c])}</small></span>
+      <button class="btn small ${st[c] && st[c].done >= st[c].total ? "ghost" : ""}" data-vc="${c}" ${st[c] ? "" : "disabled"}>${st[c] && st[c].done >= st[c].total ? "Saved" : "Save now"}</button></div>`).join("")}
+    <p class="note" style="text-align:left;margin:10px 0 0">${est}</p>`);
+  bg.querySelectorAll("[data-vc]").forEach(b => b.onclick = () => {
+    const c = b.dataset.vc, el = $("#st-" + c, bg);
+    if (!navigator.onLine){ toast("You need internet to save the voices."); return; }
     b.disabled = true; b.textContent = "Saving…";
-    makeOffline(id, (d, tot, msg) => { stEl.textContent = msg || `${d} of ${tot} sounds saved`; }).then(async () => {
-      const s = await packStatus(id); b.disabled = false;
-      b.textContent = s.done >= s.total ? "Saved" : "Make offline"; stEl.textContent = s.done >= s.total ? "✓ Ready offline" : `${s.done} of ${s.total} sounds saved`;
+    voicesDownload(c, (d, t) => { el.textContent = d >= t ? "✓ Ready offline" : `${d} of ${t} clips saved`; }).then(async () => {
+      const s2 = await voicesStatus(c); b.disabled = false;
+      b.textContent = s2 && s2.done >= s2.total ? "Saved" : "Save now"; el.textContent = line(s2);
     });
   });
-  $("#clearAudio", bg).onclick = () => askConfirm("Delete all saved voice audio from this device?", "Yes, delete", async () => { await idb.clear(); ttsCache.clear(); bg.remove(); offlineSheet(); });
 }
 async function markOfflineBadges(){
-  if (!azOn()) return;
+  return;   /* the built-in voices replaced the per-unit Microsoft audio packs */
   const have = await idb.keys();
   for (const [id] of packList()){
     const s = await packStatus(id, have);
@@ -4307,6 +4377,7 @@ function lessonShell(inner, footerHTML){
   $("#quit").onclick = confirmLeave;
 }
 const trHTML = w => S.translit && !L.queue[L.i].review ? `<div class="tr">${esc(w.tr)}</div>` : "";
+const sayBtn1 = text => `<button class="speaker" data-say="${esc(text)}" aria-label="Play">🔊</button>`;   /* letter sounds: never slowed */
 const sayBtns = text => `<button class="speaker" data-say="${esc(text)}" aria-label="Play">🔊</button><button class="speaker slow" data-slow="${esc(text)}" aria-label="Play slowly">🐌</button>`;
 function wireSay(){
   app.querySelectorAll("[data-say]").forEach(b => b.onclick = () => speak(b.dataset.say));
@@ -4344,8 +4415,10 @@ function feedback(ok, correctText, note){
   const f = $("#footer");
   f.className = "footer " + (ok ? "ok" : "no");
   const cheers = CC==="es" ? ["Great!","¡Muy bien!","You got it!","¡Excelente!","Nice!","¡Bravo!"] : ["Great!","Молоде́ц!","You got it!","Nice!","Отли́чно!"];
+  const cheer = cheers[Math.floor(Math.random()*cheers.length)];
+  if (ok && /[а-яё¡]/i.test(cheer)){ const g = sayGen, p = lastSay; setTimeout(() => p.then(() => { if (sayGen === g && L && L.queue[L.i] === ex && !document.hidden) setTimeout(() => { if (sayGen === g && L && L.queue[L.i] === ex) say(cheer, false, "misha"); }, 250); }), 300); }
   f.innerHTML = `<div class="inner">
-    <div class="fb">${chip(ok ? "good" : "bad", ok ? "hop" : "wobble")}<div><h3>${ok ? cheers[Math.floor(Math.random()*cheers.length)] : "Not quite"}</h3>${correctText ? `<p>${ok ? "" : "Correct answer: "}${correctText}</p>` : ""}${note ? `<p>${note}</p>` : ""}</div></div>
+    <div class="fb">${chip(ok ? "good" : "bad", ok ? "hop" : "wobble")}<div><h3>${ok ? cheer : "Not quite"}</h3>${correctText ? `<p>${ok ? "" : "Correct answer: "}${correctText}</p>` : ""}${note ? `<p>${note}</p>` : ""}</div></div>
     <button class="btn ${ok?"good":"bad"}" id="nextBtn">Continue</button></div>`;
   app.querySelectorAll(".body button, .body .opt, .body .tile").forEach(b => b.disabled = true);
   const nb = $("#nextBtn"); nb.focus(); nb.onclick = next;
@@ -4465,7 +4538,7 @@ const RENDER = {
     const big = `<div class="ru big" style="font-size:${plain(ex.text).length > 16 ? 28 : 36}px">${ex.text}</div>`;
     const hid = `<div id="hid"><div style="font-size:26px;letter-spacing:.3em;color:var(--muted)">• • •</div><button class="btn small ghost" id="hintBtn" style="margin-top:6px">💡 Show me</button></div>`;
     let top;
-    if (ex.lt) top = `<div class="card"><div class="bigletter" style="font-size:60px">${LP(ex.l)}</div><div class="say" style="justify-content:center">${sayBtns(ex.text)}<div class="ru" style="font-size:28px">${ex.text}</div></div><div class="sub" style="margin:0">${ex.lt==="name" ? "This is the letter’s name." : esc(ex.l.hint)}</div></div>`;
+    if (ex.lt) top = `<div class="card"><div class="bigletter" style="font-size:60px">${LP(ex.l)}</div><div class="say" style="justify-content:center">${ex.lt==="sound" ? sayBtn1(ex.text) : sayBtns(ex.text)}<div class="ru" style="font-size:28px">${ex.text}</div></div><div class="sub" style="margin:0">${ex.lt==="name" ? "This is the letter’s name." : esc(ex.l.hint)}</div></div>`;
     else if (mode==="repeat") top = `<div class="card"><div class="say">${sayBtns(ex.text)}</div>${big}${ex.en ? `<div class="sub" style="margin:0">${esc(ex.en)}</div>` : ""}</div>`;
     else if (mode==="read") top = `<div class="card">${big}${ex.en ? `<div class="sub" style="margin:0">${esc(ex.en)}</div>` : ""}<div class="say hidden" id="revealSay">${sayBtns(ex.text)}</div></div>`;
     else if (mode==="recall") top = `<div class="card"><div style="font-family:var(--font-head);font-weight:700;font-size:26px">${esc(ex.en)}</div>${hid}</div>`;
@@ -4483,7 +4556,7 @@ const RENDER = {
        <button class="btn ghost" id="skip">Can’t speak now</button>`);
     wireSay();
     if (mode==="repeat") speak(ex.text);
-    if (mode==="answer"){ speaker = "misha"; speak(ex.q); }
+    if (mode==="answer"){ speaker = "misha"; speak(ex.q, false, "misha"); }
     let rec = null, wav = null, url = null, timer = null, tries = 0, graded = false, best = 0, revealed = false;
     const note = $("#recNote"), btn = $("#rec");
     const reveal = (play) => {
@@ -4650,15 +4723,15 @@ const RENDER = {
   storyLine(ex){
     L.storyShown.push(ex); speaker = ex.who;
     lessonShell(`<p class="prompt">${UNITS[CU].storyTitle}</p><div class="story">${storyHTML()}</div>`, `<button class="btn" id="go">Continue</button>`);
-    app.querySelectorAll("[data-line]").forEach(b => b.onclick = () => { const st = L.storyShown.find(s => s.ru===b.dataset.line); speaker = st ? st.who : "misha"; speak(b.dataset.line); });
-    speak(ex.ru); $("#go").onclick = advance;
+    app.querySelectorAll("[data-line]").forEach(b => b.onclick = () => { const st = L.storyShown.find(s => s.ru===b.dataset.line); speaker = st ? st.who : "misha"; speak(b.dataset.line, false, speaker); });
+    speak(ex.ru, false, ex.who); $("#go").onclick = advance;
     const last = app.querySelector(".line.new"); if (last) last.scrollIntoView({block:"nearest"});
   },
   storyQ(ex){
     lessonShell(`<p class="prompt">${UNITS[CU].storyTitle}</p><div class="story">${storyHTML(true)}</div>
       <p class="prompt" style="font-size:20px">${esc(ex.q)}</p>
       <div class="opts">${ex.options.map((o,k) => `<button class="opt" data-k="${k}" aria-pressed="false">${/[а-яё]/i.test(o) ? `<span class="ru" style="font-size:22px">${o}</span>` : esc(o)}</button>`).join("")}</div>`, checkFooter());
-    app.querySelectorAll("[data-line]").forEach(b => b.onclick = () => speak(b.dataset.line));
+    app.querySelectorAll("[data-line]").forEach(b => b.onclick = () => { const st = L.storyShown.find(s => s.ru===b.dataset.line); speaker = st ? st.who : "misha"; speak(b.dataset.line, false, speaker); });
     choice(ex.options, (o,k) => k===ex.answer, () => ex.options[ex.answer]);
   }
 };
@@ -5367,7 +5440,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "16.4.1 (November 8, 2026)";
+const APP_VERSION = "16.5 (November 9, 2026)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */
