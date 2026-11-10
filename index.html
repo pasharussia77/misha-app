@@ -1025,11 +1025,11 @@ const UNIT3 = {
 /* ---------- Units 4 to 10 ---------- */
 const UNIT4 = {
   words:[
-    {id:"moy", ru:"мой", en:"my (he-words)", tr:"moy", pic:"<img class='wp' src='img/9f6b0ae8f661.webp' alt=''>"},
-    {id:"moya", ru:"моя́", en:"my (she-words)", tr:"maya", pic:"<img class='wp' src='img/400e61409de7.webp' alt=''>"},
+    {id:"moy", ru:"мой", en:"my (he-words)", tr:"moy", pic:"<img class='wp' src='img/14089727f249.webp' alt=''>"},
+    {id:"moya", ru:"моя́", en:"my (she-words)", tr:"maya", pic:"<img class='wp' src='img/58e212786a52.webp' alt=''>"},
     {id:"moyo", ru:"моё", en:"my (it-words)", tr:"mayo", pic:"<img class='wp' src='img/93f54aeab7d7.webp' alt=''>"},
-    {id:"tvoy", ru:"твой", en:"your (he-words)", tr:"tvoy", pic:"<img class='wp' src='img/47588fc26500.webp' alt=''>"},
-    {id:"tvoya", ru:"твоя́", en:"your (she-words)", tr:"tvaya", pic:"<img class='wp' src='img/2f8c8bf8f7d7.webp' alt=''>"},
+    {id:"tvoy", ru:"твой", en:"your (he-words)", tr:"tvoy", pic:"<img class='wp' src='img/c76cc3786df6.webp' alt=''>"},
+    {id:"tvoya", ru:"твоя́", en:"your (she-words)", tr:"tvaya", pic:"<img class='wp' src='img/391a1a2f2634.webp' alt=''>"},
     {id:"semya", ru:"семья́", en:"family", tr:"simya", pic:"<img class='wp' src='img/d76b089ca245.webp' alt=''>"},
     {id:"brat", ru:"брат", en:"brother", tr:"brat", pic:"<img class='wp' src='img/2462dd2e8ca9.webp' alt=''>"},
     {id:"sestra", ru:"сестра́", en:"sister", tr:"sistra", pic:"<img class='wp' src='img/8df78b82c46e.webp' alt=''>"},
@@ -1081,10 +1081,10 @@ const UNIT5 = {
     {id:"ryba", ru:"ры́ба", en:"fish", tr:"ryba", pic:"<img class='wp' src='img/1e53861d028b.webp' alt=''>"},
     {id:"korova", ru:"коро́ва", en:"cow", tr:"karova", pic:"<img class='wp' src='img/4cfb07efd3ab.webp' alt=''>"},
     {id:"loshad", ru:"ло́шадь", en:"horse", tr:"loshat'", pic:"<img class='wp' src='img/6c8f56250d54.webp' alt=''>"},
-    {id:"bolshoy", ru:"большо́й", en:"big (he-words)", tr:"bal'shoy", pic:"<img class='wp' src='img/e50972da85e8.webp' alt=''>"},
-    {id:"bolshaya", ru:"больша́я", en:"big (she-words)", tr:"bal'shaya", pic:"<img class='wp' src='img/f8147d1d6adc.webp' alt=''>"},
-    {id:"malenkiy", ru:"ма́ленький", en:"small (he-words)", tr:"malin'kiy", pic:"<img class='wp' src='img/5ec560080360.webp' alt=''>"},
-    {id:"malenkaya", ru:"ма́ленькая", en:"small (she-words)", tr:"malin'kaya", pic:"<img class='wp' src='img/aaafeba252d0.webp' alt=''>"}
+    {id:"bolshoy", ru:"большо́й", en:"big (he-words)", tr:"bal'shoy", pic:"<img class='wp' src='img/c5c55a8fe688.webp' alt=''>"},
+    {id:"bolshaya", ru:"больша́я", en:"big (she-words)", tr:"bal'shaya", pic:"<img class='wp' src='img/6f11686a681b.webp' alt=''>"},
+    {id:"malenkiy", ru:"ма́ленький", en:"small (he-words)", tr:"malin'kiy", pic:"<img class='wp' src='img/171d7c5f73bb.webp' alt=''>"},
+    {id:"malenkaya", ru:"ма́ленькая", en:"small (she-words)", tr:"malin'kaya", pic:"<img class='wp' src='img/f64b67d01459.webp' alt=''>"}
   ],
   groups:[["burunduk","yozh","medved","lisa","volk"],["zayats","ptitsa","ryba","korova","loshad"],["bolshoy","bolshaya","malenkiy","malenkaya"]],
   sentences:[
@@ -3179,7 +3179,8 @@ const ICACHE = "mishaling-img-v1";
 let imgsDone = false;
 async function imgsDownload(){
   if (imgsDone || !("caches" in window)) return; imgsDone = true;
-  const all = [...new Set([...Object.values(CHIP), ...Object.values(SCENE_IMG), ...Object.values(DRESS).flatMap(o => Object.values(o))])].filter(u => /^img\//.test(u));
+  const wordImgs = [UNITS, ESU].flatMap(U => Object.values(U).flatMap(un => (un.words||[]).map(w => (/src='([^']+)'/.exec(w.pic||"")||[])[1])));
+  const all = [...new Set([...Object.values(CHIP), ...Object.values(SCENE_IMG), ...Object.values(DRESS).flatMap(o => Object.values(o)), ...wordImgs])].filter(u => /^img\//.test(u));
   const cache = await caches.open(ICACHE);
   for (const u of all){ const full = new URL(u, location.href).href; if (!navigator.onLine) break; try { if (await caches.match(full)) continue; const r = await fetch(full); if (r.ok) await cache.put(full, r); } catch(_){} }
 }
@@ -3513,7 +3514,7 @@ function flyStars(n, target){
 /* ---------- Exercise builders ---------- */
 function known(upTo){ return GROUPS.slice(0, upTo+1).flat().map(W); }
 /* look-alike pictures (same object or sign) are never offered together */
-const LOOKALIKE = new Set(["bely|kakogo_tsveta","bely|tsvet","bolshaya|chitat","bolshaya|kniga","bolshaya|malenkaya","bolshaya|moya","bolshaya|tvoya","bolshoy|malenkiy","bolshoy|moy","bolshoy|myach","bolshoy|tvoy","brat|mama","brat|papa","brat|semya","brat|sestra","chetyre|plyus","chetyre|skolko","chitat|kniga","chitat|malenkaya","chitat|moya","chitat|tvoya","chto|gde","chto|kakogo_tsveta","chto|kto","chto|skolko","chyorny|kakogo_tsveta","chyorny|tsvet","desyat|plyus","desyat|skolko","devyat|plyus","devyat|skolko","do_svidaniya|zdr","dom|doma","drug|kak_dela","drug|lyubit","drug|tozhe","drug|yozh","dva|plyus","dva|skolko","futbol|v_futbol","gde|kakogo_tsveta","gde|kto","gde|skolko","hochesh|hochu","hochesh|lyubish","hochesh|moyo","hochesh|na_stole","hochesh|ty","hochesh|yabloko","hochu|moyo","hochu|na_stole","hochu|yabloko","igrat|vot","kak_dela|lyubit","kak_dela|tozhe","kak_dela|yozh","kakogo_tsveta|krasny","kakogo_tsveta|kto","kakogo_tsveta|oranzhevy","kakogo_tsveta|rozovy","kakogo_tsveta|siniy","kakogo_tsveta|skolko","kakogo_tsveta|zelyony","kakogo_tsveta|zhyolty","kak|menya","kniga|malenkaya","kniga|moya","kniga|tvoya","krasny|tsvet","kto|skolko","lyubimy|lyubish","lyubimy|lyubit","lyubimy|lyublyu","lyubish|spasibo","lyubish|ty","lyubit|spasibo","lyubit|tozhe","lyubit|yozh","lyublyu|spasibo","malenkaya|moya","malenkaya|tvoya","malenkiy|moy","malenkiy|myach","malenkiy|tvoy","mama|papa","mama|semya","mama|sestra","menya|ya","mne_let|skolko_let","mne_let|tort","morozhenoe|tozhe","moya|tvoya","moyo|na_stole","moyo|yabloko","moy|myach","moy|tvoy","myach|tvoy","na_stole|stol","na_stole|yabloko","odin|plyus","odin|skolko","oranzhevy|tsvet","papa|semya","papa|sestra","park|v_parke","plyus|pyat","plyus|sem","plyus|shest","plyus|tri","plyus|vosem","pyat|skolko","rozovy|tsvet","semya|sestra","sem|skolko","shest|skolko","shkola|v_shkole","siniy|tsvet","skolko_let|tort","skolko|tri","skolko|vosem","sumka|v_sumke","tozhe|yozh","tsvet|zelyony","tsvet|zhyolty"]);
+const LOOKALIKE = new Set(["es_al_futbol|es_futbol","bely|kakogo_tsveta","bely|tsvet","bolshaya|malenkaya","bolshaya|moya","bolshaya|sumka","bolshaya|tvoya","bolshoy|malenkiy","bolshoy|moy","bolshoy|telefon","bolshoy|tvoy","brat|mama","brat|papa","brat|semya","brat|sestra","chetyre|plyus","chetyre|skolko","chitat|kniga","chto|gde","chto|kakogo_tsveta","chto|kto","chto|skolko","chyorny|kakogo_tsveta","chyorny|tsvet","desyat|plyus","desyat|skolko","devyat|plyus","devyat|skolko","do_svidaniya|zdr","dom|doma","drug|kak_dela","drug|lyubit","drug|tozhe","drug|yozh","dva|plyus","dva|skolko","es_adios|es_buenas_tardes","es_adios|es_hasta_manana","es_agua|es_leche","es_amarillo|es_color","es_amarillo|es_de_que_color","es_amiga|es_ella","es_amigo|es_como_estas","es_amigo|es_el_he","es_amigo|es_erizo","es_amigo|es_le_gusta","es_amigo|es_tambien","es_azul|es_color","es_azul|es_de_que_color","es_blanco|es_color","es_blanco|es_de_que_color","es_buenas_tardes|es_hasta_manana","es_casa|es_en_casa","es_cinco|es_cuantos","es_cinco|es_mas","es_color|es_naranja","es_color|es_negro","es_color|es_rojo","es_color|es_rosa","es_color|es_verde","es_como_estas|es_erizo","es_como_estas|es_le_gusta","es_como_estas|es_tambien","es_como_te_llamas|es_me_llamo","es_cuantos_anos|es_pastel","es_cuantos_anos|es_tengo_anos","es_cuantos|es_cuatro","es_cuantos|es_de_que_color","es_cuantos|es_diez","es_cuantos|es_donde","es_cuantos|es_dos","es_cuantos|es_nueve","es_cuantos|es_ocho","es_cuantos|es_que_es_esto","es_cuantos|es_quien_es","es_cuantos|es_seis","es_cuantos|es_siete","es_cuantos|es_tres","es_cuantos|es_uno","es_cuatro|es_mas","es_de_que_color|es_donde","es_de_que_color|es_naranja","es_de_que_color|es_negro","es_de_que_color|es_que_es_esto","es_de_que_color|es_quien_es","es_de_que_color|es_rojo","es_de_que_color|es_rosa","es_de_que_color|es_verde","es_diez|es_mas","es_donde|es_que_es_esto","es_donde|es_quien_es","es_dos|es_mas","es_el_he|es_ella","es_el_he|es_hermano","es_ella|es_hermana","es_erizo|es_le_gusta","es_erizo|es_tambien","es_esta|es_pequena","es_este|es_grande","es_este|es_mi","es_este|es_pequeno","es_este|es_telefono","es_este|es_tu","es_familia|es_hermana","es_familia|es_hermano","es_familia|es_mama","es_familia|es_papa","es_favorito|es_le_gusta","es_favorito|es_me_gusta","es_favorito|es_te_gusta","es_gracias|es_le_gusta","es_gracias|es_me_gusta","es_gracias|es_te_gusta","es_grande|es_mi","es_grande|es_pequeno","es_grande|es_telefono","es_grande|es_tu","es_hasta_luego|es_hasta_manana","es_helado|es_tambien","es_hermana|es_hermano","es_hermana|es_mama","es_hermana|es_papa","es_hermano|es_mama","es_hermano|es_papa","es_le_gusta|es_tambien","es_leer|es_libro","es_mama|es_papa","es_manzana|es_quieres","es_manzana|es_quiero","es_mas|es_nueve","es_mas|es_ocho","es_mas|es_seis","es_mas|es_siete","es_mas|es_tres","es_mas|es_uno","es_me_encanta|es_me_gusta","es_me_llamo|es_yo","es_mi|es_pequeno","es_mi|es_telefono","es_mi|es_tu","es_pastel|es_tengo_anos","es_pequeno|es_telefono","es_pequeno|es_tu","es_perdon|es_por_favor","es_que_es_esto|es_quien_es","es_quieres|es_quiero","es_quieres|es_te_gusta","es_quieres|es_tu_you","es_te_gusta|es_tu_you","es_telefono|es_tu","futbol|v_futbol","gde|kakogo_tsveta","gde|kto","gde|skolko","hochesh|hochu","hochesh|lyubish","hochesh|moyo","hochesh|na_stole","hochesh|ty","hochesh|yabloko","hochu|moyo","hochu|na_stole","hochu|yabloko","igrat|vot","kak_dela|lyubit","kak_dela|tozhe","kak_dela|yozh","kakogo_tsveta|krasny","kakogo_tsveta|kto","kakogo_tsveta|oranzhevy","kakogo_tsveta|rozovy","kakogo_tsveta|siniy","kakogo_tsveta|skolko","kakogo_tsveta|zelyony","kakogo_tsveta|zhyolty","kak|menya","krasny|tsvet","kto|skolko","lyubimy|lyubish","lyubimy|lyubit","lyubimy|lyublyu","lyubish|spasibo","lyubish|ty","lyubit|spasibo","lyubit|tozhe","lyubit|yozh","lyublyu|spasibo","malenkaya|moya","malenkaya|sumka","malenkaya|tvoya","malenkiy|moy","malenkiy|telefon","malenkiy|tvoy","mama|papa","mama|semya","mama|sestra","menya|ya","mne_let|skolko_let","mne_let|tort","morozhenoe|tozhe","moya|sumka","moya|tvoya","moyo|na_stole","moyo|yabloko","moy|telefon","moy|tvoy","na_stole|stol","na_stole|yabloko","odin|plyus","odin|skolko","oranzhevy|tsvet","papa|semya","papa|sestra","park|v_parke","plyus|pyat","plyus|sem","plyus|shest","plyus|tri","plyus|vosem","pyat|skolko","rozovy|tsvet","semya|sestra","sem|skolko","shest|skolko","shkola|v_shkole","siniy|tsvet","skolko_let|tort","skolko|tri","skolko|vosem","sumka|tvoya","sumka|v_sumke","telefon|tvoy","tozhe|yozh","tsvet|zelyony","tsvet|zhyolty"]);
 const lookAlike = (a,b) => LOOKALIKE.has(a.id < b.id ? a.id+"|"+b.id : b.id+"|"+a.id);
 function pickPicEx(w, pool){
   if (!w.pic) return listenEx(w, pool);
@@ -5626,7 +5627,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "16.8.1 (published November 10, 2026, 6:13 PM EST)";
+const APP_VERSION = "16.9 (published November 10, 2026, 6:36 PM EST)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */
@@ -5783,17 +5784,17 @@ const ES_ALPHA = [
 const ESU = {};
 ESU[1] = {title:"Hello!", cls:"", icon:"👋", storyTitle:"Misha meets Tima", doneLine:"You can say hello and introduce yourself in Spanish. ¡Bravo!",
   words:[
-    {id:"es_hola", ru:"hola", en:"hello", tr:"OH-lah", pic:"👋"},
-    {id:"es_adios", ru:"adiós", en:"goodbye", tr:"ah-DYOHS", pic:"🚪"},
-    {id:"es_mama", ru:"mamá", en:"mom", tr:"mah-MAH", pic:"👩"},
-    {id:"es_papa", ru:"papá", en:"dad", tr:"pah-PAH", pic:"👨"},
-    {id:"es_si", ru:"sí", en:"yes", tr:"see", pic:"👍"},
-    {id:"es_no", ru:"no", en:"no", tr:"noh", pic:"👎"},
-    {id:"es_yo", ru:"yo", en:"I", tr:"yoh", pic:"🧒"},
-    {id:"es_soy", ru:"soy", en:"I am", tr:"soy", pic:"🪞"},
-    {id:"es_buenos_dias", ru:"buenos días", en:"good morning", tr:"BWEH-nohs DEE-ahs", pic:"🌞"},
-    {id:"es_me_llamo", ru:"me llamo", en:"my name is", tr:"meh YAH-moh", pic:"🏷️"},
-    {id:"es_como_te_llamas", ru:"¿Cómo te llamas?", en:"What’s your name?", tr:"KOH-moh teh YAH-mahs", pic:"❓"}
+    {id:"es_hola", ru:"hola", en:"hello", tr:"OH-lah", pic:"<img class='wp' src='img/4967ccdce6e5.webp' alt=''>"},
+    {id:"es_adios", ru:"adiós", en:"goodbye", tr:"ah-DYOHS", pic:"<img class='wp' src='img/04772c189651.webp' alt=''>"},
+    {id:"es_mama", ru:"mamá", en:"mom", tr:"mah-MAH", pic:"<img class='wp' src='img/20aba7e4e906.webp' alt=''>"},
+    {id:"es_papa", ru:"papá", en:"dad", tr:"pah-PAH", pic:"<img class='wp' src='img/1128b38453ac.webp' alt=''>"},
+    {id:"es_si", ru:"sí", en:"yes", tr:"see", pic:"<img class='wp' src='img/dc2d145dd030.webp' alt=''>"},
+    {id:"es_no", ru:"no", en:"no", tr:"noh", pic:"<img class='wp' src='img/a7091149f2aa.webp' alt=''>"},
+    {id:"es_yo", ru:"yo", en:"I", tr:"yoh", pic:"<img class='wp' src='img/ebf361427a4e.webp' alt=''>"},
+    {id:"es_soy", ru:"soy", en:"I am", tr:"soy", pic:""},
+    {id:"es_buenos_dias", ru:"buenos días", en:"good morning", tr:"BWEH-nohs DEE-ahs", pic:"<img class='wp' src='img/500c216dfa7d.webp' alt=''>"},
+    {id:"es_me_llamo", ru:"me llamo", en:"my name is", tr:"meh YAH-moh", pic:"<img class='wp' src='img/67899eb7e291.webp' alt=''>"},
+    {id:"es_como_te_llamas", ru:"¿Cómo te llamas?", en:"What’s your name?", tr:"KOH-moh teh YAH-mahs", pic:"<img class='wp' src='img/8c2710640c59.webp' alt=''>"}
   ],
   groups:[["es_hola","es_adios","es_mama","es_papa"],["es_si","es_no","es_yo","es_soy"],["es_buenos_dias","es_me_llamo","es_como_te_llamas"]],
   sentences:[
@@ -5836,19 +5837,19 @@ ESU[1] = {title:"Hello!", cls:"", icon:"👋", storyTitle:"Misha meets Tima", do
   ]};
 ESU[2] = {title:"What is this?", cls:"u2", icon:"🐱", storyTitle:"What is it?", doneLine:"You can ask «¿Qué es esto?» and name things around you!",
   words:[
-    {id:"es_gato", ru:"gato", en:"cat", tr:"GAH-toh", pic:"🐱"},
-    {id:"es_perro", ru:"perro", en:"dog", tr:"PEH-rroh", pic:"🐶"},
-    {id:"es_casa", ru:"casa", en:"house", tr:"KAH-sah", pic:"🏠"},
-    {id:"es_libro", ru:"libro", en:"book", tr:"LEE-broh", pic:"📕"},
-    {id:"es_pelota", ru:"pelota", en:"ball", tr:"peh-LOH-tah", pic:"⚽"},
-    {id:"es_telefono", ru:"teléfono", en:"phone", tr:"teh-LEH-foh-noh", pic:"📱"},
-    {id:"es_escuela", ru:"escuela", en:"school", tr:"ehs-KWEH-lah", pic:"🏫"},
-    {id:"es_y", ru:"y", en:"and", tr:"ee", pic:"➕"},
-    {id:"es_que_es_esto", ru:"¿Qué es esto?", en:"What is this?", tr:"keh ehs EHS-toh", pic:"🤔"},
-    {id:"es_es", ru:"es", en:"is, it is", tr:"ehs", pic:"🟰"},
-    {id:"es_un", ru:"un", en:"a (he-words)", tr:"oon", pic:"🧢"},
-    {id:"es_una", ru:"una", en:"a (she-words)", tr:"OO-nah", pic:"🎀"},
-    {id:"es_quien_es", ru:"¿Quién es?", en:"Who is it?", tr:"kyehn ehs", pic:"🕵️"}
+    {id:"es_gato", ru:"gato", en:"cat", tr:"GAH-toh", pic:"<img class='wp' src='img/a65943d30c63.webp' alt=''>"},
+    {id:"es_perro", ru:"perro", en:"dog", tr:"PEH-rroh", pic:"<img class='wp' src='img/d5019c35a82a.webp' alt=''>"},
+    {id:"es_casa", ru:"casa", en:"house", tr:"KAH-sah", pic:"<img class='wp' src='img/b20534b29ad4.webp' alt=''>"},
+    {id:"es_libro", ru:"libro", en:"book", tr:"LEE-broh", pic:"<img class='wp' src='img/68834373b8c6.webp' alt=''>"},
+    {id:"es_pelota", ru:"pelota", en:"ball", tr:"peh-LOH-tah", pic:"<img class='wp' src='img/254b1c27e812.webp' alt=''>"},
+    {id:"es_telefono", ru:"teléfono", en:"phone", tr:"teh-LEH-foh-noh", pic:"<img class='wp' src='img/caea60ffebd8.webp' alt=''>"},
+    {id:"es_escuela", ru:"escuela", en:"school", tr:"ehs-KWEH-lah", pic:"<img class='wp' src='img/80f7646742e3.webp' alt=''>"},
+    {id:"es_y", ru:"y", en:"and", tr:"ee", pic:""},
+    {id:"es_que_es_esto", ru:"¿Qué es esto?", en:"What is this?", tr:"keh ehs EHS-toh", pic:"<img class='wp' src='img/213f629c67aa.webp' alt=''>"},
+    {id:"es_es", ru:"es", en:"is, it is", tr:"ehs", pic:""},
+    {id:"es_un", ru:"un", en:"a (he-words)", tr:"oon", pic:""},
+    {id:"es_una", ru:"una", en:"a (she-words)", tr:"OO-nah", pic:""},
+    {id:"es_quien_es", ru:"¿Quién es?", en:"Who is it?", tr:"kyehn ehs", pic:"<img class='wp' src='img/c9658fb8a188.webp' alt=''>"}
   ],
   groups:[["es_gato","es_perro","es_casa","es_libro"],["es_pelota","es_telefono","es_escuela","es_y"],["es_que_es_esto","es_es","es_un","es_una","es_quien_es"]],
   sentences:[
@@ -5891,18 +5892,18 @@ ESU[2] = {title:"What is this?", cls:"u2", icon:"🐱", storyTitle:"What is it?"
   ]};
 ESU[3] = {title:"Food and drink", cls:"u3", icon:"🍎", storyTitle:"Misha’s picnic", doneLine:"You can ask for food and drink and say «gracias»!",
   words:[
-    {id:"es_pan", ru:"pan", en:"bread", tr:"pahn", pic:"🍞"},
-    {id:"es_queso", ru:"queso", en:"cheese", tr:"KEH-soh", pic:"🧀"},
-    {id:"es_jugo", ru:"jugo", en:"juice", tr:"HOO-goh", pic:"🧃"},
-    {id:"es_leche", ru:"leche", en:"milk", tr:"LEH-cheh", pic:"🥛"},
-    {id:"es_manzana", ru:"manzana", en:"apple", tr:"mahn-SAH-nah", pic:"🍎"},
-    {id:"es_agua", ru:"agua", en:"water", tr:"AH-gwah", pic:"💧"},
-    {id:"es_gracias", ru:"gracias", en:"thank you", tr:"GRAH-syahs", pic:"🙏"},
-    {id:"es_por_favor", ru:"por favor", en:"please", tr:"pohr fah-VOHR", pic:"🥺"},
-    {id:"es_quiero", ru:"quiero", en:"I want", tr:"KYEH-roh", pic:"🤲"},
-    {id:"es_quieres", ru:"quieres", en:"you want", tr:"KYEH-rehs", pic:"❓"},
-    {id:"es_tu_you", ru:"tú", en:"you", tr:"too", pic:"🫵"},
-    {id:"es_que_rico", ru:"¡Qué rico!", en:"Yummy!", tr:"keh REE-koh", pic:"😋"}
+    {id:"es_pan", ru:"pan", en:"bread", tr:"pahn", pic:"<img class='wp' src='img/72b89c42f990.webp' alt=''>"},
+    {id:"es_queso", ru:"queso", en:"cheese", tr:"KEH-soh", pic:"<img class='wp' src='img/cc3d7c225046.webp' alt=''>"},
+    {id:"es_jugo", ru:"jugo", en:"juice", tr:"HOO-goh", pic:"<img class='wp' src='img/9e9449fe82b3.webp' alt=''>"},
+    {id:"es_leche", ru:"leche", en:"milk", tr:"LEH-cheh", pic:"<img class='wp' src='img/e0c488dbcbde.webp' alt=''>"},
+    {id:"es_manzana", ru:"manzana", en:"apple", tr:"mahn-SAH-nah", pic:"<img class='wp' src='img/98f33aa4b005.webp' alt=''>"},
+    {id:"es_agua", ru:"agua", en:"water", tr:"AH-gwah", pic:"<img class='wp' src='img/6159cae5b54f.webp' alt=''>"},
+    {id:"es_gracias", ru:"gracias", en:"thank you", tr:"GRAH-syahs", pic:"<img class='wp' src='img/fea0a18694f3.webp' alt=''>"},
+    {id:"es_por_favor", ru:"por favor", en:"please", tr:"pohr fah-VOHR", pic:"<img class='wp' src='img/e83c47c4769e.webp' alt=''>"},
+    {id:"es_quiero", ru:"quiero", en:"I want", tr:"KYEH-roh", pic:"<img class='wp' src='img/ec6e50588138.webp' alt=''>"},
+    {id:"es_quieres", ru:"quieres", en:"you want", tr:"KYEH-rehs", pic:"<img class='wp' src='img/d3ffdd8673fb.webp' alt=''>"},
+    {id:"es_tu_you", ru:"tú", en:"you", tr:"too", pic:"<img class='wp' src='img/09fb1b8d539a.webp' alt=''>"},
+    {id:"es_que_rico", ru:"¡Qué rico!", en:"Yummy!", tr:"keh REE-koh", pic:"<img class='wp' src='img/161f4b6f3867.webp' alt=''>"}
   ],
   groups:[["es_pan","es_queso","es_jugo","es_leche"],["es_manzana","es_agua","es_gracias","es_por_favor"],["es_quiero","es_quieres","es_tu_you","es_que_rico"]],
   sentences:[
@@ -5945,19 +5946,19 @@ ESU[3] = {title:"Food and drink", cls:"u3", icon:"🍎", storyTitle:"Misha’s p
   ]};
 ESU[4] = {title:"My family", cls:"u4", icon:"👪", storyTitle:"Misha’s family album", doneLine:"You can show your family and say «mi» and «tu»!",
   words:[
-    {id:"es_familia", ru:"familia", en:"family", tr:"fah-MEE-lyah", pic:"👨‍👩‍👧‍👦"},
-    {id:"es_hermano", ru:"hermano", en:"brother", tr:"ehr-MAH-noh", pic:"👦"},
-    {id:"es_hermana", ru:"hermana", en:"sister", tr:"ehr-MAH-nah", pic:"👧"},
-    {id:"es_abuelo", ru:"abuelo", en:"grandpa", tr:"ah-BWEH-loh", pic:"👴"},
-    {id:"es_abuela", ru:"abuela", en:"grandma", tr:"ah-BWEH-lah", pic:"👵"},
-    {id:"es_mi", ru:"mi", en:"my", tr:"mee", pic:"🙋"},
-    {id:"es_tu", ru:"tu", en:"your", tr:"too", pic:"🫴"},
-    {id:"es_este", ru:"este", en:"this (he-words)", tr:"EHS-teh", pic:"👉"},
-    {id:"es_esta_this", ru:"esta", en:"this (she-words)", tr:"EHS-tah", pic:"👈"},
-    {id:"es_el_he", ru:"él", en:"he", tr:"ehl", pic:"🙋‍♂️"},
-    {id:"es_ella", ru:"ella", en:"she", tr:"EH-yah", pic:"🙋‍♀️"},
-    {id:"es_amigo", ru:"amigo", en:"friend (boy)", tr:"ah-MEE-goh", pic:"🤝"},
-    {id:"es_amiga", ru:"amiga", en:"friend (girl)", tr:"ah-MEE-gah", pic:"👭"}
+    {id:"es_familia", ru:"familia", en:"family", tr:"fah-MEE-lyah", pic:"<img class='wp' src='img/d76b089ca245.webp' alt=''>"},
+    {id:"es_hermano", ru:"hermano", en:"brother", tr:"ehr-MAH-noh", pic:"<img class='wp' src='img/2462dd2e8ca9.webp' alt=''>"},
+    {id:"es_hermana", ru:"hermana", en:"sister", tr:"ehr-MAH-nah", pic:"<img class='wp' src='img/8df78b82c46e.webp' alt=''>"},
+    {id:"es_abuelo", ru:"abuelo", en:"grandpa", tr:"ah-BWEH-loh", pic:"<img class='wp' src='img/c0dd4e2aed64.webp' alt=''>"},
+    {id:"es_abuela", ru:"abuela", en:"grandma", tr:"ah-BWEH-lah", pic:"<img class='wp' src='img/5de075da6ffd.webp' alt=''>"},
+    {id:"es_mi", ru:"mi", en:"my", tr:"mee", pic:"<img class='wp' src='img/14089727f249.webp' alt=''>"},
+    {id:"es_tu", ru:"tu", en:"your", tr:"too", pic:"<img class='wp' src='img/c76cc3786df6.webp' alt=''>"},
+    {id:"es_este", ru:"este", en:"this (he-words)", tr:"EHS-teh", pic:"<img class='wp' src='img/c4a97ea80429.webp' alt=''>"},
+    {id:"es_esta_this", ru:"esta", en:"this (she-words)", tr:"EHS-tah", pic:"<img class='wp' src='img/373c9c7d9a60.webp' alt=''>"},
+    {id:"es_el_he", ru:"él", en:"he", tr:"ehl", pic:"<img class='wp' src='img/0c1c6a8fadfe.webp' alt=''>"},
+    {id:"es_ella", ru:"ella", en:"she", tr:"EH-yah", pic:"<img class='wp' src='img/7874df425d52.webp' alt=''>"},
+    {id:"es_amigo", ru:"amigo", en:"friend (boy)", tr:"ah-MEE-goh", pic:"<img class='wp' src='img/3d2249289cae.webp' alt=''>"},
+    {id:"es_amiga", ru:"amiga", en:"friend (girl)", tr:"ah-MEE-gah", pic:"<img class='wp' src='img/d3090eaa850f.webp' alt=''>"}
   ],
   groups:[["es_familia","es_hermano","es_hermana","es_abuelo","es_abuela"],["es_mi","es_tu","es_este","es_esta_this"],["es_el_he","es_ella","es_amigo","es_amiga"]],
   sentences:[
@@ -5999,20 +6000,20 @@ ESU[4] = {title:"My family", cls:"u4", icon:"👪", storyTitle:"Misha’s family
   ]};
 ESU[5] = {title:"Animals", cls:"u5", icon:"🐻", storyTitle:"A walk in the forest", doneLine:"You can name animals and say if they are big or small!",
   words:[
-    {id:"es_ardilla", ru:"ardilla", en:"squirrel, chipmunk", tr:"ahr-DEE-yah", pic:"🐿️"},
-    {id:"es_erizo", ru:"erizo", en:"hedgehog", tr:"eh-REE-soh", pic:"🦔"},
-    {id:"es_oso", ru:"oso", en:"bear", tr:"OH-soh", pic:"🐻"},
-    {id:"es_zorro", ru:"zorro", en:"fox", tr:"SOH-rroh", pic:"🦊"},
-    {id:"es_lobo", ru:"lobo", en:"wolf", tr:"LOH-boh", pic:"🐺"},
-    {id:"es_conejo", ru:"conejo", en:"rabbit", tr:"koh-NEH-hoh", pic:"🐰"},
-    {id:"es_pajaro", ru:"pájaro", en:"bird", tr:"PAH-hah-roh", pic:"🐦"},
-    {id:"es_pez", ru:"pez", en:"fish", tr:"pehs", pic:"🐟"},
-    {id:"es_vaca", ru:"vaca", en:"cow", tr:"BAH-kah", pic:"🐄"},
-    {id:"es_el", ru:"el", en:"the (he-words)", tr:"ehl", pic:"🧢"},
-    {id:"es_la", ru:"la", en:"the (she-words)", tr:"lah", pic:"🎀"},
-    {id:"es_grande", ru:"grande", en:"big", tr:"GRAHN-deh", pic:"🐘"},
-    {id:"es_pequeno", ru:"pequeño", en:"small (he-words)", tr:"peh-KEH-nyoh", pic:"🐜"},
-    {id:"es_pequena", ru:"pequeña", en:"small (she-words)", tr:"peh-KEH-nyah", pic:"🐞"}
+    {id:"es_ardilla", ru:"ardilla", en:"squirrel, chipmunk", tr:"ahr-DEE-yah", pic:"<img class='wp' src='img/ca7827c001a6.webp' alt=''>"},
+    {id:"es_erizo", ru:"erizo", en:"hedgehog", tr:"eh-REE-soh", pic:"<img class='wp' src='img/07825ddbcdc1.webp' alt=''>"},
+    {id:"es_oso", ru:"oso", en:"bear", tr:"OH-soh", pic:"<img class='wp' src='img/7a8baf3aef7b.webp' alt=''>"},
+    {id:"es_zorro", ru:"zorro", en:"fox", tr:"SOH-rroh", pic:"<img class='wp' src='img/326fca1797fc.webp' alt=''>"},
+    {id:"es_lobo", ru:"lobo", en:"wolf", tr:"LOH-boh", pic:"<img class='wp' src='img/244eaa78791d.webp' alt=''>"},
+    {id:"es_conejo", ru:"conejo", en:"rabbit", tr:"koh-NEH-hoh", pic:"<img class='wp' src='img/cad7c9bbdf79.webp' alt=''>"},
+    {id:"es_pajaro", ru:"pájaro", en:"bird", tr:"PAH-hah-roh", pic:"<img class='wp' src='img/e24ac1d7392f.webp' alt=''>"},
+    {id:"es_pez", ru:"pez", en:"fish", tr:"pehs", pic:"<img class='wp' src='img/1e53861d028b.webp' alt=''>"},
+    {id:"es_vaca", ru:"vaca", en:"cow", tr:"BAH-kah", pic:"<img class='wp' src='img/4cfb07efd3ab.webp' alt=''>"},
+    {id:"es_el", ru:"el", en:"the (he-words)", tr:"ehl", pic:""},
+    {id:"es_la", ru:"la", en:"the (she-words)", tr:"lah", pic:""},
+    {id:"es_grande", ru:"grande", en:"big", tr:"GRAHN-deh", pic:"<img class='wp' src='img/c5c55a8fe688.webp' alt=''>"},
+    {id:"es_pequeno", ru:"pequeño", en:"small (he-words)", tr:"peh-KEH-nyoh", pic:"<img class='wp' src='img/171d7c5f73bb.webp' alt=''>"},
+    {id:"es_pequena", ru:"pequeña", en:"small (she-words)", tr:"peh-KEH-nyah", pic:"<img class='wp' src='img/f64b67d01459.webp' alt=''>"}
   ],
   groups:[["es_ardilla","es_erizo","es_oso","es_zorro","es_lobo"],["es_conejo","es_pajaro","es_pez","es_vaca"],["es_el","es_la","es_grande","es_pequeno","es_pequena"]],
   sentences:[
@@ -6054,19 +6055,19 @@ ESU[5] = {title:"Animals", cls:"u5", icon:"🐻", storyTitle:"A walk in the fore
   ]};
 ESU[6] = {title:"Where is it?", cls:"u6", icon:"📍", storyTitle:"Where is Misha’s phone?", doneLine:"You can ask «¿Dónde está?» and say where things are!",
   words:[
-    {id:"es_donde", ru:"dónde", en:"where", tr:"DOHN-deh", pic:"🔎"},
-    {id:"es_esta_is", ru:"está", en:"is (somewhere)", tr:"ehs-TAH", pic:"📍"},
-    {id:"es_aqui", ru:"aquí", en:"here", tr:"ah-KEE", pic:"⬇️"},
-    {id:"es_estoy", ru:"estoy", en:"I am (somewhere)", tr:"ehs-TOY", pic:"🧍"},
-    {id:"es_estas", ru:"estás", en:"you are (somewhere)", tr:"ehs-TAHS", pic:"🧭"},
-    {id:"es_alli", ru:"allí", en:"there", tr:"ah-YEE", pic:"🔭"},
-    {id:"es_en", ru:"en", en:"in, on, at", tr:"ehn", pic:"📥"},
-    {id:"es_en_casa", ru:"en casa", en:"at home", tr:"ehn KAH-sah", pic:"🏡"},
-    {id:"es_parque", ru:"parque", en:"park", tr:"PAHR-keh", pic:"🌳"},
-    {id:"es_cuarto", ru:"cuarto", en:"room", tr:"KWAHR-toh", pic:"🚪"},
-    {id:"es_mesa", ru:"mesa", en:"table", tr:"MEH-sah", pic:"🍽️"},
-    {id:"es_mochila", ru:"mochila", en:"backpack", tr:"moh-CHEE-lah", pic:"🎒"},
-    {id:"es_cama", ru:"cama", en:"bed", tr:"KAH-mah", pic:"🛏️"}
+    {id:"es_donde", ru:"dónde", en:"where", tr:"DOHN-deh", pic:"<img class='wp' src='img/1aab38ba2a4d.webp' alt=''>"},
+    {id:"es_esta_is", ru:"está", en:"is (somewhere)", tr:"ehs-TAH", pic:""},
+    {id:"es_aqui", ru:"aquí", en:"here", tr:"ah-KEE", pic:"<img class='wp' src='img/8baafbe13fab.webp' alt=''>"},
+    {id:"es_estoy", ru:"estoy", en:"I am (somewhere)", tr:"ehs-TOY", pic:""},
+    {id:"es_estas", ru:"estás", en:"you are (somewhere)", tr:"ehs-TAHS", pic:""},
+    {id:"es_alli", ru:"allí", en:"there", tr:"ah-YEE", pic:"<img class='wp' src='img/8277092e8feb.webp' alt=''>"},
+    {id:"es_en", ru:"en", en:"in, on, at", tr:"ehn", pic:""},
+    {id:"es_en_casa", ru:"en casa", en:"at home", tr:"ehn KAH-sah", pic:"<img class='wp' src='img/4c01177f6157.webp' alt=''>"},
+    {id:"es_parque", ru:"parque", en:"park", tr:"PAHR-keh", pic:"<img class='wp' src='img/084d9f572d8a.webp' alt=''>"},
+    {id:"es_cuarto", ru:"cuarto", en:"room", tr:"KWAHR-toh", pic:"<img class='wp' src='img/6cce153e1399.webp' alt=''>"},
+    {id:"es_mesa", ru:"mesa", en:"table", tr:"MEH-sah", pic:"<img class='wp' src='img/eaef457c789d.webp' alt=''>"},
+    {id:"es_mochila", ru:"mochila", en:"backpack", tr:"moh-CHEE-lah", pic:"<img class='wp' src='img/7e8f76612e4b.webp' alt=''>"},
+    {id:"es_cama", ru:"cama", en:"bed", tr:"KAH-mah", pic:"<img class='wp' src='img/9e175f259ca0.webp' alt=''>"}
   ],
   groups:[["es_donde","es_esta_is","es_estoy","es_estas"],["es_aqui","es_alli","es_en","es_en_casa"],["es_parque","es_cuarto","es_mesa","es_mochila","es_cama"]],
   sentences:[
@@ -6110,18 +6111,18 @@ ESU[6] = {title:"Where is it?", cls:"u6", icon:"📍", storyTitle:"Where is Mish
   ]};
 ESU[7] = {title:"How are you?", cls:"u7", icon:"😊", storyTitle:"Misha’s day", doneLine:"You can ask «¿Cómo estás?» and greet people all day long!",
   words:[
-    {id:"es_como_estas", ru:"¿Cómo estás?", en:"How are you?", tr:"KOH-moh ehs-TAHS", pic:"💬"},
-    {id:"es_bien", ru:"bien", en:"fine, well", tr:"byehn", pic:"🙂"},
-    {id:"es_muy", ru:"muy", en:"very", tr:"mwee", pic:"⬆️"},
-    {id:"es_genial", ru:"¡genial!", en:"great!", tr:"heh-NYAHL", pic:"🤩"},
-    {id:"es_mal", ru:"mal", en:"bad", tr:"mahl", pic:"😞"},
-    {id:"es_mas_o_menos", ru:"más o menos", en:"so-so", tr:"mahs oh MEH-nohs", pic:"😐"},
-    {id:"es_tambien", ru:"también", en:"too, also", tr:"tahm-BYEHN", pic:"👯"},
-    {id:"es_perdon", ru:"perdón", en:"sorry", tr:"pehr-DOHN", pic:"🙇"},
-    {id:"es_hasta_luego", ru:"hasta luego", en:"see you later", tr:"AHS-tah LWEH-goh", pic:"🤚"},
-    {id:"es_hasta_manana", ru:"hasta mañana", en:"see you tomorrow", tr:"AHS-tah mah-NYAH-nah", pic:"📅"},
-    {id:"es_buenas_tardes", ru:"buenas tardes", en:"good afternoon", tr:"BWEH-nahs TAHR-dehs", pic:"🌇"},
-    {id:"es_buenas_noches", ru:"buenas noches", en:"good evening, good night", tr:"BWEH-nahs NOH-chehs", pic:"🌙"}
+    {id:"es_como_estas", ru:"¿Cómo estás?", en:"How are you?", tr:"KOH-moh ehs-TAHS", pic:"<img class='wp' src='img/9469ce817851.webp' alt=''>"},
+    {id:"es_bien", ru:"bien", en:"fine, well", tr:"byehn", pic:"<img class='wp' src='img/2eb3a2c34715.webp' alt=''>"},
+    {id:"es_muy", ru:"muy", en:"very", tr:"mwee", pic:""},
+    {id:"es_genial", ru:"¡genial!", en:"great!", tr:"heh-NYAHL", pic:"<img class='wp' src='img/bced3c1925d9.webp' alt=''>"},
+    {id:"es_mal", ru:"mal", en:"bad", tr:"mahl", pic:"<img class='wp' src='img/5a097d642ea2.webp' alt=''>"},
+    {id:"es_mas_o_menos", ru:"más o menos", en:"so-so", tr:"mahs oh MEH-nohs", pic:"<img class='wp' src='img/681174aa9c35.webp' alt=''>"},
+    {id:"es_tambien", ru:"también", en:"too, also", tr:"tahm-BYEHN", pic:"<img class='wp' src='img/70b90bf8f417.webp' alt=''>"},
+    {id:"es_perdon", ru:"perdón", en:"sorry", tr:"pehr-DOHN", pic:"<img class='wp' src='img/b0a6187ad5ba.webp' alt=''>"},
+    {id:"es_hasta_luego", ru:"hasta luego", en:"see you later", tr:"AHS-tah LWEH-goh", pic:"<img class='wp' src='img/cd36334ddb6c.webp' alt=''>"},
+    {id:"es_hasta_manana", ru:"hasta mañana", en:"see you tomorrow", tr:"AHS-tah mah-NYAH-nah", pic:"<img class='wp' src='img/f5218285b0e6.webp' alt=''>"},
+    {id:"es_buenas_tardes", ru:"buenas tardes", en:"good afternoon", tr:"BWEH-nahs TAHR-dehs", pic:"<img class='wp' src='img/ea29ed470d44.webp' alt=''>"},
+    {id:"es_buenas_noches", ru:"buenas noches", en:"good evening, good night", tr:"BWEH-nahs NOH-chehs", pic:"<img class='wp' src='img/9071e476eb3e.webp' alt=''>"}
   ],
   groups:[["es_como_estas","es_bien","es_muy","es_genial"],["es_mal","es_mas_o_menos","es_tambien","es_perdon"],["es_hasta_luego","es_hasta_manana","es_buenas_tardes","es_buenas_noches"]],
   sentences:[
@@ -6165,21 +6166,21 @@ ESU[7] = {title:"How are you?", cls:"u7", icon:"😊", storyTitle:"Misha’s day
   ]};
 ESU[8] = {title:"Numbers 1 to 10", cls:"u8", icon:"🔢", storyTitle:"Misha’s birthday", doneLine:"You can count to ten and say how old you are!",
   words:[
-    {id:"es_uno", ru:"uno", en:"one", tr:"OO-noh", pic:"1️⃣"},
-    {id:"es_dos", ru:"dos", en:"two", tr:"dohs", pic:"2️⃣"},
-    {id:"es_tres", ru:"tres", en:"three", tr:"trehs", pic:"3️⃣"},
-    {id:"es_cuatro", ru:"cuatro", en:"four", tr:"KWAH-troh", pic:"4️⃣"},
-    {id:"es_cinco", ru:"cinco", en:"five", tr:"SEEN-koh", pic:"5️⃣"},
-    {id:"es_seis", ru:"seis", en:"six", tr:"says", pic:"6️⃣"},
-    {id:"es_siete", ru:"siete", en:"seven", tr:"SYEH-teh", pic:"7️⃣"},
-    {id:"es_ocho", ru:"ocho", en:"eight", tr:"OH-choh", pic:"8️⃣"},
-    {id:"es_nueve", ru:"nueve", en:"nine", tr:"NWEH-beh", pic:"9️⃣"},
-    {id:"es_diez", ru:"diez", en:"ten", tr:"dyehs", pic:"🔟"},
-    {id:"es_mas", ru:"más", en:"plus", tr:"mahs", pic:"🧮"},
-    {id:"es_son", ru:"son", en:"make (in sums)", tr:"sohn", pic:"🟰"},
-    {id:"es_cuantos", ru:"¿cuántos?", en:"how many?", tr:"KWAHN-tohs", pic:"🔢"},
-    {id:"es_cuantos_anos", ru:"¿Cuántos años tienes?", en:"How old are you?", tr:"KWAHN-tohs AH-nyohs TYEH-nehs", pic:"🎈"},
-    {id:"es_tengo_anos", ru:"Tengo … años.", en:"I’m … years old.", tr:"TEHN-goh … AH-nyohs", pic:"🕯️"}
+    {id:"es_uno", ru:"uno", en:"one", tr:"OO-noh", pic:"<img class='wp' src='img/1df3feafcdfb.webp' alt=''>"},
+    {id:"es_dos", ru:"dos", en:"two", tr:"dohs", pic:"<img class='wp' src='img/169c948a58ba.webp' alt=''>"},
+    {id:"es_tres", ru:"tres", en:"three", tr:"trehs", pic:"<img class='wp' src='img/c8c8b994ee9f.webp' alt=''>"},
+    {id:"es_cuatro", ru:"cuatro", en:"four", tr:"KWAH-troh", pic:"<img class='wp' src='img/e0b890977c19.webp' alt=''>"},
+    {id:"es_cinco", ru:"cinco", en:"five", tr:"SEEN-koh", pic:"<img class='wp' src='img/b2cb4b5fd037.webp' alt=''>"},
+    {id:"es_seis", ru:"seis", en:"six", tr:"says", pic:"<img class='wp' src='img/d2b77c0a03ec.webp' alt=''>"},
+    {id:"es_siete", ru:"siete", en:"seven", tr:"SYEH-teh", pic:"<img class='wp' src='img/fdaf13b809d9.webp' alt=''>"},
+    {id:"es_ocho", ru:"ocho", en:"eight", tr:"OH-choh", pic:"<img class='wp' src='img/cdb42a4c17b3.webp' alt=''>"},
+    {id:"es_nueve", ru:"nueve", en:"nine", tr:"NWEH-beh", pic:"<img class='wp' src='img/f83c189d6c20.webp' alt=''>"},
+    {id:"es_diez", ru:"diez", en:"ten", tr:"dyehs", pic:"<img class='wp' src='img/e6bfb3c0fe9e.webp' alt=''>"},
+    {id:"es_mas", ru:"más", en:"plus", tr:"mahs", pic:"<img class='wp' src='img/4fb7004a8c9d.webp' alt=''>"},
+    {id:"es_son", ru:"son", en:"make (in sums)", tr:"sohn", pic:""},
+    {id:"es_cuantos", ru:"¿cuántos?", en:"how many?", tr:"KWAHN-tohs", pic:"<img class='wp' src='img/9384a94751e8.webp' alt=''>"},
+    {id:"es_cuantos_anos", ru:"¿Cuántos años tienes?", en:"How old are you?", tr:"KWAHN-tohs AH-nyohs TYEH-nehs", pic:"<img class='wp' src='img/120cbf53358b.webp' alt=''>"},
+    {id:"es_tengo_anos", ru:"Tengo … años.", en:"I’m … years old.", tr:"TEHN-goh … AH-nyohs", pic:"<img class='wp' src='img/b8f91982c65f.webp' alt=''>"}
   ],
   groups:[["es_uno","es_dos","es_tres","es_cuatro","es_cinco"],["es_seis","es_siete","es_ocho","es_nueve","es_diez"],["es_mas","es_son","es_cuantos","es_cuantos_anos","es_tengo_anos"]],
   sentences:[
@@ -6222,17 +6223,17 @@ ESU[8] = {title:"Numbers 1 to 10", cls:"u8", icon:"🔢", storyTitle:"Misha’s 
   ]};
 ESU[9] = {title:"Colours", cls:"u9", icon:"🎨", storyTitle:"Tima paints a picture", doneLine:"You can say the colours of everything around you!",
   words:[
-    {id:"es_rojo", ru:"rojo", en:"red", tr:"ROH-hoh", pic:"🟥"},
-    {id:"es_azul", ru:"azul", en:"blue", tr:"ah-SOOL", pic:"🟦"},
-    {id:"es_verde", ru:"verde", en:"green", tr:"BEHR-deh", pic:"🟩"},
-    {id:"es_amarillo", ru:"amarillo", en:"yellow", tr:"ah-mah-REE-yoh", pic:"🟨"},
-    {id:"es_blanco", ru:"blanco", en:"white", tr:"BLAHN-koh", pic:"⬜"},
-    {id:"es_negro", ru:"negro", en:"black", tr:"NEH-groh", pic:"⬛"},
-    {id:"es_rosa", ru:"rosa", en:"pink", tr:"RROH-sah", pic:"🩷"},
-    {id:"es_naranja", ru:"naranja", en:"orange", tr:"nah-RAHN-hah", pic:"🟧"},
-    {id:"es_color", ru:"color", en:"colour", tr:"koh-LOHR", pic:"🎨"},
-    {id:"es_favorito", ru:"favorito", en:"favourite", tr:"fah-boh-REE-toh", pic:"💖"},
-    {id:"es_de_que_color", ru:"¿De qué color es?", en:"What colour is it?", tr:"deh keh koh-LOHR ehs", pic:"🖍️"}
+    {id:"es_rojo", ru:"rojo", en:"red", tr:"ROH-hoh", pic:"<img class='wp' src='img/a5798d14d5a7.webp' alt=''>"},
+    {id:"es_azul", ru:"azul", en:"blue", tr:"ah-SOOL", pic:"<img class='wp' src='img/6b831751267d.webp' alt=''>"},
+    {id:"es_verde", ru:"verde", en:"green", tr:"BEHR-deh", pic:"<img class='wp' src='img/f07cf6fe3bf7.webp' alt=''>"},
+    {id:"es_amarillo", ru:"amarillo", en:"yellow", tr:"ah-mah-REE-yoh", pic:"<img class='wp' src='img/491e1cd6f280.webp' alt=''>"},
+    {id:"es_blanco", ru:"blanco", en:"white", tr:"BLAHN-koh", pic:"<img class='wp' src='img/b84b01916328.webp' alt=''>"},
+    {id:"es_negro", ru:"negro", en:"black", tr:"NEH-groh", pic:"<img class='wp' src='img/45db662eeaa1.webp' alt=''>"},
+    {id:"es_rosa", ru:"rosa", en:"pink", tr:"RROH-sah", pic:"<img class='wp' src='img/f46042e2e715.webp' alt=''>"},
+    {id:"es_naranja", ru:"naranja", en:"orange", tr:"nah-RAHN-hah", pic:"<img class='wp' src='img/9516e0ba05bb.webp' alt=''>"},
+    {id:"es_color", ru:"color", en:"colour", tr:"koh-LOHR", pic:"<img class='wp' src='img/123732ba0b2c.webp' alt=''>"},
+    {id:"es_favorito", ru:"favorito", en:"favourite", tr:"fah-boh-REE-toh", pic:"<img class='wp' src='img/de7bb1415ba9.webp' alt=''>"},
+    {id:"es_de_que_color", ru:"¿De qué color es?", en:"What colour is it?", tr:"deh keh koh-LOHR ehs", pic:"<img class='wp' src='img/3499153d17eb.webp' alt=''>"}
   ],
   groups:[["es_rojo","es_azul","es_verde","es_amarillo"],["es_blanco","es_negro","es_rosa","es_naranja"],["es_color","es_favorito","es_de_que_color"]],
   sentences:[
@@ -6274,20 +6275,20 @@ ESU[9] = {title:"Colours", cls:"u9", icon:"🎨", storyTitle:"Tima paints a pict
   ]};
 ESU[10] = {title:"I love it!", cls:"u10", icon:"❤️", storyTitle:"A fun day", doneLine:"You can say what you like and love to do!",
   words:[
-    {id:"es_me_gusta", ru:"me gusta", en:"I like", tr:"meh GOOS-tah", pic:"❤️"},
-    {id:"es_te_gusta", ru:"te gusta", en:"you like", tr:"teh GOOS-tah", pic:"💞"},
-    {id:"es_le_gusta", ru:"le gusta", en:"he / she likes", tr:"leh GOOS-tah", pic:"💘"},
-    {id:"es_me_encanta", ru:"me encanta", en:"I love", tr:"meh ehn-KAHN-tah", pic:"😍"},
-    {id:"es_mucho", ru:"mucho", en:"a lot", tr:"MOO-choh", pic:"💯"},
-    {id:"es_chocolate", ru:"chocolate", en:"chocolate", tr:"choh-koh-LAH-teh", pic:"🍫"},
-    {id:"es_helado", ru:"helado", en:"ice cream", tr:"eh-LAH-doh", pic:"🍦"},
-    {id:"es_pastel", ru:"pastel", en:"cake", tr:"pahs-TEHL", pic:"🎂"},
-    {id:"es_musica", ru:"música", en:"music", tr:"MOO-see-kah", pic:"🎵"},
-    {id:"es_jugar", ru:"jugar", en:"to play", tr:"hoo-GAHR", pic:"🎮"},
-    {id:"es_leer", ru:"leer", en:"to read", tr:"leh-EHR", pic:"📖"},
-    {id:"es_dibujar", ru:"dibujar", en:"to draw", tr:"dee-boo-HAHR", pic:"✏️"},
-    {id:"es_futbol", ru:"fútbol", en:"soccer", tr:"FOOT-bohl", pic:"⚽"},
-    {id:"es_al_futbol", ru:"al fútbol", en:"(play) soccer", tr:"ahl FOOT-bohl", pic:"<span class=\"pp\">🏃<i>⚽</i></span>"}
+    {id:"es_me_gusta", ru:"me gusta", en:"I like", tr:"meh GOOS-tah", pic:"<img class='wp' src='img/f7c30cea7536.webp' alt=''>"},
+    {id:"es_te_gusta", ru:"te gusta", en:"you like", tr:"teh GOOS-tah", pic:"<img class='wp' src='img/533d045dc728.webp' alt=''>"},
+    {id:"es_le_gusta", ru:"le gusta", en:"he / she likes", tr:"leh GOOS-tah", pic:"<img class='wp' src='img/c2492f62e519.webp' alt=''>"},
+    {id:"es_me_encanta", ru:"me encanta", en:"I love", tr:"meh ehn-KAHN-tah", pic:"<img class='wp' src='img/3d7cd8148e26.webp' alt=''>"},
+    {id:"es_mucho", ru:"mucho", en:"a lot", tr:"MOO-choh", pic:""},
+    {id:"es_chocolate", ru:"chocolate", en:"chocolate", tr:"choh-koh-LAH-teh", pic:"<img class='wp' src='img/046dedd77b05.webp' alt=''>"},
+    {id:"es_helado", ru:"helado", en:"ice cream", tr:"eh-LAH-doh", pic:"<img class='wp' src='img/66b475178c00.webp' alt=''>"},
+    {id:"es_pastel", ru:"pastel", en:"cake", tr:"pahs-TEHL", pic:"<img class='wp' src='img/c22d8b5501f6.webp' alt=''>"},
+    {id:"es_musica", ru:"música", en:"music", tr:"MOO-see-kah", pic:"<img class='wp' src='img/a583289ee9f6.webp' alt=''>"},
+    {id:"es_jugar", ru:"jugar", en:"to play", tr:"hoo-GAHR", pic:"<img class='wp' src='img/152695a6d5cc.webp' alt=''>"},
+    {id:"es_leer", ru:"leer", en:"to read", tr:"leh-EHR", pic:"<img class='wp' src='img/eba215fbb68f.webp' alt=''>"},
+    {id:"es_dibujar", ru:"dibujar", en:"to draw", tr:"dee-boo-HAHR", pic:"<img class='wp' src='img/bfab6ee335b7.webp' alt=''>"},
+    {id:"es_futbol", ru:"fútbol", en:"soccer", tr:"FOOT-bohl", pic:"<img class='wp' src='img/781cb621e7e2.webp' alt=''>"},
+    {id:"es_al_futbol", ru:"al fútbol", en:"(play) soccer", tr:"ahl FOOT-bohl", pic:"<img class='wp' src='img/147aa50630c7.webp' alt=''>"}
   ],
   groups:[["es_me_gusta","es_te_gusta","es_le_gusta","es_me_encanta","es_mucho"],["es_chocolate","es_helado","es_pastel","es_musica"],["es_jugar","es_leer","es_dibujar","es_futbol","es_al_futbol"]],
   sentences:[
