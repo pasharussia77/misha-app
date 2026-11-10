@@ -177,6 +177,9 @@ button{font:inherit;color:inherit}
 .sheet h3{font-family:var(--font-head);margin:18px 0 8px;font-size:18px}
 .wordrow{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:2px solid var(--line)}
 .wordrow .p{font-size:30px;width:40px;text-align:center}
+.wp{display:block;width:1.6em;height:1.6em;object-fit:contain;margin:0 auto;-webkit-user-drag:none;user-select:none}
+.opt .pic .wp{width:1.75em;height:1.75em}
+.wordrow .p .wp{width:40px;height:40px}
 .wordrow .w{flex:1}
 .wordrow .w b{font-size:20px}
 .wordrow .w small{display:block;color:var(--muted);font-weight:700}
@@ -851,15 +854,15 @@ html.tab .sheet-bg.typing .sheet{max-height:calc(52vh / var(--z))}
 <script>
 /* ---------- Content: Unit 1, “Make introductions” ---------- */
 let WORDS = [
-  {id:"privet", ru:"приве́т", en:"hi", tr:"privyet", pic:"👋"},
-  {id:"mama", ru:"ма́ма", en:"mom", tr:"mama", pic:"👩"},
-  {id:"papa", ru:"па́па", en:"dad", tr:"papa", pic:"👨"},
-  {id:"eto", ru:"э́то", en:"this is", tr:"eta", pic:"👉"},
-  {id:"da", ru:"да", en:"yes", tr:"da", pic:"👍"},
-  {id:"net", ru:"нет", en:"no", tr:"nyet", pic:"👎"},
-  {id:"zdr", ru:"здра́вствуйте", en:"hello (polite)", tr:"zdrastvuytye", pic:"🤝"},
-  {id:"menya", ru:"меня́ зову́т", en:"my name is", tr:"minya zavut", pic:"🏷️"},
-  {id:"kak", ru:"как тебя́ зову́т?", en:"what is your name?", tr:"kak tibya zavut?", pic:"❓"}
+  {id:"privet", ru:"приве́т", en:"hi", tr:"privyet", pic:"<img class='wp' src='img/4967ccdce6e5.webp' alt=''>"},
+  {id:"mama", ru:"ма́ма", en:"mom", tr:"mama", pic:"<img class='wp' src='img/20aba7e4e906.webp' alt=''>"},
+  {id:"papa", ru:"па́па", en:"dad", tr:"papa", pic:"<img class='wp' src='img/1128b38453ac.webp' alt=''>"},
+  {id:"eto", ru:"э́то", en:"this is", tr:"eta", pic:"<img class='wp' src='img/1cc6f1578b19.webp' alt=''>"},
+  {id:"da", ru:"да", en:"yes", tr:"da", pic:"<img class='wp' src='img/dc2d145dd030.webp' alt=''>"},
+  {id:"net", ru:"нет", en:"no", tr:"nyet", pic:"<img class='wp' src='img/a7091149f2aa.webp' alt=''>"},
+  {id:"zdr", ru:"здра́вствуйте", en:"hello (polite)", tr:"zdrastvuytye", pic:"<img class='wp' src='img/87b579766278.webp' alt=''>"},
+  {id:"menya", ru:"меня́ зову́т", en:"my name is", tr:"minya zavut", pic:"<img class='wp' src='img/67899eb7e291.webp' alt=''>"},
+  {id:"kak", ru:"как тебя́ зову́т?", en:"what is your name?", tr:"kak tibya zavut?", pic:"<img class='wp' src='img/8c2710640c59.webp' alt=''>"}
 ];
 let GROUPS = [["privet","mama","papa"],["eto","da","net"],["zdr","menya","kak"]];
 let SENTENCES = [
@@ -930,17 +933,17 @@ function tapify(ru){
 /* ---------- Unit 2, “Что э́то?” (What is this?) ---------- */
 const UNIT2 = {
   words:[
-    {id:"chto", ru:"что", en:"what", tr:"shto", pic:"🤔"},
-    {id:"kto", ru:"кто", en:"who", tr:"kto", pic:"🙋"},
-    {id:"kot", ru:"кот", en:"cat", tr:"kot", pic:"🐱"},
-    {id:"sobaka", ru:"соба́ка", en:"dog", tr:"sabaka", pic:"🐶"},
-    {id:"dom", ru:"дом", en:"house", tr:"dom", pic:"🏠"},
-    {id:"kniga", ru:"кни́га", en:"book", tr:"kniga", pic:"📕"},
-    {id:"myach", ru:"мяч", en:"ball", tr:"myach", pic:"⚽"},
-    {id:"telefon", ru:"телефо́н", en:"phone", tr:"tilifon", pic:"📱"},
-    {id:"shkola", ru:"шко́ла", en:"school", tr:"shkola", pic:"🏫"},
-    {id:"i", ru:"и", en:"and", tr:"i", pic:"➕"},
-    {id:"ne", ru:"не", en:"not", tr:"nye", pic:"🚫"}
+    {id:"chto", ru:"что", en:"what", tr:"shto", pic:"<img class='wp' src='img/213f629c67aa.webp' alt=''>"},
+    {id:"kto", ru:"кто", en:"who", tr:"kto", pic:"<img class='wp' src='img/c9658fb8a188.webp' alt=''>"},
+    {id:"kot", ru:"кот", en:"cat", tr:"kot", pic:"<img class='wp' src='img/a65943d30c63.webp' alt=''>"},
+    {id:"sobaka", ru:"соба́ка", en:"dog", tr:"sabaka", pic:"<img class='wp' src='img/d5019c35a82a.webp' alt=''>"},
+    {id:"dom", ru:"дом", en:"house", tr:"dom", pic:"<img class='wp' src='img/b20534b29ad4.webp' alt=''>"},
+    {id:"kniga", ru:"кни́га", en:"book", tr:"kniga", pic:"<img class='wp' src='img/68834373b8c6.webp' alt=''>"},
+    {id:"myach", ru:"мяч", en:"ball", tr:"myach", pic:"<img class='wp' src='img/254b1c27e812.webp' alt=''>"},
+    {id:"telefon", ru:"телефо́н", en:"phone", tr:"tilifon", pic:"<img class='wp' src='img/caea60ffebd8.webp' alt=''>"},
+    {id:"shkola", ru:"шко́ла", en:"school", tr:"shkola", pic:"<img class='wp' src='img/80f7646742e3.webp' alt=''>"},
+    {id:"i", ru:"и", en:"and", tr:"i", pic:""},
+    {id:"ne", ru:"не", en:"not", tr:"nye", pic:""}
   ],
   groups:[["chto","kto","kot","sobaka"],["dom","kniga","myach","telefon"],["shkola","i","ne"]],
   sentences:[
@@ -976,18 +979,18 @@ const UNIT2 = {
 /* ---------- Unit 3, “Я хочу́ сок!” (Food and drink) ---------- */
 const UNIT3 = {
   words:[
-    {id:"hleb", ru:"хлеб", en:"bread", tr:"khlyep", pic:"🍞"},
-    {id:"syr", ru:"сыр", en:"cheese", tr:"syr", pic:"🧀"},
-    {id:"sok", ru:"сок", en:"juice", tr:"sok", pic:"🧃"},
-    {id:"chay", ru:"чай", en:"tea", tr:"chay", pic:"🍵"},
-    {id:"moloko", ru:"молоко́", en:"milk", tr:"malako", pic:"🥛"},
-    {id:"yabloko", ru:"я́блоко", en:"apple", tr:"yablaka", pic:"🍎"},
-    {id:"vkusno", ru:"вку́сно", en:"tasty!", tr:"fkusna", pic:"😋"},
-    {id:"spasibo", ru:"спаси́бо", en:"thank you", tr:"spasiba", pic:"🙏"},
-    {id:"ya", ru:"я", en:"I", tr:"ya", pic:"🧒"},
-    {id:"ty", ru:"ты", en:"you", tr:"ty", pic:"🫵"},
-    {id:"hochu", ru:"хочу́", en:"I want", tr:"khachu", pic:"🤲"},
-    {id:"hochesh", ru:"хо́чешь", en:"you want", tr:"khochish", pic:"❓"}
+    {id:"hleb", ru:"хлеб", en:"bread", tr:"khlyep", pic:"<img class='wp' src='img/72b89c42f990.webp' alt=''>"},
+    {id:"syr", ru:"сыр", en:"cheese", tr:"syr", pic:"<img class='wp' src='img/cc3d7c225046.webp' alt=''>"},
+    {id:"sok", ru:"сок", en:"juice", tr:"sok", pic:"<img class='wp' src='img/9e9449fe82b3.webp' alt=''>"},
+    {id:"chay", ru:"чай", en:"tea", tr:"chay", pic:"<img class='wp' src='img/81b0a6ddc7f1.webp' alt=''>"},
+    {id:"moloko", ru:"молоко́", en:"milk", tr:"malako", pic:"<img class='wp' src='img/e0c488dbcbde.webp' alt=''>"},
+    {id:"yabloko", ru:"я́блоко", en:"apple", tr:"yablaka", pic:"<img class='wp' src='img/98f33aa4b005.webp' alt=''>"},
+    {id:"vkusno", ru:"вку́сно", en:"tasty!", tr:"fkusna", pic:"<img class='wp' src='img/161f4b6f3867.webp' alt=''>"},
+    {id:"spasibo", ru:"спаси́бо", en:"thank you", tr:"spasiba", pic:"<img class='wp' src='img/fea0a18694f3.webp' alt=''>"},
+    {id:"ya", ru:"я", en:"I", tr:"ya", pic:"<img class='wp' src='img/ebf361427a4e.webp' alt=''>"},
+    {id:"ty", ru:"ты", en:"you", tr:"ty", pic:"<img class='wp' src='img/09fb1b8d539a.webp' alt=''>"},
+    {id:"hochu", ru:"хочу́", en:"I want", tr:"khachu", pic:"<img class='wp' src='img/ec6e50588138.webp' alt=''>"},
+    {id:"hochesh", ru:"хо́чешь", en:"you want", tr:"khochish", pic:"<img class='wp' src='img/d3ffdd8673fb.webp' alt=''>"}
   ],
   groups:[["hleb","syr","sok","chay"],["moloko","yabloko","vkusno","spasibo"],["ya","ty","hochu","hochesh"]],
   sentences:[
@@ -1022,20 +1025,20 @@ const UNIT3 = {
 /* ---------- Units 4 to 10 ---------- */
 const UNIT4 = {
   words:[
-    {id:"moy", ru:"мой", en:"my (he-words)", tr:"moy", pic:"🙋‍♂️"},
-    {id:"moya", ru:"моя́", en:"my (she-words)", tr:"maya", pic:"🙋‍♀️"},
-    {id:"moyo", ru:"моё", en:"my (it-words)", tr:"mayo", pic:"🙋"},
-    {id:"tvoy", ru:"твой", en:"your (he-words)", tr:"tvoy", pic:"🫵"},
-    {id:"tvoya", ru:"твоя́", en:"your (she-words)", tr:"tvaya", pic:"🫴"},
-    {id:"semya", ru:"семья́", en:"family", tr:"simya", pic:"👨‍👩‍👧‍👦"},
-    {id:"brat", ru:"брат", en:"brother", tr:"brat", pic:"👦"},
-    {id:"sestra", ru:"сестра́", en:"sister", tr:"sistra", pic:"👧"},
-    {id:"babushka", ru:"ба́бушка", en:"grandma", tr:"babushka", pic:"👵"},
-    {id:"dedushka", ru:"де́душка", en:"grandpa", tr:"dyedushka", pic:"👴"},
-    {id:"drug", ru:"друг", en:"friend (boy)", tr:"druk", pic:"🤝"},
-    {id:"podruga", ru:"подру́га", en:"friend (girl)", tr:"padruga", pic:"👭"},
-    {id:"vot", ru:"вот", en:"here is", tr:"vot", pic:"🎁"},
-    {id:"a_conj", ru:"а", en:"and, but", tr:"a", pic:"↔️"}
+    {id:"moy", ru:"мой", en:"my (he-words)", tr:"moy", pic:"<img class='wp' src='img/9f6b0ae8f661.webp' alt=''>"},
+    {id:"moya", ru:"моя́", en:"my (she-words)", tr:"maya", pic:"<img class='wp' src='img/400e61409de7.webp' alt=''>"},
+    {id:"moyo", ru:"моё", en:"my (it-words)", tr:"mayo", pic:"<img class='wp' src='img/93f54aeab7d7.webp' alt=''>"},
+    {id:"tvoy", ru:"твой", en:"your (he-words)", tr:"tvoy", pic:"<img class='wp' src='img/47588fc26500.webp' alt=''>"},
+    {id:"tvoya", ru:"твоя́", en:"your (she-words)", tr:"tvaya", pic:"<img class='wp' src='img/2f8c8bf8f7d7.webp' alt=''>"},
+    {id:"semya", ru:"семья́", en:"family", tr:"simya", pic:"<img class='wp' src='img/d76b089ca245.webp' alt=''>"},
+    {id:"brat", ru:"брат", en:"brother", tr:"brat", pic:"<img class='wp' src='img/2462dd2e8ca9.webp' alt=''>"},
+    {id:"sestra", ru:"сестра́", en:"sister", tr:"sistra", pic:"<img class='wp' src='img/8df78b82c46e.webp' alt=''>"},
+    {id:"babushka", ru:"ба́бушка", en:"grandma", tr:"babushka", pic:"<img class='wp' src='img/5de075da6ffd.webp' alt=''>"},
+    {id:"dedushka", ru:"де́душка", en:"grandpa", tr:"dyedushka", pic:"<img class='wp' src='img/c0dd4e2aed64.webp' alt=''>"},
+    {id:"drug", ru:"друг", en:"friend (boy)", tr:"druk", pic:"<img class='wp' src='img/3d2249289cae.webp' alt=''>"},
+    {id:"podruga", ru:"подру́га", en:"friend (girl)", tr:"padruga", pic:"<img class='wp' src='img/d3090eaa850f.webp' alt=''>"},
+    {id:"vot", ru:"вот", en:"here is", tr:"vot", pic:"<img class='wp' src='img/c62d730f687a.webp' alt=''>"},
+    {id:"a_conj", ru:"а", en:"and, but", tr:"a", pic:""}
   ],
   groups:[["semya","brat","sestra","babushka","dedushka"],["moy","moya","moyo","vot","a_conj"],["tvoy","tvoya","drug","podruga"]],
   sentences:[
@@ -1068,20 +1071,20 @@ const UNIT4 = {
 };
 const UNIT5 = {
   words:[
-    {id:"burunduk", ru:"бурунду́к", en:"chipmunk", tr:"burunduk", pic:"🐿️"},
-    {id:"yozh", ru:"ёж", en:"hedgehog", tr:"yosh", pic:"🦔"},
-    {id:"medved", ru:"медве́дь", en:"bear", tr:"midvyet'", pic:"🐻"},
-    {id:"lisa", ru:"лиса́", en:"fox", tr:"lisa", pic:"🦊"},
-    {id:"volk", ru:"волк", en:"wolf", tr:"volk", pic:"🐺"},
-    {id:"zayats", ru:"за́яц", en:"hare (bunny)", tr:"zayits", pic:"🐰"},
-    {id:"ptitsa", ru:"пти́ца", en:"bird", tr:"ptitsa", pic:"🐦"},
-    {id:"ryba", ru:"ры́ба", en:"fish", tr:"ryba", pic:"🐟"},
-    {id:"korova", ru:"коро́ва", en:"cow", tr:"karova", pic:"🐄"},
-    {id:"loshad", ru:"ло́шадь", en:"horse", tr:"loshat'", pic:"🐴"},
-    {id:"bolshoy", ru:"большо́й", en:"big (he-words)", tr:"bal'shoy", pic:"🐘"},
-    {id:"bolshaya", ru:"больша́я", en:"big (she-words)", tr:"bal'shaya", pic:"🐋"},
-    {id:"malenkiy", ru:"ма́ленький", en:"small (he-words)", tr:"malin'kiy", pic:"🐜"},
-    {id:"malenkaya", ru:"ма́ленькая", en:"small (she-words)", tr:"malin'kaya", pic:"🐞"}
+    {id:"burunduk", ru:"бурунду́к", en:"chipmunk", tr:"burunduk", pic:"<img class='wp' src='img/ca7827c001a6.webp' alt=''>"},
+    {id:"yozh", ru:"ёж", en:"hedgehog", tr:"yosh", pic:"<img class='wp' src='img/07825ddbcdc1.webp' alt=''>"},
+    {id:"medved", ru:"медве́дь", en:"bear", tr:"midvyet'", pic:"<img class='wp' src='img/7a8baf3aef7b.webp' alt=''>"},
+    {id:"lisa", ru:"лиса́", en:"fox", tr:"lisa", pic:"<img class='wp' src='img/326fca1797fc.webp' alt=''>"},
+    {id:"volk", ru:"волк", en:"wolf", tr:"volk", pic:"<img class='wp' src='img/244eaa78791d.webp' alt=''>"},
+    {id:"zayats", ru:"за́яц", en:"hare (bunny)", tr:"zayits", pic:"<img class='wp' src='img/cad7c9bbdf79.webp' alt=''>"},
+    {id:"ptitsa", ru:"пти́ца", en:"bird", tr:"ptitsa", pic:"<img class='wp' src='img/e24ac1d7392f.webp' alt=''>"},
+    {id:"ryba", ru:"ры́ба", en:"fish", tr:"ryba", pic:"<img class='wp' src='img/1e53861d028b.webp' alt=''>"},
+    {id:"korova", ru:"коро́ва", en:"cow", tr:"karova", pic:"<img class='wp' src='img/4cfb07efd3ab.webp' alt=''>"},
+    {id:"loshad", ru:"ло́шадь", en:"horse", tr:"loshat'", pic:"<img class='wp' src='img/6c8f56250d54.webp' alt=''>"},
+    {id:"bolshoy", ru:"большо́й", en:"big (he-words)", tr:"bal'shoy", pic:"<img class='wp' src='img/e50972da85e8.webp' alt=''>"},
+    {id:"bolshaya", ru:"больша́я", en:"big (she-words)", tr:"bal'shaya", pic:"<img class='wp' src='img/f8147d1d6adc.webp' alt=''>"},
+    {id:"malenkiy", ru:"ма́ленький", en:"small (he-words)", tr:"malin'kiy", pic:"<img class='wp' src='img/5ec560080360.webp' alt=''>"},
+    {id:"malenkaya", ru:"ма́ленькая", en:"small (she-words)", tr:"malin'kaya", pic:"<img class='wp' src='img/aaafeba252d0.webp' alt=''>"}
   ],
   groups:[["burunduk","yozh","medved","lisa","volk"],["zayats","ptitsa","ryba","korova","loshad"],["bolshoy","bolshaya","malenkiy","malenkaya"]],
   sentences:[
@@ -1114,18 +1117,18 @@ const UNIT5 = {
 };
 const UNIT6 = {
   words:[
-    {id:"gde", ru:"где", en:"where", tr:"gdye", pic:"🔎"},
-    {id:"zdes", ru:"здесь", en:"here", tr:"zdyes'", pic:"📍"},
-    {id:"tam", ru:"там", en:"there", tr:"tam", pic:"🔭"},
-    {id:"doma", ru:"до́ма", en:"at home", tr:"doma", pic:"🏡"},
-    {id:"v_shkole", ru:"в шко́ле", en:"at school", tr:"f shkolye", pic:"🎒"},
-    {id:"park", ru:"парк", en:"park", tr:"park", pic:"🌳"},
-    {id:"v_parke", ru:"в па́рке", en:"in the park", tr:"f parkye", pic:"🛝"},
-    {id:"stol", ru:"стол", en:"table", tr:"stol", pic:"🍽️"},
-    {id:"na_stole", ru:"на столе́", en:"on the table", tr:"na stalye", pic:"🧁"},
-    {id:"sumka", ru:"су́мка", en:"bag", tr:"sumka", pic:"👜"},
-    {id:"v_sumke", ru:"в су́мке", en:"in the bag", tr:"f sumkye", pic:"🛍️"},
-    {id:"komnata", ru:"ко́мната", en:"room", tr:"komnata", pic:"🛏️"}
+    {id:"gde", ru:"где", en:"where", tr:"gdye", pic:"<img class='wp' src='img/1aab38ba2a4d.webp' alt=''>"},
+    {id:"zdes", ru:"здесь", en:"here", tr:"zdyes'", pic:"<img class='wp' src='img/8baafbe13fab.webp' alt=''>"},
+    {id:"tam", ru:"там", en:"there", tr:"tam", pic:"<img class='wp' src='img/8277092e8feb.webp' alt=''>"},
+    {id:"doma", ru:"до́ма", en:"at home", tr:"doma", pic:"<img class='wp' src='img/4c01177f6157.webp' alt=''>"},
+    {id:"v_shkole", ru:"в шко́ле", en:"at school", tr:"f shkolye", pic:"<img class='wp' src='img/7d33c00174c5.webp' alt=''>"},
+    {id:"park", ru:"парк", en:"park", tr:"park", pic:"<img class='wp' src='img/084d9f572d8a.webp' alt=''>"},
+    {id:"v_parke", ru:"в па́рке", en:"in the park", tr:"f parkye", pic:"<img class='wp' src='img/e09bb2ab0121.webp' alt=''>"},
+    {id:"stol", ru:"стол", en:"table", tr:"stol", pic:"<img class='wp' src='img/eaef457c789d.webp' alt=''>"},
+    {id:"na_stole", ru:"на столе́", en:"on the table", tr:"na stalye", pic:"<img class='wp' src='img/cab2339ab984.webp' alt=''>"},
+    {id:"sumka", ru:"су́мка", en:"bag", tr:"sumka", pic:"<img class='wp' src='img/80a41cd86cd9.webp' alt=''>"},
+    {id:"v_sumke", ru:"в су́мке", en:"in the bag", tr:"f sumkye", pic:"<img class='wp' src='img/fd0e5b7862d3.webp' alt=''>"},
+    {id:"komnata", ru:"ко́мната", en:"room", tr:"komnata", pic:"<img class='wp' src='img/6cce153e1399.webp' alt=''>"}
   ],
   groups:[["gde","zdes","tam","doma"],["v_shkole","park","v_parke","komnata"],["stol","na_stole","sumka","v_sumke"]],
   sentences:[
@@ -1160,18 +1163,18 @@ const UNIT6 = {
 };
 const UNIT7 = {
   words:[
-    {id:"kak_dela", ru:"как дела́?", en:"how are you?", tr:"kak dila?", pic:"💬"},
-    {id:"horosho", ru:"хорошо́", en:"good, fine", tr:"kharasho", pic:"🙂"},
-    {id:"otlichno", ru:"отли́чно", en:"great", tr:"atlichna", pic:"🤩"},
-    {id:"normalno", ru:"норма́льно", en:"okay", tr:"narmal'na", pic:"😐"},
-    {id:"ploho", ru:"пло́хо", en:"bad", tr:"plokha", pic:"😞"},
-    {id:"a_ty", ru:"а ты?", en:"and you?", tr:"a ty?", pic:"🔄"},
-    {id:"tozhe", ru:"то́же", en:"too, also", tr:"tozhe", pic:"👯"},
-    {id:"poka", ru:"пока́", en:"bye (friends)", tr:"paka", pic:"🤚"},
-    {id:"do_svidaniya", ru:"до свида́ния", en:"goodbye (polite)", tr:"da svidaniya", pic:"🎩"},
-    {id:"dobroe_utro", ru:"до́брое у́тро", en:"good morning", tr:"dobraye utra", pic:"🌅"},
-    {id:"spokoynoy_nochi", ru:"споко́йной но́чи", en:"good night", tr:"spakoynay nochi", pic:"🌙"},
-    {id:"izvini", ru:"извини́", en:"sorry", tr:"izvini", pic:"🙇"}
+    {id:"kak_dela", ru:"как дела́?", en:"how are you?", tr:"kak dila?", pic:"<img class='wp' src='img/9469ce817851.webp' alt=''>"},
+    {id:"horosho", ru:"хорошо́", en:"good, fine", tr:"kharasho", pic:"<img class='wp' src='img/2eb3a2c34715.webp' alt=''>"},
+    {id:"otlichno", ru:"отли́чно", en:"great", tr:"atlichna", pic:"<img class='wp' src='img/bced3c1925d9.webp' alt=''>"},
+    {id:"normalno", ru:"норма́льно", en:"okay", tr:"narmal'na", pic:"<img class='wp' src='img/681174aa9c35.webp' alt=''>"},
+    {id:"ploho", ru:"пло́хо", en:"bad", tr:"plokha", pic:"<img class='wp' src='img/5a097d642ea2.webp' alt=''>"},
+    {id:"a_ty", ru:"а ты?", en:"and you?", tr:"a ty?", pic:""},
+    {id:"tozhe", ru:"то́же", en:"too, also", tr:"tozhe", pic:"<img class='wp' src='img/70b90bf8f417.webp' alt=''>"},
+    {id:"poka", ru:"пока́", en:"bye (friends)", tr:"paka", pic:"<img class='wp' src='img/04772c189651.webp' alt=''>"},
+    {id:"do_svidaniya", ru:"до свида́ния", en:"goodbye (polite)", tr:"da svidaniya", pic:"<img class='wp' src='img/cd36334ddb6c.webp' alt=''>"},
+    {id:"dobroe_utro", ru:"до́брое у́тро", en:"good morning", tr:"dobraye utra", pic:"<img class='wp' src='img/500c216dfa7d.webp' alt=''>"},
+    {id:"spokoynoy_nochi", ru:"споко́йной но́чи", en:"good night", tr:"spakoynay nochi", pic:"<img class='wp' src='img/9071e476eb3e.webp' alt=''>"},
+    {id:"izvini", ru:"извини́", en:"sorry", tr:"izvini", pic:"<img class='wp' src='img/b0a6187ad5ba.webp' alt=''>"}
   ],
   groups:[["kak_dela","horosho","otlichno","normalno"],["ploho","a_ty","tozhe","izvini"],["poka","do_svidaniya","dobroe_utro","spokoynoy_nochi"]],
   sentences:[
@@ -1206,20 +1209,20 @@ const UNIT7 = {
 };
 const UNIT8 = {
   words:[
-    {id:"odin", ru:"оди́н", en:"one", tr:"adin", pic:"1️⃣"},
-    {id:"dva", ru:"два", en:"two", tr:"dva", pic:"2️⃣"},
-    {id:"tri", ru:"три", en:"three", tr:"tri", pic:"3️⃣"},
-    {id:"chetyre", ru:"четы́ре", en:"four", tr:"chityri", pic:"4️⃣"},
-    {id:"pyat", ru:"пять", en:"five", tr:"pyat'", pic:"5️⃣"},
-    {id:"shest", ru:"шесть", en:"six", tr:"shest'", pic:"6️⃣"},
-    {id:"sem", ru:"семь", en:"seven", tr:"syem'", pic:"7️⃣"},
-    {id:"vosem", ru:"во́семь", en:"eight", tr:"vosim'", pic:"8️⃣"},
-    {id:"devyat", ru:"де́вять", en:"nine", tr:"dyevit'", pic:"9️⃣"},
-    {id:"desyat", ru:"де́сять", en:"ten", tr:"dyesit'", pic:"🔟"},
-    {id:"plyus", ru:"плюс", en:"plus", tr:"plyus", pic:"🧮"},
-    {id:"skolko", ru:"ско́лько?", en:"how many?", tr:"skol'ka?", pic:"🔢"},
-    {id:"skolko_let", ru:"Ско́лько тебе́ лет?", en:"How old are you?", tr:"skol'ka tibye lyet?", pic:"🎈"},
-    {id:"mne_let", ru:"Мне … лет.", en:"I’m … years old.", tr:"mnye … lyet", pic:"🕯️"}
+    {id:"odin", ru:"оди́н", en:"one", tr:"adin", pic:"<img class='wp' src='img/1df3feafcdfb.webp' alt=''>"},
+    {id:"dva", ru:"два", en:"two", tr:"dva", pic:"<img class='wp' src='img/169c948a58ba.webp' alt=''>"},
+    {id:"tri", ru:"три", en:"three", tr:"tri", pic:"<img class='wp' src='img/c8c8b994ee9f.webp' alt=''>"},
+    {id:"chetyre", ru:"четы́ре", en:"four", tr:"chityri", pic:"<img class='wp' src='img/e0b890977c19.webp' alt=''>"},
+    {id:"pyat", ru:"пять", en:"five", tr:"pyat'", pic:"<img class='wp' src='img/b2cb4b5fd037.webp' alt=''>"},
+    {id:"shest", ru:"шесть", en:"six", tr:"shest'", pic:"<img class='wp' src='img/d2b77c0a03ec.webp' alt=''>"},
+    {id:"sem", ru:"семь", en:"seven", tr:"syem'", pic:"<img class='wp' src='img/fdaf13b809d9.webp' alt=''>"},
+    {id:"vosem", ru:"во́семь", en:"eight", tr:"vosim'", pic:"<img class='wp' src='img/cdb42a4c17b3.webp' alt=''>"},
+    {id:"devyat", ru:"де́вять", en:"nine", tr:"dyevit'", pic:"<img class='wp' src='img/f83c189d6c20.webp' alt=''>"},
+    {id:"desyat", ru:"де́сять", en:"ten", tr:"dyesit'", pic:"<img class='wp' src='img/e6bfb3c0fe9e.webp' alt=''>"},
+    {id:"plyus", ru:"плюс", en:"plus", tr:"plyus", pic:"<img class='wp' src='img/4fb7004a8c9d.webp' alt=''>"},
+    {id:"skolko", ru:"ско́лько?", en:"how many?", tr:"skol'ka?", pic:"<img class='wp' src='img/9384a94751e8.webp' alt=''>"},
+    {id:"skolko_let", ru:"Ско́лько тебе́ лет?", en:"How old are you?", tr:"skol'ka tibye lyet?", pic:"<img class='wp' src='img/120cbf53358b.webp' alt=''>"},
+    {id:"mne_let", ru:"Мне … лет.", en:"I’m … years old.", tr:"mnye … lyet", pic:"<img class='wp' src='img/b8f91982c65f.webp' alt=''>"}
   ],
   groups:[["odin","dva","tri","chetyre","pyat"],["shest","sem","vosem","devyat","desyat"],["plyus","skolko","skolko_let","mne_let"]],
   sentences:[
@@ -1253,17 +1256,17 @@ const UNIT8 = {
 };
 const UNIT9 = {
   words:[
-    {id:"krasny", ru:"кра́сный", en:"red", tr:"krasny", pic:"🟥"},
-    {id:"siniy", ru:"си́ний", en:"blue", tr:"siniy", pic:"🟦"},
-    {id:"zelyony", ru:"зелёный", en:"green", tr:"zilyony", pic:"🟩"},
-    {id:"zhyolty", ru:"жёлтый", en:"yellow", tr:"zholty", pic:"🟨"},
-    {id:"bely", ru:"бе́лый", en:"white", tr:"byely", pic:"⬜"},
-    {id:"chyorny", ru:"чёрный", en:"black", tr:"chorny", pic:"⬛"},
-    {id:"rozovy", ru:"ро́зовый", en:"pink", tr:"rozavy", pic:"🩷"},
-    {id:"oranzhevy", ru:"ора́нжевый", en:"orange", tr:"aranzhivy", pic:"🟧"},
-    {id:"tsvet", ru:"цвет", en:"colour", tr:"tsvyet", pic:"🎨"},
-    {id:"lyubimy", ru:"люби́мый", en:"favourite", tr:"lyubimy", pic:"💖"},
-    {id:"kakogo_tsveta", ru:"Како́го цве́та?", en:"What colour?", tr:"kakova tsvyeta?", pic:"🖍️"}
+    {id:"krasny", ru:"кра́сный", en:"red", tr:"krasny", pic:"<img class='wp' src='img/a5798d14d5a7.webp' alt=''>"},
+    {id:"siniy", ru:"си́ний", en:"blue", tr:"siniy", pic:"<img class='wp' src='img/6b831751267d.webp' alt=''>"},
+    {id:"zelyony", ru:"зелёный", en:"green", tr:"zilyony", pic:"<img class='wp' src='img/f07cf6fe3bf7.webp' alt=''>"},
+    {id:"zhyolty", ru:"жёлтый", en:"yellow", tr:"zholty", pic:"<img class='wp' src='img/491e1cd6f280.webp' alt=''>"},
+    {id:"bely", ru:"бе́лый", en:"white", tr:"byely", pic:"<img class='wp' src='img/b84b01916328.webp' alt=''>"},
+    {id:"chyorny", ru:"чёрный", en:"black", tr:"chorny", pic:"<img class='wp' src='img/45db662eeaa1.webp' alt=''>"},
+    {id:"rozovy", ru:"ро́зовый", en:"pink", tr:"rozavy", pic:"<img class='wp' src='img/f46042e2e715.webp' alt=''>"},
+    {id:"oranzhevy", ru:"ора́нжевый", en:"orange", tr:"aranzhivy", pic:"<img class='wp' src='img/9516e0ba05bb.webp' alt=''>"},
+    {id:"tsvet", ru:"цвет", en:"colour", tr:"tsvyet", pic:"<img class='wp' src='img/123732ba0b2c.webp' alt=''>"},
+    {id:"lyubimy", ru:"люби́мый", en:"favourite", tr:"lyubimy", pic:"<img class='wp' src='img/de7bb1415ba9.webp' alt=''>"},
+    {id:"kakogo_tsveta", ru:"Како́го цве́та?", en:"What colour?", tr:"kakova tsvyeta?", pic:"<img class='wp' src='img/3499153d17eb.webp' alt=''>"}
   ],
   groups:[["krasny","siniy","zelyony","zhyolty"],["bely","chyorny","rozovy","oranzhevy"],["tsvet","lyubimy","kakogo_tsveta"]],
   sentences:[
@@ -1296,19 +1299,19 @@ const UNIT9 = {
 };
 const UNIT10 = {
   words:[
-    {id:"lyublyu", ru:"люблю́", en:"I love, I like", tr:"lyublyu", pic:"❤️"},
-    {id:"lyubish", ru:"лю́бишь", en:"you love, you like", tr:"lyubish", pic:"💞"},
-    {id:"lyubit", ru:"лю́бит", en:"he / she loves", tr:"lyubit", pic:"💘"},
-    {id:"ochen", ru:"о́чень", en:"very much", tr:"ochin'", pic:"💯"},
-    {id:"igrat", ru:"игра́ть", en:"to play", tr:"igrat'", pic:"🎮"},
-    {id:"chitat", ru:"чита́ть", en:"to read", tr:"chitat'", pic:"📖"},
-    {id:"risovat", ru:"рисова́ть", en:"to draw", tr:"risavat'", pic:"✏️"},
-    {id:"shokolad", ru:"шокола́д", en:"chocolate", tr:"shakalat", pic:"🍫"},
-    {id:"morozhenoe", ru:"моро́женое", en:"ice cream", tr:"marozhinaye", pic:"🍦"},
-    {id:"tort", ru:"торт", en:"cake", tr:"tort", pic:"🎂"},
-    {id:"futbol", ru:"футбо́л", en:"soccer", tr:"futbol", pic:"⚽"},
-    {id:"multfilmy", ru:"му́льтики", en:"cartoons", tr:"mul'tiki", pic:"📺"},
-    {id:"v_futbol", ru:"в футбо́л", en:"(play) soccer", tr:"f futbol", pic:"<span class=\"pp\">🏃<i>⚽</i></span>"}
+    {id:"lyublyu", ru:"люблю́", en:"I love, I like", tr:"lyublyu", pic:"<img class='wp' src='img/f7c30cea7536.webp' alt=''>"},
+    {id:"lyubish", ru:"лю́бишь", en:"you love, you like", tr:"lyubish", pic:"<img class='wp' src='img/533d045dc728.webp' alt=''>"},
+    {id:"lyubit", ru:"лю́бит", en:"he / she loves", tr:"lyubit", pic:"<img class='wp' src='img/c2492f62e519.webp' alt=''>"},
+    {id:"ochen", ru:"о́чень", en:"very much", tr:"ochin'", pic:""},
+    {id:"igrat", ru:"игра́ть", en:"to play", tr:"igrat'", pic:"<img class='wp' src='img/152695a6d5cc.webp' alt=''>"},
+    {id:"chitat", ru:"чита́ть", en:"to read", tr:"chitat'", pic:"<img class='wp' src='img/eba215fbb68f.webp' alt=''>"},
+    {id:"risovat", ru:"рисова́ть", en:"to draw", tr:"risavat'", pic:"<img class='wp' src='img/bfab6ee335b7.webp' alt=''>"},
+    {id:"shokolad", ru:"шокола́д", en:"chocolate", tr:"shakalat", pic:"<img class='wp' src='img/046dedd77b05.webp' alt=''>"},
+    {id:"morozhenoe", ru:"моро́женое", en:"ice cream", tr:"marozhinaye", pic:"<img class='wp' src='img/66b475178c00.webp' alt=''>"},
+    {id:"tort", ru:"торт", en:"cake", tr:"tort", pic:"<img class='wp' src='img/c22d8b5501f6.webp' alt=''>"},
+    {id:"futbol", ru:"футбо́л", en:"soccer", tr:"futbol", pic:"<img class='wp' src='img/781cb621e7e2.webp' alt=''>"},
+    {id:"multfilmy", ru:"му́льтики", en:"cartoons", tr:"mul'tiki", pic:"<img class='wp' src='img/d792b8b0e992.webp' alt=''>"},
+    {id:"v_futbol", ru:"в футбо́л", en:"(play) soccer", tr:"f futbol", pic:"<img class='wp' src='img/147aa50630c7.webp' alt=''>"}
   ],
   groups:[["lyublyu","lyubish","lyubit","ochen"],["shokolad","morozhenoe","tort","multfilmy"],["igrat","chitat","risovat","futbol","v_futbol"]],
   sentences:[
@@ -3509,7 +3512,14 @@ function flyStars(n, target){
 
 /* ---------- Exercise builders ---------- */
 function known(upTo){ return GROUPS.slice(0, upTo+1).flat().map(W); }
-function pickPicEx(w, pool){ return {type:"pickPic", word:w, options:shuffle([w, ...sample(pool.filter(x=>x!==w), Math.min(3, pool.length-1))])}; }
+/* look-alike pictures (same object or sign) are never offered together */
+const LOOKALIKE = new Set(["bely|kakogo_tsveta","bely|tsvet","bolshaya|chitat","bolshaya|kniga","bolshaya|malenkaya","bolshaya|moya","bolshaya|tvoya","bolshoy|malenkiy","bolshoy|moy","bolshoy|myach","bolshoy|tvoy","brat|mama","brat|papa","brat|semya","brat|sestra","chetyre|plyus","chetyre|skolko","chitat|kniga","chitat|malenkaya","chitat|moya","chitat|tvoya","chto|gde","chto|kakogo_tsveta","chto|kto","chto|skolko","chyorny|kakogo_tsveta","chyorny|tsvet","desyat|plyus","desyat|skolko","devyat|plyus","devyat|skolko","do_svidaniya|zdr","dom|doma","drug|kak_dela","drug|lyubit","drug|tozhe","drug|yozh","dva|plyus","dva|skolko","futbol|v_futbol","gde|kakogo_tsveta","gde|kto","gde|skolko","hochesh|hochu","hochesh|lyubish","hochesh|moyo","hochesh|na_stole","hochesh|ty","hochesh|yabloko","hochu|moyo","hochu|na_stole","hochu|yabloko","igrat|vot","kak_dela|lyubit","kak_dela|tozhe","kak_dela|yozh","kakogo_tsveta|krasny","kakogo_tsveta|kto","kakogo_tsveta|oranzhevy","kakogo_tsveta|rozovy","kakogo_tsveta|siniy","kakogo_tsveta|skolko","kakogo_tsveta|zelyony","kakogo_tsveta|zhyolty","kak|menya","kniga|malenkaya","kniga|moya","kniga|tvoya","krasny|tsvet","kto|skolko","lyubimy|lyubish","lyubimy|lyubit","lyubimy|lyublyu","lyubish|spasibo","lyubish|ty","lyubit|spasibo","lyubit|tozhe","lyubit|yozh","lyublyu|spasibo","malenkaya|moya","malenkaya|tvoya","malenkiy|moy","malenkiy|myach","malenkiy|tvoy","mama|papa","mama|semya","mama|sestra","menya|ya","mne_let|skolko_let","mne_let|tort","morozhenoe|tozhe","moya|tvoya","moyo|na_stole","moyo|yabloko","moy|myach","moy|tvoy","myach|tvoy","na_stole|stol","na_stole|yabloko","odin|plyus","odin|skolko","oranzhevy|tsvet","papa|semya","papa|sestra","park|v_parke","plyus|pyat","plyus|sem","plyus|shest","plyus|tri","plyus|vosem","pyat|skolko","rozovy|tsvet","semya|sestra","sem|skolko","shest|skolko","shkola|v_shkole","siniy|tsvet","skolko_let|tort","skolko|tri","skolko|vosem","sumka|v_sumke","tozhe|yozh","tsvet|zelyony","tsvet|zhyolty"]);
+const lookAlike = (a,b) => LOOKALIKE.has(a.id < b.id ? a.id+"|"+b.id : b.id+"|"+a.id);
+function pickPicEx(w, pool){
+  if (!w.pic) return listenEx(w, pool);
+  const others = pool.filter(x => x!==w && x.pic && !lookAlike(w,x));
+  return {type:"pickPic", word:w, options:shuffle([w, ...sample(others, Math.min(3, others.length))])};
+}
 function listenEx(w, pool){ return {type:"listen", word:w, options:shuffle([w, ...sample(pool.filter(x=>x!==w), Math.min(3, pool.length-1))])}; }
 function meaningEx(w, pool){ return {type:"meaning", word:w, options:shuffle([w, ...sample(pool.filter(x=>x!==w), Math.min(2, pool.length-1))])}; }
 function matchEx(pool){ return {type:"match", words:sample(pool, Math.min(5, pool.length))}; }
@@ -3530,7 +3540,7 @@ function blankEx(s, pool=SENTENCES){
   const opts = shuffle([pick, ...sample(BLANKABLE.filter(b => norm(b)!==norm(pick) && seen.includes(norm(b))), 2)]);
   return {type:"blank", s, word:pick, options:opts};
 }
-function speakEx(text, en, mode="repeat", extra={}){ return {type:"speak", text, en, mode, ...extra}; }
+function speakEx(text, en, mode="repeat", extra={}){ if (mode==="picture" && !extra.pic) mode = "recall"; return {type:"speak", text, en, mode, ...extra}; }
 function heardEx(s, pool){ return {type:"heard", s, options:shuffle([s, ...sample(pool.filter(x=>x!==s), 2)])}; }
 
 function lettersOf(w){ return [...plain(w).toLowerCase()]; }
@@ -6906,6 +6916,18 @@ fitScreen(); window.addEventListener("resize", () => fitScreen());
 /* ---------- Start ---------- */
 useCourse(COURSE);
 if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost") && !/claude\.ai|claudeusercontent/.test(location.host)) navigator.serviceWorker.register("sw.js").catch(() => {});
+/* word pictures: download them once in the background so they also show offline */
+(function savePics(){
+  const KEY = "mishaling-wordpics", urls = [...new Set([...document.scripts].map(x => x.textContent).join(" ").match(/img\/[0-9a-f]{12}\.webp(?=' alt)/g) || [])];
+  if (!urls.length || !navigator.serviceWorker || !/^https?:/.test(location.protocol)) return;
+  try { if (localStorage.getItem(KEY) === String(urls.length) + APP_VERSION) return; } catch(_){}
+  navigator.serviceWorker.ready.then(() => setTimeout(async () => {
+    if (!navigator.onLine) return;
+    let ok = 0;
+    for (const u of urls){ try { const r = await fetch(u); if (r.ok) ok++; } catch(_){} }
+    if (ok === urls.length) try { localStorage.setItem(KEY, String(urls.length) + APP_VERSION); } catch(_){}
+  }, 8000)).catch(() => {});
+})();
 if (!P.profiles.length) editLearner(null);
 else if (!P.current){ P.current = P.profiles[0].id; saveP(); COURSE = courseOf(P.current); useCourse(COURSE); S = withAz(loadS(P.current)); home(); }
 else home();
