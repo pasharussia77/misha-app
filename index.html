@@ -3086,7 +3086,10 @@ function vpLoad(c){
     if (!j && "caches" in window){ try { const r = await caches.match(new URL(`voices/${c}/index.json`, location.href).href, {ignoreSearch:true}); if (r) j = await r.json(); } catch(_){} }
     if (!j || !j.clips){ delete VP[c]; return; }
     const maps = {};
-    for (const role in j.clips){ const m = new Map(); for (const k in j.clips[role]){ const id = j.clips[role][k]; vVariants(k).forEach(v => { if (!m.has(v)) m.set(v, id); }); } maps[role] = m; }
+    for (const role in j.clips){ const m = new Map(), src = j.clips[role];
+      for (const k in src) m.set(k, src[k]);                                               /* exact text first: "Это мама." and "Это мама?" keep their own recordings */
+      for (const k in src) vVariants(k).forEach(v => { if (!m.has(v)) m.set(v, src[k]); }); /* then look-alikes, only where no exact recording exists */
+      maps[role] = m; }
     o.maps = maps; o.ids = [...new Set(Object.values(j.clips).flatMap(x => Object.values(x)))]; o.mb = j.mb || 0;
   });
   return o.ready;
@@ -3163,6 +3166,21 @@ function voicesAuto(){
 }
 let curDone = null;
 function stopAudio(){ if (curAudio){ curAudio.pause(); curAudio = null; } if (curDone){ const d = curDone; curDone = null; d(); } }
+/* Moving on while a voice is still talking: fade it out quickly instead of letting it run on or cutting it dead */
+let fadeUntil = 0;
+function fadeAudio(ms = 220){
+  sayGen++; clearQueue();
+  try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch(_){}
+  const a = curAudio;
+  if (a && !a.paused && !a.ended){
+    curAudio = null; fadeUntil = performance.now() + ms;
+    const v0 = a.volume, t0 = performance.now();
+    const iv = setInterval(() => { const k = (performance.now() - t0) / ms; if (k >= 1){ clearInterval(iv); a.pause(); } else { try { a.volume = v0 * (1 - k) * (1 - k); } catch(_){} } }, 16);
+  }
+  if (curDone){ const d = curDone; curDone = null; d(); }
+  if (curAudio){ curAudio.pause(); curAudio = null; }
+  setTalking(false);
+}
 function playUrl(url, rate=1){
   return new Promise(res => {
     stopAudio();
@@ -3205,6 +3223,7 @@ async function sayInner(text, slow, who){
   const wasTalking = !!(window.speechSynthesis && (speechSynthesis.speaking || speechSynthesis.pending));
   if (window.speechSynthesis) speechSynthesis.cancel();
   stopAudio();
+  if (fadeUntil > performance.now()) await new Promise(r => setTimeout(r, Math.min(250, fadeUntil - performance.now())));   /* let the last voice finish fading */
   if (!VP[CC]) vpLoad(CC);
   if (VP[CC] && !VP[CC].maps) await VP[CC].ready;
   if (my !== sayGen || document.hidden) return;
@@ -4417,7 +4436,7 @@ function wireSay(){
 }
 
 function showExercise(){
-  clearQueue(); speaker = "misha";
+  fadeAudio(); speaker = "misha";
   if (L.i >= L.queue.length) return finishLesson();
   saveResume();
   while (L.queue[L.i] && L.queue[L.i].type==="lread") L.i++;
@@ -4461,6 +4480,7 @@ function bump(ok){
   if (ok && (L.combo===5 || L.combo===10)) L.pendingCombo = L.combo;
 }
 function next(){
+  fadeAudio();
   L.i++;
   if (L.pendingCombo){ const n = L.pendingCombo; L.pendingCombo = 0; return splash(chip("combo"), `${n} in a row!`, n===10 ? "You’re on fire! Keep going!" : "Wow, you’re on a roll!"); }
   const nx = L.queue[L.i];
@@ -5472,7 +5492,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "16.6 (November 9, 2026)";
+const APP_VERSION = "16.6.1 (November 9, 2026)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */
