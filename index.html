@@ -370,6 +370,39 @@ img.chip.papa{filter:brightness(.8) saturate(.85)}
 .fsec{border-top:2px solid var(--line)}
 .fsec>.fbody{display:none;padding:0 0 14px}
 .fold.open>.fbody,.fsec.open>.fbody{display:block;animation:popup .25s ease-out}
+/* Settings redesign (16.7): openable cards are clearly boxed and shaded */
+:root{--edge:#C9A877;--edge2:#D2B98F;--hd1:#F6EAD6;--hd2:#F0DDB8;--sd1:#FBF1DF;--sd2:#F6EAD6;--unl:#8A5A00}
+@media (prefers-color-scheme: dark){:root[data-theme="auto"]{--edge:#7A6247;--edge2:#6B5640;--hd1:#33281F;--hd2:#43342A;--sd1:#2F251D;--sd2:#3A2D23;--unl:#FFD27A}}
+:root[data-theme="dark"]{--edge:#7A6247;--edge2:#6B5640;--hd1:#33281F;--hd2:#43342A;--sd1:#2F251D;--sd2:#3A2D23;--unl:#FFD27A}
+.dcard.fold{border:3px solid var(--edge);box-shadow:0 3px 0 var(--edge2);overflow:hidden}
+.dcard.fold.wsnew{border-color:#F2B84B}
+.dcard.fold>.fhd{background:var(--hd1)}
+.dcard.fold.open>.fhd{background:var(--hd2);border-bottom:2px solid var(--edge)}
+.dcard.fold>.fbody{padding-top:12px}
+.fsec{border:2px solid var(--edge2);border-radius:16px;margin:8px 0;overflow:hidden;background:var(--surface)}
+.fsec>.fhd2{padding:10px 12px;min-height:52px;background:var(--sd1)}
+.fsec.open>.fhd2{background:var(--sd2)}
+.fsec>.fbody{padding:6px 12px 14px;border-top:2px solid var(--edge2)}
+.ficon{font-size:24px;width:32px;text-align:center;flex:none}
+.chip2{font-size:13px;font-weight:800;padding:3px 9px;border-radius:999px;background:var(--chip);color:var(--muted);white-space:nowrap;flex:none}
+.chip2.on{background:var(--good-bg);color:var(--good-ink)}
+.chip2.warn{background:#FFF4D6;color:#6E4700}
+.dgroup{padding:10px 4px 0}.dgroup h3{margin:0;font-family:var(--font-head);font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.dgroup p{margin:2px 0 0;color:var(--muted);font-weight:700;font-size:14px}
+.subhd{padding:12px 4px 4px}.subhd b{display:block;font-family:var(--font-head);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--primary-lip)}
+.subhd small{color:var(--muted);font-weight:700;font-size:13px}
+.lockf{padding:8px 0}.lbl{font-weight:800;font-size:15px}
+.lockrow{display:flex;align-items:center;gap:6px;margin-top:6px;padding:4px 6px 4px 12px;border-radius:12px;border:2px dashed var(--edge2);background:var(--chip);font-weight:800}
+.lockrow .v{flex:1;min-width:0;overflow-wrap:anywhere}
+.minilink{appearance:none;border:0;background:none;min-height:44px;padding:0 8px;font:inherit;font-weight:800;font-size:15px;color:var(--primary-lip);cursor:pointer;text-decoration:underline}
+.lockhint{display:block;margin-top:6px;color:var(--muted);font-weight:700;font-size:13px}
+.unl{display:block;margin-top:6px;color:var(--unl);font-weight:800;font-size:13px}
+.unl input{display:block;width:100%;margin-top:6px;font:inherit;font-weight:700;font-size:16px;padding:12px;border-radius:12px;border:2px solid var(--sun-lip);background:var(--surface);color:var(--ink)}
+.rowbtns{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.okmsg{margin-top:10px;padding:9px 12px;border-radius:12px;background:var(--good-bg);color:var(--good-ink);font-weight:800;font-size:15px}
+.okmsg.err{background:var(--bad-bg);color:var(--bad-ink)}
+.linkcard{display:flex;align-items:center;gap:10px;width:100%;min-height:56px;padding:12px 14px;border:2px dashed var(--edge2);border-radius:18px;background:none;font:inherit;font-weight:800;color:var(--ink);cursor:pointer;text-align:left}
+.linkcard span:nth-child(2){flex:1}
 /* Offline */
 .offrow{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:2px solid var(--line)}
 .offrow .tx{flex:1;font-weight:800}.offrow small{display:block;color:var(--muted);font-weight:700}
@@ -2589,37 +2622,27 @@ function wsRefPics(){
   toast("Saving 2 reference pictures…");
 }
 function wsDashHTML(){
-  const all = wsAllOrders(); if (!all.length) return "";
+  const all = wsAllOrders(); if (!all.length && !dashNote.ws) return "";
   const fresh = all.some(x => !x.o.pSeen); if (fresh) dashOpen.ws = true;
   return `<div class="dcard fold ${dashOpen.ws || fresh ? "open" : ""} ${fresh ? "wsnew" : ""}"><button class="fhd" data-ft="ws"><h3>🧵 Workshop orders${fresh ? ` <span class="newpill">New</span>` : ""}</h3><span class="chev">›</span></button><div class="fbody">
     ${all.map(({p, c, o}) => { const it = wsItem(o), st = wsStage(o), arr = o.readyDay ? addDays(o.day, wsReadyD(o)) : null;
       return `<div class="wsorder"><div class="wsh">${avHTML(p.avatar, 40)}<div><b>${esc(p.name)} ${COURSE_FLAGS[c]}: “${esc(o.wish)}”</b><small>Order ${esc(o.id)} · ordered ${wsWhen(o.day)} · now: ${WS_STAGES[st][0]} ${WS_STAGES[st][1]}</small></div></div>
         <p class="note" style="text-align:left;margin:6px 0">${it ? (o.readyDay ? (wsReady(o) ? "✓ Delivered. Waiting for pickup." : `✓ Switched to ready. It arrives on ${wsWhen(arr)}.`) : "✓ The item is in the app. You can switch it to ready.") : "The item isn’t in the app yet. Copy the order for Claude, make the pictures, then bring them to Claude."}</p>
         <div class="wsbtns"><button class="btn small ghost" data-wscopy="${p.id}:${c}">📋 Copy for Claude</button><button class="btn small ghost" data-wsref>⬇️ Reference pictures</button>
-        ${!o.readyDay ? `<button class="btn small" data-wsready="${p.id}:${c}" ${it ? "" : "disabled"}>🎁 Ready for pickup</button>` : ""}<button class="btn small ghost" data-wscancel="${p.id}:${c}">↩️ Cancel and refund</button></div></div>`; }).join("")}
+        ${!o.readyDay ? `<button class="btn small" data-wsready="${p.id}:${c}" ${it ? "" : "disabled"}>🎁 Ready for pickup</button>` : ""}<button class="btn small ghost" data-wscancel="${p.id}:${c}">↩️ Cancel and refund</button></div></div>`; }).join("") || `<p class="note" style="text-align:left">No open orders.</p>`}
+    ${noteHTML("ws")}
+    <p class="note" style="text-align:left;margin:12px 0 0;padding-top:10px;border-top:2px solid var(--line)">🔔 Phone notification for new orders: <b>${P.ntfy ? "On" : "Off"}</b>. Set it up in Grown-up settings.</p>
     </div></div>`;
-}
-/* 📚 How many words the app teaches, and how many each child has learned. Counted from the units, so new units are included automatically. */
-function wordsDashHTML(){
-  const totals = {ru:withContent("ru", () => [ALLWORDS.length, UNIT_IDS.length]), es:withContent("es", () => [ALLWORDS.length, UNIT_IDS.length])};
-  const rows = P.profiles.map(p => `<div class="wsorder"><div class="wsh">${avHTML(p.avatar, 36)}<div style="flex:1"><b>${esc(p.name)}</b>
-    ${["ru","es"].map(c => withContent(c, () => { const s = stateOf(p.id, c), total = ALLWORDS.length;
-      const st = ALLWORDS.map(w => wordStats(s, w)).filter(Boolean), learned = st.length, well = st.filter(x => x.score != null && x.score >= 80).length;
-      return `<div class="prog" style="margin:6px 0 0"><div class="lab"><span>${COURSE_FLAGS[c]} ${COURSE_NAMES[c]} words learned</span><span>${learned} / ${total}</span></div><div class="bar"><i style="width:${Math.round(100*learned/total)}%"></i></div></div>
-      <small>Known well (grade A or B): ${well} · still to meet: ${total - learned}</small>`; })).join("")}</div></div></div>`).join("");
-  return `<div class="dcard fold ${dashOpen.words ? "open" : ""}"><button class="fhd" data-ft="words"><h3>📚 Words</h3><span class="chev">›</span></button><div class="fbody">
-    <p class="sub" style="margin:0 0 6px">${COURSE_FLAGS.ru} The Russian course teaches <b>${totals.ru[0]} words</b> in ${totals.ru[1]} units, plus the 33 letters. ${COURSE_FLAGS.es} The Spanish course teaches <b>${totals.es[0]} words</b> in ${totals.es[1]} units, plus the sounds. These numbers grow by themselves when units are added.</p>
-    ${rows}</div></div>`;
 }
 function wsDashWire(editKid){
   const all = wsAllOrders(), find = key => { const [pid, c] = key.split(":"); return all.find(x => x.p.id===pid && x.c===c); };
-  app.querySelectorAll("[data-wscopy]").forEach(b => b.onclick = () => { const x = find(b.dataset.wscopy); wsCopy(wsForClaude(x.p, x.o)); });
-  app.querySelectorAll("[data-wsref]").forEach(b => b.onclick = wsRefPics);
-  app.querySelectorAll("[data-wsready]").forEach(b => b.onclick = () => { { const [pid, c] = b.dataset.wsready.split(":"); editKid(pid, c, s2 => { if (s2.order){ s2.order.readyDay = todayKey(); wsSync(s2); } }); } dashOpen.ws = true; parentDash(); toast("Done! The children will see it arrive."); });
+  app.querySelectorAll("[data-wscopy]").forEach(b => b.onclick = () => { const x = find(b.dataset.wscopy); wsCopy(wsForClaude(x.p, x.o)); setNote("ws", "✓ Order copied. Paste it into ChatGPT and into Claude"); dashOpen.ws = true; dashRedo(); });
+  app.querySelectorAll("[data-wsref]").forEach(b => b.onclick = () => { wsRefPics(); setNote("ws", "✓ 2 reference pictures saved to Downloads"); dashOpen.ws = true; dashRedo(); });
+  app.querySelectorAll("[data-wsready]").forEach(b => b.onclick = () => { { const [pid, c] = b.dataset.wsready.split(":"); editKid(pid, c, s2 => { if (s2.order){ s2.order.readyDay = todayKey(); wsSync(s2); } }); } dashOpen.ws = true; setNote("ws", "✓ Switched to “Ready for pickup”. The children will see it arrive."); dashRedo(); });
   app.querySelectorAll("[data-wscancel]").forEach(b => b.onclick = () => {
     const x = find(b.dataset.wscancel);
     const bg = sheet(`<h2>Cancel this order?</h2><p class="sub">${esc(x.p.name)} gets the ⭐ ${x.o.price} stars back.</p><div style="display:grid;gap:10px"><button class="btn" id="wsCx">Cancel and refund</button><button class="btn ghost" data-close>Keep the order</button></div>`, true);
-    $("#wsCx", bg).onclick = () => { editKid(x.p.id, x.c, s2 => { if (s2.order){ s2.stars = (s2.stars||0) + s2.order.price; s2.order = null; } }); bg.remove(); parentDash(); toast("Order cancelled. Stars returned."); };
+    $("#wsCx", bg).onclick = () => { editKid(x.p.id, x.c, s2 => { if (s2.order){ s2.stars = (s2.stars||0) + s2.order.price; s2.order = null; } }); bg.remove(); setNote("ws", `✓ Order cancelled. ⭐ ${x.o.price} stars returned to ${x.p.name}`); dashOpen.ws = true; dashRedo(); };
   });
   /* the grown-up has now seen every order */
   all.forEach(x => { if (!x.o.pSeen) editKid(x.p.id, x.c, s2 => { if (s2.order) s2.order.pSeen = true; }); });
@@ -3824,10 +3847,7 @@ function askPin(onOk, title){
 }
 function settings(){
   const bg = sheet(`<h2>Settings</h2>
-    <label class="toggle">Show English-letter spelling<input type="checkbox" id="tTr" ${S.translit?"checked":""}></label>
     <label class="toggle">Sound effects<input type="checkbox" id="tSnd" ${S.sound?"checked":""}></label>
-    <label class="toggle">Speaking exercises<input type="checkbox" id="tSpk" ${S.speakOn!==false?"checked":""}></label>
-    <label class="toggle">Listening exercises<input type="checkbox" id="tLis" ${S.listenOn!==false?"checked":""}></label>
     <label class="toggle">Vibration<input type="checkbox" id="tVib" ${P.vibe!==false?"checked":""}></label>
     <label class="toggle">Full screen (hide the phone’s buttons)<input type="checkbox" id="tFull" ${P.full!==false?"checked":""}></label>
     <h3>Colours</h3>
@@ -3844,116 +3864,135 @@ function settings(){
   bg.querySelectorAll("[data-theme-btn]").forEach(b => b.onclick = () => { P.theme = b.dataset.themeBtn; saveP(); applyTheme(); bg.querySelectorAll("[data-theme-btn]").forEach(x => x.setAttribute("aria-pressed", x===b)); });
   $("#offBtn",bg).onclick = () => { bg.remove(); offlineSheet(); };
   const ib = $("#instBtn",bg); if (ib) ib.onclick = async () => { installPrompt.prompt(); try { await installPrompt.userChoice; } catch(_){} installPrompt = null; bg.remove(); };
-  $("#tTr",bg).onchange = e => { S.translit = e.target.checked; save(); };
   $("#tSnd",bg).onchange = e => { S.sound = e.target.checked; save(); };
-  $("#tSpk",bg).onchange = e => { S.speakOn = e.target.checked; save(); };
-  $("#tLis",bg).onchange = e => { S.listenOn = e.target.checked; save(); };
-  $("#grownBtn",bg).onclick = () => { bg.remove(); askPin(grownSettings); };
+  $("#grownBtn",bg).onclick = () => { bg.remove(); askPin(openGrown); };
 }
 function askConfirm(msg, okLabel, onOk){
   const bg = sheet(`<h2>Are you sure?</h2><p class="sub" style="margin:0 0 6px">${esc(msg)}</p>
     <div style="display:grid;gap:10px;margin-top:14px"><button class="btn" id="cfYes" style="background:var(--bad);box-shadow:0 5px 0 var(--bad-lip)">${esc(okLabel)}</button><button class="btn ghost" data-close>Cancel</button></div>`, true);
   $("#cfYes", bg).onclick = () => { bg.remove(); onOk(); };
 }
-let gsDone = {};
-function grownSettings(keep){
-  if (!keep) gsDone = {};
+/* ---------- Grown-up settings: the app and this phone ---------- */
+let gsWho = null;
+function gRedo(){ const y = window.scrollY; grownSettings(); window.scrollTo(0, y); }
+function openGrown(){ resetUI(); gsWho = null; grownSettings(); }
+const okTopic = v => /^[-_A-Za-z0-9]{6,64}$/.test(v);
+function azStore(o){
+  const key = o.key != null ? o.key : (S.azKey || ""), region = o.region != null ? o.region : (S.azRegion || "eastus");
+  S.azKey = key; S.azRegion = (region.trim() || "eastus").toLowerCase().replace(/\s+/g, "");
+  P.az = {key:S.azKey, region:S.azRegion, voice:o.voice || P.az.voice, voiceEs:o.voiceEs || P.az.voiceEs};
+  S.azVoice = curVoice(); saveP(); save(); ttsCache.clear(); azWarned = false;
+}
+async function syncJoin(raw){
+  const code = cleanCode(raw);
+  if (code.length < 16) return {err:"Enter the whole family code from the other phone (it has 4 dashes)."};
+  if (syncOn() && code === P.sync.code){ const ok = await syncNow(true); return ok ? {ok:"✓ Already on this code. Synced with the family"} : {err:"Couldn’t connect. Check the internet and try again."}; }
+  let fd = null;
+  try { const db = await fbReady(); const fsn = await db.doc(famPath(code)).get(); fd = fsn.exists ? fsn.data() : null; }
+  catch(e){ return {err:"Couldn’t connect. Check the internet and try again."}; }
+  if (!fd) return {err:"No family uses that code yet. Check it, or tap “Make a new code”."};
+  const names = JSON.parse(fd.profiles || "[]").map(p => p.avatar + " " + p.name).join(", ");
+  if (!confirm(`Join this family? This phone will use the family’s learners and progress (${names}). This phone’s own learners will be replaced.`)) return {err:"Not joined. Nothing was changed."};
+  P.sync = {code, profT:0, profSeen:JSON.stringify(P.profiles), famT:0, famSeen:JSON.stringify({family:P.family||null, rewards:P.rewards||[]})}; saveP();
+  const ok = await syncNow(true);
+  if (!ok) return {err:"Couldn’t connect. Check the internet and try again."};
+  COURSE = courseOf(P.current); useCourse(COURSE); S = withAz(loadS(P.current));
+  return {ok:"✓ Joined. Progress now stays the same on every phone"};
+}
+function grownSettings(){
+  save();
   const voices = [["ru-RU-SvetlanaNeural","Svetlana (woman)"],["ru-RU-DariyaNeural","Dariya (woman)"],["ru-RU-DmitryNeural","Dmitry (man)"]];
   const voicesEs = [["es-MX-DaliaNeural","Dalia (woman, Mexico)"],["es-MX-JorgeNeural","Jorge (man, Mexico)"],["es-US-PalomaNeural","Paloma (woman, US)"],["es-CO-SalomeNeural","Salomé (woman, Colombia)"],["es-ES-ElviraNeural","Elvira (woman, Spain)"]];
-  const bg = sheet(`<h2>🔓 Grown-up settings</h2>
-    <label class="toggle">Open all levels (for testing)<input type="checkbox" id="tAll" ${S.unlockAll?"checked":""}></label>
-    <label class="toggle">Try everything: all of ${MN()}’s items to try on<input type="checkbox" id="tTry" ${P.tryAll?"checked":""}></label>
-    <div class="row" style="flex-wrap:wrap;gap:8px;margin-top:8px"><button class="btn small ghost" id="tStarsUp">⭐ +300 stars for ${esc(me().name)}</button><button class="btn small ghost" id="tStarsDn">⭐ −300</button><button class="btn small ghost" id="tParty">🎆 Preview the celebration</button></div>
-    <p class="note" style="margin:4px 0 0">For testing. Stars added here don’t count as earned and don’t change the family goal.</p>
-    <h3>Phone notifications</h3>
-    <p class="note" style="text-align:left;margin:0">Get a notification on your phone when a child orders something in ${MN()}’s workshop, and nothing else. Uses the free ntfy app. Enter the same channel on every phone the children use.</p>
-    <label class="field">ntfy channel name<input type="text" id="ntfyTopic" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(P.ntfy||"")}" placeholder="Tap “Make one”, or paste yours"></label>
-    <div class="row" style="flex-wrap:nowrap;gap:8px"><button class="btn small ghost" id="ntfyMake" style="flex:1">Make one</button><button class="btn small" id="ntfySave" style="flex:1">Save</button><button class="btn small ghost" id="ntfyTest" style="flex:1">Test</button></div>
-    <p class="note" id="ntfyStatus">${P.ntfy ? "On: new orders are sent to your channel." : "Off."}</p>
-    <h3>Sync between phones</h3>
-    <p class="note" style="text-align:left;margin:0">Keeps every learner’s stars, streak, wardrobe and progress, plus the family goal and rewards, the same on all the family’s phones (free Google Firebase). Make a family code on the first phone, then enter the same code on each other phone and tap Join. Keep the code private, like a password.</p>
-    <label class="field">Family code<input type="text" id="syCode" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc((P.sync && P.sync.code) || "")}" placeholder="Tap “Make a code”, or enter yours"></label>
-    <div class="row" style="flex-wrap:nowrap;gap:8px"><button class="btn small ghost" id="syMake" style="flex:1">Make a code</button><button class="btn small" id="syJoin" style="flex:1">${syncOn() ? "Sync now" : "Join"}</button><button class="btn small ghost" id="syOff" style="flex:1">Turn off</button></div>
-    <p class="note" id="syStatus">${syncStatus()}</p>
-    <h3>Microsoft Speech</h3>
-    <p class="note" style="text-align:left;margin:0">Lesson voices are built into the app now. Microsoft is used for pronunciation scoring, and as a backup voice for anything without a recording. Paste your key once. It stays on this device and is shared by all learners. Works from your own web link (GitHub Pages), not inside Claude.</p>
-    <label class="field">Key<input type="password" id="azKey" autocomplete="off" placeholder="Paste KEY 1 here" value="${esc(S.azKey||"")}"></label>
-    <label class="field">Region<input type="text" id="azRegion" autocomplete="off" value="${esc(S.azRegion||"eastus")}"></label>
-    <label class="field">🇷🇺 Russian voice<select id="azVoice">${voices.map(([v,n]) => `<option value="${v}" ${(P.az.voice||"ru-RU-SvetlanaNeural")===v?"selected":""}>${n}</option>`).join("")}</select></label>
-    <label class="field">🇪🇸 Spanish voice<select id="azVoiceEs">${voicesEs.map(([v,n]) => `<option value="${v}" ${(P.az.voiceEs||"es-MX-DaliaNeural")===v?"selected":""}>${n}</option>`).join("")}</select></label>
-    <div class="row" style="flex-wrap:nowrap"><button class="btn small" id="azSave" style="flex:1">Save</button><button class="btn small ghost" id="azTest" style="flex:1">Test voice</button></div>
-    <p class="note" id="azStatus">${azOn() ? "Microsoft voice is on." : "Not connected: using the phone’s voice."}</p>
-    ${(() => { const m = Math.round(((P.stt||{})[todayKey().slice(0,7)]||0)/60), pct = Math.min(100, Math.round(100*m/300));
-      return `<div class="fam" style="margin:6px 0"><div class="row1"><span style="flex:1">🎙️ Speech scoring this month</span><small>${m} of 300 free minutes</small></div><div class="qbar"><i style="width:${pct}%;background:${pct>=90 ? "var(--bad)" : pct>=70 ? "var(--sun)" : "var(--good)"}"></i></div><small>${pct>=90 ? "Almost used up. If it runs out, speaking switches to “compare it yourself” until the 1st." : "Resets on the 1st of each month."}</small></div>`; })()}
-    <p class="note">${(CC==="es" ? esVoice : ruVoice) ? "Phone voice: "+esc((CC==="es" ? esVoice : ruVoice).name) : ("speechSynthesis" in window ? `No ${LN()} phone voice found on this device.` : "This browser can’t speak aloud.")}</p>
-    <h3>Learners</h3>
-    <div>${P.profiles.map(p => `<div class="wordrow"><div class="p">${avHTML(p.avatar, 40)}</div><div class="w"><b>${esc(p.name)}</b><small>${p.id===P.current ? "learning now" : ""}</small></div>
-      <button class="iconbtn" data-ledit="${p.id}" aria-label="Edit ${esc(p.name)}">✏️</button><button class="iconbtn" data-ldel="${p.id}" aria-label="Delete ${esc(p.name)}">🗑️</button></div>`).join("")}</div>
-    <div style="margin-top:10px"><button class="btn ghost" id="lAdd">＋ Add a learner</button></div>
-    <h3>Progress</h3>
-    <div style="display:grid;gap:10px">
-      <button class="btn ghost" id="pmBtn">📋 Progress manager</button>
-      <button class="btn ghost" id="bkBtn">💾 Back up progress</button>
-      <button class="btn ghost" id="rsBtn">📂 Restore from a backup</button>
-      <button class="btn ghost" id="resetBtn">Reset ${esc(me().name)}’s ${LN()} progress</button>
-    </div>
-    <input type="file" id="rsFile" accept=".json,application/json" hidden>`);
-  const mark = (id, text) => { gsDone[id] = text; const b = $("#" + id, bg); if (b){ b.classList.add("kept"); b.textContent = text; } };
-  Object.entries(gsDone).forEach(([id, text]) => mark(id, text));
-  $("#pmBtn",bg).onclick = () => { bg.remove(); progressManager(P.current, COURSE, null); };
-  $("#lAdd",bg).onclick = () => { bg.remove(); editLearner(null); };
-  bg.querySelectorAll("[data-ledit]").forEach(b => b.onclick = () => { bg.remove(); editLearner(b.dataset.ledit, grownSettings); });
-  bg.querySelectorAll("[data-ldel]").forEach(b => b.onclick = () => deleteLearner(b.dataset.ldel, () => { bg.remove(); P.profiles.length ? grownSettings() : editLearner(null); }));
-  $("#bkBtn",bg).onclick = () => { exportBackup(); mark("bkBtn", "✓ Backup made"); };
-  $("#rsBtn",bg).onclick = () => $("#rsFile",bg).click();
-  $("#rsFile",bg).onchange = e => { const f = e.target.files[0]; if (f){ bg.remove(); importBackup(f, () => { gsDone.rsBtn = "✓ Restored"; grownSettings(true); }); } };
-  $("#tAll",bg).onchange = e => { S.unlockAll = e.target.checked; save(); home(); };
-  const syC = $("#syCode",bg), syS = $("#syStatus",bg), syJ = $("#syJoin",bg);
-  $("#syMake",bg).onclick = async () => {
-    if (syncOn() && !confirm("This phone already syncs with a family code. Make a new one? The other phones would need the new code.")) return;
-    const code = newFamilyCode(); syC.value = code; P.sync = {code, profT:Date.now(), profSeen:"", famSeen:""}; saveP();
-    syS.textContent = "Saving to the family code…";
-    const ok = await syncNow(true);
-    syS.innerHTML = ok ? `On. Now enter this code on the other phones:<br><b style="user-select:all">${esc(code)}</b>` : "Couldn’t connect. Check the internet and tap Sync now. " + esc((P.sync && P.sync.err) || ""); syJ.textContent = "Sync now";
+  const combos = P.profiles.flatMap(p => ["ru","es"].map(c => ({id:p.id + ":" + c, p, c})));
+  if (!gsWho || !combos.some(x => x.id===gsWho)) gsWho = (P.current || (P.profiles[0] && P.profiles[0].id)) + ":" + courseOf(P.current || (P.profiles[0] && P.profiles[0].id));
+  const [wp, wc] = gsWho.split(":"), ws = P.profiles.length ? stateOf(wp, wc) : {}, wname = (P.profiles.find(x => x.id===wp) || {name:""}).name;
+  const testingOn = P.tryAll || combos.some(x => stateOf(x.p.id, x.c).unlockAll);
+  const mins = Math.round(((P.stt||{})[todayKey().slice(0,7)]||0)/60), pct = Math.min(100, Math.round(100*mins/300));
+  const lastBk = P.lastBackup ? new Date(P.lastBackup).toLocaleString([], {day:"numeric", month:"short", hour:"numeric", minute:"2-digit"}) : null;
+  const syncHTML = `<p class="note" style="text-align:left;margin:0">Keeps every learner’s stars, streak, wardrobe and progress, plus the family goal and rewards, the same on all the family’s phones (free Google Firebase). On the first phone tap “Make a new code”. On each other phone tap Change, enter the same code and tap Join. Keep the code private, like a password.</p>
+    ${lockHTML("syncCode", "Family code", (P.sync && P.sync.code) || "", {secret:true, saveLabel:"Join with this code"})}
+    <p class="note" style="text-align:left;margin:4px 0 0">${syncStatus()}</p>
+    <div class="rowbtns">${syncOn() ? `<button class="btn small" id="syNow">🔄 Sync now</button><button class="btn small ghost" id="syOff">Turn off</button>` : ""}<button class="btn small ghost" id="syMake">Make a new code</button></div>${noteHTML("sync")}`;
+  const ntfyHTML = `<p class="note" style="text-align:left;margin:0">Get a notification on your phone when a child orders something in ${MN()}’s workshop, and nothing else. Uses the free ntfy app. Enter the same channel on every phone the children use.</p>
+    ${lockHTML("ntfy", "ntfy channel name", P.ntfy || "")}
+    <p class="note" style="text-align:left;margin:4px 0 0">${P.ntfy ? "On: new orders are sent to this channel." : "Off."}</p>
+    <div class="rowbtns"><button class="btn small ghost" id="ntMake">Make one for me</button><button class="btn small ghost" id="ntTest" ${P.ntfy ? "" : "disabled"}>Send a test</button>${P.ntfy ? `<button class="btn small ghost" id="ntOff">Turn off</button>` : ""}</div>${noteHTML("ntfy")}`;
+  const speechHTML = `<p class="note" style="text-align:left;margin:0">Lesson voices are built into the app now. Microsoft is used for pronunciation scoring, and as a backup voice for anything without a recording. The key stays on this device and is shared by all learners. Works from your own web link (GitHub Pages), not inside Claude.</p>
+    ${lockHTML("azKey", "Microsoft key", S.azKey || "", {secret:true})}${lockHTML("azRegion", "Region", S.azRegion || "eastus")}
+    <label class="field">🇷🇺 Russian backup voice<select id="azVoice">${voices.map(([v,n]) => `<option value="${v}" ${(P.az.voice||"ru-RU-SvetlanaNeural")===v?"selected":""}>${n}</option>`).join("")}</select></label>
+    <label class="field">🇪🇸 Spanish backup voice<select id="azVoiceEs">${voicesEs.map(([v,n]) => `<option value="${v}" ${(P.az.voiceEs||"es-MX-DaliaNeural")===v?"selected":""}>${n}</option>`).join("")}</select></label>
+    <p class="note" style="text-align:left;margin:0">${azOn() ? "Microsoft voice is on." : "Not connected: using the phone’s voice."}</p>
+    <div class="rowbtns"><button class="btn small ghost" id="azTest">🔊 Test the voice</button>${S.azKey ? `<button class="btn small ghost" id="azOff">Disconnect Microsoft</button>` : ""}</div>${noteHTML("speech")}
+    <div class="fam" style="margin:12px 0 6px"><div class="row1"><span style="flex:1">🎙️ Speech scoring this month</span><small>${mins} of 300 free minutes</small></div><div class="qbar"><i style="width:${pct}%;background:${pct>=90 ? "var(--bad)" : pct>=70 ? "var(--sun)" : "var(--good)"}"></i></div><small>${pct>=90 ? "Almost used up. If it runs out, speaking switches to “compare it yourself” until the 1st." : "Resets on the 1st of each month."}</small></div>
+    <p class="note" style="text-align:left;margin:0">${(CC==="es" ? esVoice : ruVoice) ? "Phone voice: " + esc((CC==="es" ? esVoice : ruVoice).name) : ("speechSynthesis" in window ? `No ${LN()} phone voice found on this device.` : "This browser can’t speak aloud.")}</p>`;
+  const backupHTML = `<p class="note" style="text-align:left;margin:0">A backup file holds every learner, both courses, the family goal and the rewards. Keep it somewhere safe, like Google Drive.</p>
+    <div style="display:grid;gap:10px;margin-top:10px"><button class="btn" id="bkBtn">💾 Back up now</button><button class="btn ghost" id="rsBtn">📂 Restore from a backup</button></div>
+    <p class="note" style="text-align:left;margin:8px 0 0">${lastBk ? "Last backup from this phone: " + lastBk + "." : "No backup made from this phone yet."} Restoring shows what the file contains before anything is replaced.</p>
+    <input type="file" id="rsFile" accept=".json,application/json" hidden>${noteHTML("backup")}`;
+  const testHTML = `<p class="note" style="text-align:left;margin:0">For trying things out, not for normal use. Stars added here don’t count as earned and don’t change the family goal.</p>
+    ${P.profiles.length ? `<label class="field">Test on<select id="gsWho">${combos.map(x => `<option value="${x.id}" ${x.id===gsWho?"selected":""}>${esc(x.p.name)} · ${COURSE_FLAGS[x.c]} ${COURSE_NAMES[x.c]}</option>`).join("")}</select></label>
+    ${togHTML("Open all levels", `Nothing locked and no daily limit, for ${esc(wname)} · ${COURSE_NAMES[wc]}.`, !!ws.unlockAll, 'id="tAll"')}` : ""}
+    ${togHTML("Try everything", `All of ${MN()}’s items to try on. Nothing is bought or saved. Applies to all learners on this phone.`, !!P.tryAll, 'id="tTry"')}
+    ${P.profiles.length ? `<div class="row" style="align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px"><span style="flex:1;min-width:120px;font-weight:800">⭐ ${ws.stars||0} stars<small style="display:block;color:var(--muted);font-weight:700;font-size:13px">${esc(wname)} · ${COURSE_NAMES[wc]}</small></span><button class="btn small ghost" id="tStarsUp">＋300</button><button class="btn small ghost" id="tStarsDn">−300</button></div>` : ""}
+    <button class="btn ghost" id="tParty" style="margin-top:12px">🎆 Preview the celebration</button>${noteHTML("test")}`;
+  app.innerHTML = `<div class="top navtop"><button class="iconbtn back" id="back" aria-label="Back">←</button><div class="grow"></div></div>
+    <div style="padding:0 16px 8px"><h2 style="font-family:var(--font-head);margin:0;font-size:28px">🔓 Grown-up settings</h2>
+      <p class="sub" style="margin:4px 0 0;font-weight:800">Everything about the app and this phone: connections, keys, backup and testing. Nothing here is about one child’s learning.</p>
+      <p class="sub" style="margin:4px 0 0;font-size:14px">Opens from ⚙️ Settings, with the PIN.</p></div>
+    <div class="dash">
+      ${dgroup("Connections", "What this phone is linked to. Each one shows On or Off before you open it.")}
+      ${fcard("g:sync", "🔄", "Sync between phones", syncHTML, chip2(syncOn() ? "On" : "Off", syncOn() ? "on" : ""))}
+      ${fcard("g:ntfy", "🔔", "Phone notifications", ntfyHTML, chip2(P.ntfy ? "On" : "Off", P.ntfy ? "on" : ""))}
+      ${fcard("g:speech", "🎙️", "Speech scoring", speechHTML, chip2(azOn() ? "Connected" : "Not connected", azOn() ? "on" : "warn"))}
+      ${dgroup("This phone’s data", "Save a copy, or bring one back.")}
+      ${fcard("g:backup", "💾", "Backup and restore", backupHTML, chip2(lastBk ? "Saved " + lastBk : "No backup yet", lastBk ? "on" : "warn"))}
+      ${dgroup("Testing", "Tools for checking the app. Not part of normal use.")}
+      ${fcard("g:test", "🧪", "Testing tools", testHTML, chip2(testingOn ? "Testing is on" : "Off", testingOn ? "warn" : ""))}
+      <button class="linkcard" id="goDash"><span aria-hidden="true" style="font-size:22px">👪</span><span>Learners, progress, daily limits, exercises, family goal, rewards and orders are in the Parent dashboard</span><span aria-hidden="true">→</span></button></div>`;
+  $("#back").onclick = home;
+  $("#goDash").onclick = () => askPin(() => { resetUI(); parentDash(); }, "Parent dashboard");
+  wireFolds(app);
+  const H = {
+    syncCode: {label:"Family code", reveal:true, get: () => (P.sync && P.sync.code) || "", save: v => syncJoin(v)},
+    ntfy: {label:"ntfy channel name", get: () => P.ntfy || "", save: v => { if (!okTopic(v)) return {err:"Use 6 or more letters, numbers or dashes, no spaces."}; P.ntfy = v; saveP(); return {ok:"✓ Saved. New orders will be sent to this channel. Now subscribe to this name in the ntfy app."}; }},
+    azKey: {label:"Microsoft key", get: () => S.azKey || "", save: v => { azStore({key:v}); return {ok: azOn() ? "✓ Saved. Microsoft voice is on." : "✓ Saved."}; }},
+    azRegion: {label:"Region", get: () => S.azRegion || "eastus", save: v => { azStore({region:v}); return {ok:`✓ Saved. The region is now ${S.azRegion}.`}; }}
   };
-  syJ.onclick = async () => {
-    const code = cleanCode(syC.value);
-    if (syncOn() && code === P.sync.code){ syS.textContent = "Syncing…"; const ok = await syncNow(true); syS.innerHTML = ok ? syncStatus() : "Couldn’t connect. Check the internet and try again."; return; }
-    if (code.length < 16){ syS.textContent = "Enter the whole family code from the other phone (it has 4 dashes)."; return; }
-    syS.textContent = "Looking for the family…";
-    let fd = null;
-    try { const db = await fbReady(); const fs = await db.doc(famPath(code)).get(); fd = fs.exists ? fs.data() : null; }
-    catch(e){ syS.textContent = "Couldn’t connect. Check the internet and try again."; return; }
-    if (!fd){ syS.textContent = "No family uses that code yet. Check it, or tap “Make a code”."; return; }
-    const names = JSON.parse(fd.profiles || "[]").map(p => p.avatar + " " + esc(p.name)).join(", ");
-    if (!confirm(`Join this family? This phone will use the family’s learners and progress (${names.replace(/<[^>]*>/g, "")}). This phone’s own learners will be replaced.`)) { syS.innerHTML = syncStatus(); return; }
-    P.sync = {code, profT:0, profSeen:JSON.stringify(P.profiles), famT:0, famSeen:JSON.stringify({family:P.family||null, rewards:P.rewards||[]})}; saveP();
-    syS.textContent = "Joining…";
-    const ok = await syncNow(true);
-    if (ok){ bg.remove(); toast("Joined! Progress now stays the same on every phone."); home(); } else syS.textContent = "Couldn’t connect. Check the internet and try again.";
-  };
-  $("#syOff",bg).onclick = () => { if (!syncOn()) return; if (!confirm("Stop syncing this phone? Its progress stays here.")) return; P.sync = null; saveP(); syC.value = ""; syJ.textContent = "Join"; syS.textContent = "Off."; };
-  const nt = $("#ntfyTopic",bg), nst = $("#ntfyStatus",bg), okTopic = v => /^[-_A-Za-z0-9]{6,64}$/.test(v);
-  $("#ntfyMake",bg).onclick = () => { nt.value = "misha-" + Array.from(crypto.getRandomValues(new Uint8Array(9)), b => "abcdefghijkmnpqrstuvwxyz23456789"[b % 32]).join(""); nst.textContent = "Now tap Save, then subscribe to this name in the ntfy app."; };
-  $("#ntfySave",bg).onclick = () => { const v = nt.value.trim(); if (v && !okTopic(v)){ nst.textContent = "Use 6 or more letters, numbers or dashes, no spaces."; return; } P.ntfy = v || null; saveP(); nst.textContent = v ? "Saved. New orders will be sent to your channel." : "Off."; };
-  $("#ntfyTest",bg).onclick = async () => { const v = nt.value.trim(); if (!okTopic(v)){ nst.textContent = "Make or paste a channel name first."; return; }
-    nst.textContent = "Sending…";
-    try { const r = await fetch("https://ntfy.sh/", {method:"POST", body:JSON.stringify({topic:v, title:"🧵 Test from Ми́ша", message:"It works! You’ll get a message like this when a child orders something.", tags:["tada"]})}); nst.textContent = r.ok ? "Sent! Check your phone." : "Couldn’t send. Check the name and try again."; }
-    catch(_){ nst.textContent = "Couldn’t send. Are you online?"; } };
-  $("#tStarsUp",bg).onclick = () => { S.stars = (S.stars||0) + 300; S.shownStars = S.stars; save(); toast(`${me().name} now has ⭐ ${S.stars}.`); };
-  $("#tStarsDn",bg).onclick = () => { S.stars = Math.max(0, (S.stars||0) - 300); S.shownStars = S.stars; save(); toast(`${me().name} now has ⭐ ${S.stars}.`); };
-  $("#tParty",bg).onclick = () => { const it = ITEMS.find(i => i.id===SHOP_LINE.find(id => !(S.owned||[]).includes(id))) || ITEMS.find(i => i.id==="crown"); if (!it){ toast("This course has no items yet."); return; } bg.remove(); buyParty(it, true); };
-  $("#tTry",bg).onchange = e => { P.tryAll = e.target.checked; if (!P.tryAll) P.tryWear = {}; saveP(); toast(P.tryAll ? "Try-everything is on. Open the 🐿️ Ми́ша tab." : "Try-everything is off. Back to earned items."); };
-  const store = () => { S.azKey = $("#azKey",bg).value.trim(); S.azRegion = ($("#azRegion",bg).value.trim() || "eastus").toLowerCase().replace(/\s+/g,""); P.az = {key:S.azKey, region:S.azRegion, voice:$("#azVoice",bg).value, voiceEs:$("#azVoiceEs",bg).value}; S.azVoice = curVoice(); saveP(); save(); ttsCache.clear(); azWarned = false; };
-  $("#azSave",bg).onclick = () => { store(); mark("azSave", "✓ Saved"); $("#azStatus",bg).textContent = azOn() ? "Saved. Microsoft voice is on." : "Saved. No key: using the phone’s voice."; };
-  $("#azTest",bg).onclick = async () => {
-    store(); const st = $("#azStatus",bg);
-    if (!azOn()){ st.textContent = "Paste the key first."; return; }
-    st.textContent = "Testing…";
-    try { await playUrl(await azureTTS(CC==="es" ? "¡Hola! Me llamo Misha. ¿Cómo te llamas?" : "Приве́т! Меня́ зову́т Ми́ша. Как тебя́ зову́т?")); st.textContent = "It works! That was Microsoft’s voice."; }
-    catch(e){ st.textContent = azExplain(e); }
-  };
-  $("#resetBtn",bg).onclick = () => askConfirm(`Reset all ${LN()} progress for ${me().name}? The other course and the Microsoft key stay.`, "Yes, reset", () => { const k = {azKey:S.azKey, azRegion:S.azRegion, azVoice:S.azVoice}; S = {...JSON.parse(JSON.stringify(DEFAULT)), ...k}; save(); home(); mark("resetBtn", `✓ ${me().name}’s progress reset`); });
+  wireLocks(app, gRedo, H);
+  const busy = (b, t) => { b.disabled = true; b.textContent = t; };
+  /* sync */
+  const syN = $("#syNow"); if (syN) syN.onclick = async () => { busy(syN, "Syncing…"); const ok = await syncNow(true); setNote("sync", ok ? "✓ Synced with the family" : "Couldn’t connect. Check the internet and try again.", !ok); dashOpen["g:sync"] = true; gRedo(); };
+  const syO = $("#syOff"); if (syO) syO.onclick = () => askConfirm("Stop syncing this phone? Its progress stays here.", "Yes, turn off", () => { P.sync = null; saveP(); setNote("sync", "✓ Sync turned off on this phone"); gRedo(); });
+  $("#syMake").onclick = () => { const go = async () => { const b = $("#syMake"); busy(b, "Saving…"); const code = newFamilyCode(); P.sync = {code, profT:Date.now(), profSeen:"", famSeen:""}; saveP();
+      const ok = await syncNow(true); lockShow.syncCode = true;
+      setNote("sync", ok ? `✓ New family code made. Now enter it on the other phones: ${code}` : "Couldn’t connect. Check the internet and tap Sync now. " + ((P.sync && P.sync.err) || ""), !ok); gRedo(); };
+    if (syncOn()) askConfirm("Make a new code? The other phones would need the new code.", "Yes, make a new code", go); else go(); };
+  /* notifications */
+  $("#ntMake").onclick = () => { if (P.ntfy){ setNote("ntfy", "A channel is already saved. Tap Change to replace it.", true); gRedo(); return; }
+    P.ntfy = "misha-" + Array.from(crypto.getRandomValues(new Uint8Array(9)), b => "abcdefghijkmnpqrstuvwxyz23456789"[b % 32]).join(""); saveP(); lockShow.ntfy = true;
+    setNote("ntfy", "✓ Channel made and saved. Now subscribe to this name in the ntfy app."); gRedo(); };
+  $("#ntTest").onclick = async e => { const v = P.ntfy || ""; if (!okTopic(v)){ setNote("ntfy", "Make or save a channel name first.", true); gRedo(); return; } busy(e.currentTarget, "Sending…");
+    try { const r = await fetch("https://ntfy.sh/", {method:"POST", body:JSON.stringify({topic:v, title:"🧵 Test from Ми́ша", message:"It works! You’ll get a message like this when a child orders something.", tags:["tada"]})}); setNote("ntfy", r.ok ? "✓ Test sent. Check your phone." : "Couldn’t send. Check the name and try again.", !r.ok); }
+    catch(_){ setNote("ntfy", "Couldn’t send. Are you online?", true); } gRedo(); };
+  const ntO = $("#ntOff"); if (ntO) ntO.onclick = () => askConfirm("You will stop getting order notifications from this phone.", "Yes, turn off", () => { P.ntfy = null; saveP(); setNote("ntfy", "✓ Notifications turned off"); gRedo(); });
+  /* speech */
+  $("#azVoice").onchange = e => { azStore({voice:e.target.value}); setNote("speech", `✓ Russian backup voice changed to ${e.target.selectedOptions[0].textContent}`); gRedo(); };
+  $("#azVoiceEs").onchange = e => { azStore({voiceEs:e.target.value}); setNote("speech", `✓ Spanish backup voice changed to ${e.target.selectedOptions[0].textContent}`); gRedo(); };
+  $("#azTest").onclick = async e => { if (!azOn()){ setNote("speech", "Save the Microsoft key first.", true); gRedo(); return; } busy(e.currentTarget, "Testing…");
+    try { await playUrl(await azureTTS(CC==="es" ? "¡Hola! Me llamo Misha. ¿Cómo te llamas?" : "Приве́т! Меня́ зову́т Ми́ша. Как тебя́ зову́т?")); setNote("speech", "✓ It works! That was Microsoft’s voice."); }
+    catch(err){ setNote("speech", azExplain(err), true); } gRedo(); };
+  const azO = $("#azOff"); if (azO) azO.onclick = () => askConfirm("Microsoft voice and pronunciation scoring stop working until you save a key again.", "Yes, disconnect", () => { azStore({key:""}); setNote("speech", "✓ Microsoft disconnected. Using the phone’s voice."); gRedo(); });
+  /* backup */
+  $("#bkBtn").onclick = async e => { busy(e.currentTarget, "Working…"); const ok = await exportBackup(); setNote("backup", ok ? "✓ Backup made. Keep the file somewhere safe." : "Backup cancelled. Nothing was saved.", !ok); gRedo(); };
+  $("#rsBtn").onclick = () => $("#rsFile").click();
+  $("#rsFile").onchange = e => { const f = e.target.files[0]; if (f) importBackup(f, () => { setNote("backup", "✓ Restored from the backup file"); dashOpen["g:backup"] = true; grownSettings(); }); };
+  /* testing */
+  const tw = $("#gsWho"); if (tw) tw.onchange = e => { gsWho = e.target.value; const x = combos.find(y => y.id===gsWho); setNote("test", `✓ Now testing on ${x.p.name} · ${COURSE_NAMES[x.c]}`); dashOpen["g:test"] = true; gRedo(); };
+  const ta = $("#tAll"); if (ta) ta.onchange = e => { editKidState(wp, wc, s2 => { s2.unlockAll = e.target.checked; }); setNote("test", `✓ Open all levels turned ${e.target.checked ? "on" : "off"} for ${wname} · ${COURSE_NAMES[wc]}`); gRedo(); };
+  $("#tTry").onchange = e => { P.tryAll = e.target.checked; if (!P.tryAll) P.tryWear = {}; saveP(); setNote("test", `✓ Try everything turned ${P.tryAll ? "on. Open the 🐿️ Ми́ша tab" : "off. Back to earned items"}`); gRedo(); };
+  const star = d => { let n = 0; editKidState(wp, wc, s2 => { s2.stars = Math.max(0, (s2.stars||0) + d); s2.shownStars = s2.stars; n = s2.stars; }); setNote("test", `✓ ${d > 0 ? "+300" : "−300"} stars. ${wname} · ${COURSE_NAMES[wc]} now has ⭐ ${n}`); gRedo(); };
+  const su = $("#tStarsUp"), sd = $("#tStarsDn"); if (su) su.onclick = () => star(300); if (sd) sd.onclick = () => star(-300);
+  $("#tParty").onclick = () => { const it = ITEMS.find(i => i.id===SHOP_LINE.find(id => !(S.owned||[]).includes(id))) || ITEMS.find(i => i.id==="crown"); if (!it){ setNote("test", "This course has no items yet.", true); gRedo(); return; } buyParty(it, true); };
 }
 
 
@@ -5167,10 +5206,49 @@ function deleteLearnerNow(p, after){
   if (P.current===p.id){ P.current = P.profiles[0] ? P.profiles[0].id : null; COURSE = P.current ? courseOf(P.current) : "ru"; useCourse(COURSE); S = withAz(P.current ? loadS(P.current) : clone(DEFAULT)); }
   saveP(); toast(`${p.name} was deleted.`); after && after();
 }
-/* ---------- Parent dashboard ---------- */
-let dashOpen = {};
-function parentGate(){ askPin(() => { dashOpen = {}; parentDash(); }, "Parent dashboard"); }
-let dashCourse = {};
+/* ---------- Parent dashboard: everything about the children ---------- */
+let dashOpen = {}, dashNote = {}, lockEdit = {}, lockShow = {}, lockDraft = {}, dashCourse = {};
+const resetUI = () => { dashOpen = {}; dashNote = {}; lockEdit = {}; lockShow = {}; lockDraft = {}; };
+const nowT = () => new Date().toLocaleTimeString([], {hour:"numeric", minute:"2-digit"});
+function setNote(key, text, err){ dashNote[key] = {t:text, at:nowT(), err:!!err}; }
+function noteHTML(key){ const n = dashNote[key]; return n ? `<div class="okmsg ${n.err ? "err" : ""}" role="status">${esc(n.t)}${n.err ? "" : " · " + n.at}</div>` : ""; }
+const chip2 = (t, k) => `<span class="chip2 ${k||""}">${t}</span>`;
+const dgroup = (t, hint) => `<div class="dgroup"><h3>${t}</h3><p>${hint}</p></div>`;
+const dbar = (label, done, tot) => `<div class="prog"><div class="lab"><span>${label}</span><span>${done} / ${tot}</span></div><div class="bar"><i style="width:${tot ? Math.min(100, Math.round(100*done/tot)) : 0}%"></i></div></div>`;
+function fcard(key, icon, title, html, chip){ return `<div class="dcard fold ${dashOpen[key] ? "open" : ""}"><button class="fhd" data-ft="${key}">${icon ? `<span class="ficon" aria-hidden="true">${icon}</span>` : ""}<h3>${title}</h3>${chip || ""}<span class="chev">›</span></button><div class="fbody">${html}</div></div>`; }
+function togHTML(label, hint, on, attr){ return `<label class="toggle"><span style="flex:1">${label}<small style="display:block;color:var(--muted);font-weight:700;font-size:13px">${hint}</small></span>${chip2(on ? "On" : "Off", on ? "on" : "")}<input type="checkbox" ${attr} ${on ? "checked" : ""}></label>`; }
+function wireFolds(root){ root.querySelectorAll("[data-ft]").forEach(h => h.onclick = () => { const k = h.dataset.ft; dashOpen[k] = !dashOpen[k]; h.parentElement.classList.toggle("open", dashOpen[k]); }); }
+function editKidState(pid, c, fn){ const s2 = stateOf(pid, c); fn(s2); putState(pid, c, s2); }
+const maskVal = v => v.length > 10 ? v.slice(0,4) + " •••• •••• " + v.slice(-4) : "••••••";
+/* A protected field: shows locked; Change unlocks it; nothing changes until Save; every result is shown. */
+function lockHTML(key, label, val, o){
+  o = o || {}; const ed = !!lockEdit[key], empty = !val;
+  const shown = empty ? "Not set yet" : (o.secret && !lockShow[key] ? maskVal(val) : val) + (o.unit || "");
+  const body = ed
+    ? `<label class="unl">🔓 Unlocked for editing<input type="text" id="lk_${key}" value="${esc(lockDraft[key] != null ? lockDraft[key] : val)}" autocomplete="off" autocapitalize="off" spellcheck="false"${o.num ? ' inputmode="numeric"' : ""}${o.max ? ` maxlength="${o.max}"` : ""}></label>
+       <div class="rowbtns"><button class="btn small" data-lsave="${key}" disabled>${o.saveLabel || "Save"}</button><button class="btn small ghost" data-lcancel="${key}">Cancel</button></div>
+       <small class="lockhint">Nothing changes until you tap ${o.saveLabel ? "“" + o.saveLabel + "”" : "Save"}. Cancel keeps the old value.</small>`
+    : `<div class="lockrow"><span aria-hidden="true">🔒</span><span class="v">${esc(shown)}</span>${o.secret && !empty ? `<button class="minilink" data-lshow="${key}">${lockShow[key] ? "Hide" : "Show"}</button>` : ""}<button class="minilink" data-lchg="${key}">${empty ? "Set up" : "Change"}</button></div>
+       <small class="lockhint">Locked. It can’t be changed or erased by accident.</small>`;
+  return `<div class="lockf"><div class="lbl">${label}</div>${body}${noteHTML(key)}</div>`;
+}
+function wireLocks(root, redo, H){
+  const dis = k => { const i = document.getElementById("lk_" + k), sv = root.querySelector(`[data-lsave="${k}"]`); if (i && sv) sv.disabled = !i.value.trim() || i.value.trim() === H[k].get(); };
+  root.querySelectorAll("[data-lshow]").forEach(b => b.onclick = () => { const k = b.dataset.lshow; lockShow[k] = !lockShow[k]; redo(); });
+  root.querySelectorAll("[data-lchg]").forEach(b => b.onclick = () => { const k = b.dataset.lchg; lockEdit[k] = true; lockDraft[k] = H[k].get(); delete dashNote[k]; redo(); const i = document.getElementById("lk_" + k); if (i){ i.focus(); if (i.select) i.select(); } });
+  root.querySelectorAll("[data-lcancel]").forEach(b => b.onclick = () => { const k = b.dataset.lcancel; lockEdit[k] = false; delete lockDraft[k]; setNote(k, "Not changed. The old value was kept."); redo(); });
+  root.querySelectorAll("[id^='lk_']").forEach(i => { const k = i.id.slice(3); i.oninput = () => { lockDraft[k] = i.value; dis(k); }; dis(k); });
+  root.querySelectorAll("[data-lsave]").forEach(b => b.onclick = async () => {
+    const k = b.dataset.lsave, v = (document.getElementById("lk_" + k).value || "").trim();
+    b.disabled = true; b.textContent = "Working…";
+    const r = (await H[k].save(v)) || {};
+    if (r.err){ setNote(k, r.err, true); lockDraft[k] = v; }
+    else { lockEdit[k] = false; lockShow[k] = !!H[k].reveal; delete lockDraft[k]; setNote(k, r.ok || ("✓ Saved. " + H[k].label + " changed")); }
+    redo();
+  });
+}
+function dashRedo(){ const y = window.scrollY; parentDash(); window.scrollTo(0, y); }
+function parentGate(){ askPin(() => { resetUI(); parentDash(); }, "Parent dashboard"); }
 function childReport(p){ const c = dashCourse[p.id] || courseOf(p.id); return withContent(c, () => childReportC(p, c)); }
 function childReportC(p, c){
   const s = stateOf(p.id, c);
@@ -5197,16 +5275,19 @@ function childReportC(p, c){
   const pr = s.pron || [], pavg = pr.length ? Math.round(pr.slice(-20).reduce((a,b) => a+b, 0) / Math.min(20, pr.length)) : null;
   const unitPct = u => { const d = s[doneKey(u)] || [0,0,0,0,0]; const tot = LEVELS.reduce((a,l) => a + l.lessons, 0); return {done: d.reduce((a,v,i) => a + Math.min(v, LEVELS[i].lessons), 0), tot}; };
   const bar = (label, done, tot) => `<div class="prog"><div class="lab"><span>${label}</span><span>${done} / ${tot}</span></div><div class="bar"><i style="width:${Math.round(100*done/tot)}%"></i></div></div>`;
-  const id = p.id, fs = (k, title, html) => { const key = id + ":" + k; return `<div class="fsec ${dashOpen[key] ? "open" : ""}"><button class="fhd2" data-ft="${key}"><span class="t">${title}</span><span class="chev">›</span></button><div class="fbody">${html}</div></div>`; };
+  const id = p.id, lim = dayLimit(s);
+  const fs = (k, title, html, chip) => { const key = id + ":" + k; return `<div class="fsec ${dashOpen[key] ? "open" : ""}"><button class="fhd2" data-ft="${key}"><span class="t">${title}</span>${chip || ""}<span class="chev">›</span></button><div class="fbody">${html}</div></div>`; };
+  const subhd = (t, hint) => `<div class="subhd"><b>${t}</b><small>${hint}</small></div>`;
+  const nk = k => noteHTML(`${id}:${c}:${k}`);
+  const exOn = {speakOn: s.speakOn !== false, listenOn: s.listenOn !== false, translit: !!s.translit}, exN = Object.values(exOn).filter(Boolean).length;
+  const well = wrows.filter(r => r.st.score != null && r.st.score >= 80).length;
   return `<div class="dcard fold ${dashOpen[id] ? "open" : ""}">
-    <button class="fhd" data-ft="${id}">${avHTML(p.avatar, 48)}<h3>${esc(p.name)}</h3><span class="chev">›</span></button>
+    <button class="fhd" data-ft="${id}">${avHTML(p.avatar, 48)}<h3>${esc(p.name)}</h3>${chip2(COURSE_FLAGS[c] + " " + COURSE_NAMES[c])}<span class="chev">›</span></button>
     <div class="fbody">
+    <p class="note" style="text-align:left;margin:0 0 8px">Pick the course. Everything below belongs to that course only.</p>
     <div class="seg dcourse" role="group" aria-label="Course">${["ru","es"].map(x => `<button data-dc="${id}:${x}" aria-pressed="${c===x}">${COURSE_FLAGS[x]} ${COURSE_NAMES[x]}</button>`).join("")}</div>
-    <p class="note" style="text-align:left;margin:6px 0 0">${COURSE_NAMES[c]} course${courseOf(id)===c && p.course ? " · learning now" : ""}. Everything below belongs to this course only.</p>
-    ${fs("limit", "🌙 New lessons per day", `<p class="sub" style="margin:0 0 8px">Practice and replaying finished lessons are always open. An acorn opens one whole bonus circle. ${s.unlockAll ? "<b>“Open all levels” is on in Grown-up settings, so there is no limit right now.</b>" : ""}</p>
-      <div class="seg" role="group" aria-label="New lessons per day">${[[3,"3"],[6,"6"],[9,"9"],[0,"No limit"]].map(([v,n]) => `<button data-lim="${id}:${c}:${v}" aria-pressed="${dayLimit(s)===v}">${n}</button>`).join("")}</div>
-      <small style="display:block;color:var(--muted);font-weight:700;margin-top:8px">${dayLimit(s) ? `Today: ${newToday(s).n} of ${dayLimit(s)} new lessons started${newToday(s).bonus.length ? " · bonus circle open" : ""}` : "No daily limit"} · 🌰 ${s.acorns||0} acorn${(s.acorns||0)===1?"":"s"}</small>
-      <button class="btn small ghost" data-acorn="${id}:${c}" style="margin-top:8px">🌰 Give an acorn</button>`)}
+    <p class="note" style="text-align:left;margin:6px 0 0">${COURSE_NAMES[c]} course${courseOf(id)===c && p.course ? " · learning now" : ""}.</p>
+    ${subhd("See", "How it’s going. Nothing here changes anything.")}
     ${fs("week", "📅 This week", `<div class="dsec" style="margin-top:0"><small>${daysWeek} day${daysWeek===1?"":"s"} practised · ${minWeek} min in total</small></div>
     <div class="week7">${week.map(w => `<div><i style="height:${w.future ? 0 : Math.max(3, Math.round(56*w.min/maxMin))}px;${w.min ? "" : "background:var(--line)"}"></i>${w.nm}</div>`).join("")}</div>`)}
     ${fs("sum", "📈 Summary", `<small style="color:var(--muted);font-weight:700">🔥 ${s.streak||0}-day streak · ⭐ ${s.stars||0} stars</small><div class="dstats">
@@ -5219,47 +5300,76 @@ function childReportC(p, c){
     </div>`)}
     ${fs("prog", c==="es" ? "📚 Sounds and units" : "📚 Letters and units", `${bar(c==="es" ? "Sounds of Spanish" : "Letters", Math.min(s.alpha||0, ALPHA.length), ALPHA.length)}
     ${UNIT_IDS.map(u => { const x = unitPct(u); return bar(`Unit ${u}: ${UNITS[u].title}`, x.done, x.tot); }).join("")}`)}
-    ${fs("grades", "🔤 Word grades", `<div class="dsec" style="margin-top:0"><small>${wordsLearned ? `A ${dist.A} · B ${dist.B} · C ${dist.C} · D ${dist.D} · F ${dist.F}${dist.N ? ` · not graded yet ${dist.N}` : ""}` : "No words learned yet."}</small></div>
+    ${fs("grades", "🔤 Words and grades", `<p class="note" style="text-align:left;margin:0 0 6px">The ${COURSE_NAMES[c]} course teaches <b>${ALLWORDS.length} words</b> in ${UNIT_IDS.length} units, plus ${c==="es" ? "the sounds" : "the 33 letters"}. These numbers grow by themselves when units are added.</p>
+    ${dbar(COURSE_NAMES[c] + " words learned", wordsLearned, ALLWORDS.length)}
+    <div class="dsec" style="margin-top:0"><small>${wordsLearned ? `Known well (grade A or B): ${well} · still to meet: ${ALLWORDS.length - wordsLearned}<br>A ${dist.A} · B ${dist.B} · C ${dist.C} · D ${dist.D} · F ${dist.F}${dist.N ? ` · not graded yet ${dist.N}` : ""}` : "No words learned yet."}</small></div>
     ${wordsLearned ? `<div class="gdist">${["A","B","C","D","F","N"].map(g => dist[g] ? `<i class="g${g}" style="width:${100*dist[g]/wordsLearned}%"></i>` : "").join("")}</div>` : ""}
     ${weakWords.length ? `<div class="dsec" style="margin-top:8px"><small>Weakest words</small></div><div class="chips">${weakWords.map(w => `<span class="${w.b}">${w.t} · ${w.g}</span>`).join("")}</div>` : ""}<button class="btn ghost" data-stats="${p.id}:${c}" style="margin-top:12px">📊 All words and grades</button>`)}
-    ${fs("mem", "🧠 Memory", `<div class="dsec" style="margin-top:0"><small>${due ? `${due} item${due>1?"s":""} need${due>1?"":"s"} review. Smart review in Practice brings them back.` : "Everything is fresh right now."}</small></div>`)}
+    ${fs("rev", "🧠 Review and mistakes", `<div class="dsec" style="margin-top:0"><small>${due ? `Memory: ${due} item${due>1?"s":""} need${due>1?"":"s"} review. Smart review in Practice brings them back.` : "Memory: everything is fresh right now."}</small></div>
+    <div class="dsec"><small>Recent mistakes: ${(s.mistakes||[]).length} to fix. The Mistakes practice uses these.</small></div>`)}
     ${fs("pron", "🎙️ Pronunciation", `<div class="dsec" style="margin-top:0"><small>${pavg==null ? "No scored speaking yet. Connect Microsoft Speech in Grown-up settings and use the speaking exercises." : `Average score (last ${Math.min(20, pr.length)} tries): ${pavg} / 100`}</small></div>
     ${snd.length ? `<div class="dsec" style="margin-top:8px"><small>Sounds to practise (average score)</small></div><div class="chips">${snd.map(x => `<span class="${band(x.avg)}">${esc(x.ph)} · ${x.avg}</span>`).join("")}</div>` : ""}`)}
-    ${fs("mist", "❌ Recent mistakes", `<div class="dsec" style="margin-top:0"><small>${(s.mistakes||[]).length} to fix · the Mistakes practice uses these</small></div>`)}
-    <div class="fsec" style="padding-top:12px"><button class="btn ghost" data-pm="${p.id}:${c}">📋 Progress manager (${COURSE_NAMES[c]})</button><button class="btn ghost" data-edit="${p.id}:${c}" style="margin-top:10px">✏️ Edit, reset or delete ${esc(p.name)}</button></div>
+    ${subhd("Change", "Rules and tools for this child.")}
+    ${fs("limit", "🌙 Lessons per day and acorns", `<p class="sub" style="margin:0 0 8px">Practice and replaying finished lessons are always open. An acorn opens one whole bonus circle. ${s.unlockAll ? "<b>“Open all levels” is on in Grown-up settings (testing), so there is no limit right now.</b>" : ""}</p>
+      <div class="seg" role="group" aria-label="New lessons per day">${[[3,"3"],[6,"6"],[9,"9"],[0,"No limit"]].map(([v,n]) => `<button data-lim="${id}:${c}:${v}" aria-pressed="${lim===v}">${n}</button>`).join("")}</div>
+      <small style="display:block;color:var(--muted);font-weight:700;margin-top:8px">${lim ? `Today: ${newToday(s).n} of ${lim} new lessons started${newToday(s).bonus.length ? " · bonus circle open" : ""}` : "No daily limit"} · 🌰 ${s.acorns||0} acorn${(s.acorns||0)===1?"":"s"}</small>
+      <button class="btn small ghost" data-acorn="${id}:${c}" style="margin-top:8px">🌰 Give an acorn</button>${nk("lim")}`, chip2(lim ? lim + " a day" : "No limit"))}
+    ${fs("ex", "🎧 Exercises and helpers", `<p class="note" style="text-align:left;margin:0 0 4px">What ${esc(p.name)} gets in ${COURSE_NAMES[c]} lessons. Children can no longer switch these off themselves.</p>
+      ${togHTML("Speaking exercises", "Say it aloud and get a score.", exOn.speakOn, `data-ex="${id}:${c}:speakOn"`)}
+      ${togHTML("Listening exercises", "Hear it and choose or type.", exOn.listenOn, `data-ex="${id}:${c}:listenOn"`)}
+      ${togHTML("Show English-letter spelling", "A reading helper under the words.", exOn.translit, `data-ex="${id}:${c}:translit"`)}${nk("ex")}`, chip2(exN + " of 3 on", exN===3 ? "" : "warn"))}
+    ${fs("pm", "📋 Progress manager", `<p class="note" style="text-align:left;margin:0">Mark letters, units and levels as done or not done for ${esc(p.name)} in ${COURSE_NAMES[c]}.</p><button class="btn ghost" data-pm="${p.id}:${c}" style="margin-top:10px">📋 Open the progress manager</button>`)}
+    ${fs("profile", "✏️ Name and animal", `${lockHTML("name:" + id, "Name", p.name, {max:20})}
+      <div class="lbl" style="margin-top:8px">Animal</div>
+      <div class="agrid" style="margin-top:8px">${AVATARS.map(a => `<button data-av="${id}:${a}" aria-pressed="${a===p.avatar}" aria-label="Animal ${a}">${avHTML(a, 52)}</button>`).join("")}</div>${noteHTML("av:" + id)}`)}
+    ${fs("danger", "⚠️ Reset or delete", `<p class="note" style="text-align:left;margin:0 0 10px">Both ask “Are you sure?” first.</p><div style="display:grid;gap:10px">
+      <button class="btn ghost" data-reset="${id}:${c}">↺ Reset ${esc(p.name)}’s ${COURSE_NAMES[c]} progress</button>
+      <button class="btn ghost" data-del="${id}">🗑️ Delete ${esc(p.name)}</button></div>${nk("danger")}`)}
     </div>
   </div>`;
 }
 function parentDash(){
   save();
+  const hasWs = wsAllOrders().length || dashNote.ws, fam = familyStatus();
+  const rwHTML = `<p class="sub" style="margin:0 0 8px">Real-life rewards children work towards. They see the next one on their home screen.</p>
+    <div id="rwList">${(P.rewards||[]).map(r => `<div class="rw"><span class="e">${r.emoji}</span><span class="tx"><b>${esc(r.title)}</b><small>${rewardLabel(r)} · ${r.who==="all" ? "everyone" : esc((P.profiles.find(p => p.id===r.who)||{name:"?"}).name)}</small>
+      <small>${P.profiles.filter(p => r.who==="all" || r.who===p.id).map(p => { const e = (r.earned||{})[p.id], g = (r.given||{})[p.id]; return `${p.avatar} ${g ? "given ✓" : e ? `<button class="btn small" data-give="${r.id}:${p.id}" style="padding:4px 8px;font-size:13px">Mark given</button>` : "working on it"}`; }).join(" · ")}</small></span>
+      <button class="iconbtn" data-delr="${r.id}" aria-label="Delete reward">🗑️</button></div>`).join("") || `<p class="note" style="text-align:left">No rewards yet.</p>`}</div>
+    <button class="btn" id="addRw" style="margin-top:10px">＋ Add a reward</button>${noteHTML("rw")}`;
   app.innerHTML = `<div class="top navtop"><button class="iconbtn back" id="back" aria-label="Back">←</button><div class="grow"></div></div>
-    <div style="padding:0 16px 12px"><h2 style="font-family:var(--font-head);margin:0;font-size:28px">Parent dashboard</h2>
-      <p class="sub" style="margin:4px 0 0">Saved on this device only.</p></div>
+    <div style="padding:0 16px 8px"><h2 style="font-family:var(--font-head);margin:0;font-size:28px">👪 Parent dashboard</h2>
+      <p class="sub" style="margin:4px 0 0;font-weight:800">Everything about the children: who is learning, how it’s going, their rules and their rewards.</p>
+      <p class="sub" style="margin:4px 0 0;font-size:14px">Saved on this device. App, phone and connection settings are in Grown-up settings.</p></div>
     <div class="dash">
-      ${wsDashHTML()}
-      ${wordsDashHTML()}
-      <div class="dcard fold ${dashOpen.fam ? "open" : ""}"><button class="fhd" data-ft="fam"><h3>👪 Family goal</h3><span class="chev">›</span></button><div class="fbody"><p class="sub" style="margin:0 0 8px">Stars all learners earn together each week (Monday to Sunday). This week: ${familyStatus().total}.</p>
-        <label class="field">Weekly target<input type="number" inputmode="numeric" id="famT" min="10" max="2000" value="${(P.family||{target:60}).target}"></label><button class="btn small" id="famSave">Save target</button></div></div>
-      <div class="dcard fold ${dashOpen.rw ? "open" : ""}"><button class="fhd" data-ft="rw"><h3>🎁 Family rewards</h3><span class="chev">›</span></button><div class="fbody"><p class="sub" style="margin:0 0 8px">Real-life rewards children work towards. They see the next one on their home screen.</p>
-        <div id="rwList">${(P.rewards||[]).map(r => `<div class="rw"><span class="e">${r.emoji}</span><span class="tx"><b>${esc(r.title)}</b><small>${rewardLabel(r)} · ${r.who==="all" ? "everyone" : esc((P.profiles.find(p => p.id===r.who)||{name:"?"}).name)}</small>
-          <small>${P.profiles.filter(p => r.who==="all" || r.who===p.id).map(p => { const e = (r.earned||{})[p.id], g = (r.given||{})[p.id]; return `${p.avatar} ${g ? "given ✓" : e ? `<button class="btn small" data-give="${r.id}:${p.id}" style="padding:4px 8px;font-size:13px">Mark given</button>` : "working on it"}`; }).join(" · ")}</small></span>
-          <button class="iconbtn" data-delr="${r.id}" aria-label="Delete reward">🗑️</button></div>`).join("") || `<p class="note" style="text-align:left">No rewards yet.</p>`}</div>
-        <button class="btn" id="addRw" style="margin-top:10px">＋ Add a reward</button></div></div>
+      ${hasWs ? dgroup("Needs you", "Appears when a child has ordered something.") + wsDashHTML() : ""}
+      ${dgroup("Family", "Shared by all the children.")}
+      ${fcard("fam", "⭐", "Weekly star goal", `<p class="sub" style="margin:0 0 8px">Stars all learners earn together each week (Monday to Sunday).</p>${dbar("This week (⭐)", fam.total, fam.target)}${lockHTML("famT", "Weekly target", String(fam.target), {unit:" stars", num:true})}`, chip2(fam.target + " ⭐ a week"))}
+      ${fcard("rw", "🎁", "Family rewards", rwHTML, chip2(String((P.rewards||[]).length)))}
+      ${dgroup("Learners", "One card per child. The only place to see, edit, reset or delete a learner.")}
       ${P.profiles.map(childReport).join("") || `<p class="note">No learners yet.</p>`}
-      <button class="btn ghost" id="addP2">＋ Add learner</button></div>`;
+      <button class="btn ghost" id="addP2">＋ Add learner</button>
+      <button class="linkcard" id="goGrown"><span aria-hidden="true" style="font-size:22px">🔒</span><span>Sync, notifications, speech key, backup and testing are in Grown-up settings</span><span aria-hidden="true">→</span></button></div>`;
   $("#back").onclick = whoScreen;
   $("#addP2").onclick = () => editLearner(null);
-  const editKid = (pid, c, fn) => { const s2 = stateOf(pid, c); fn(s2); putState(pid, c, s2); };
+  $("#goGrown").onclick = () => askPin(openGrown);
+  const editKid = editKidState, nameOf = pid => (P.profiles.find(x => x.id===pid) || {name:"?"}).name;
   wsDashWire(editKid);
-  app.querySelectorAll("[data-lim]").forEach(b => b.onclick = () => { const [pid, c, v] = b.dataset.lim.split(":"); editKid(pid, c, s2 => { s2.dayLessons = +v; s2.dayLimit = null; }); parentDash(); });
-  app.querySelectorAll("[data-acorn]").forEach(b => b.onclick = () => { const [pid, c] = b.dataset.acorn.split(":"); editKid(pid, c, s2 => s2.acorns = Math.min(9, (s2.acorns||0) + 1)); parentDash(); toast("Acorn given. 🌰"); });
-  app.querySelectorAll("[data-dc]").forEach(b => b.onclick = () => { const [pid, c] = b.dataset.dc.split(":"); dashCourse[pid] = c; parentDash(); });
+  wireFolds(app);
+  const H = {famT: {label:"Weekly target", get: () => String(familyStatus().target), save: v => { const n = parseInt(v, 10); if (!(n >= 10 && n <= 2000) || String(n) !== v) return {err:"Use a whole number from 10 to 2000."}; P.family = {target:n}; saveP(); return {ok:`✓ Saved. The weekly target is now ${n} stars.`}; }}};
+  P.profiles.forEach(p => { H["name:" + p.id] = {label:"Name", get: () => p.name, save: v => { p.name = v.slice(0, 20); saveP(); return {ok:`✓ Saved. The name is now ${p.name}.`}; }}; });
+  wireLocks(app, dashRedo, H);
+  app.querySelectorAll("[data-lim]").forEach(b => b.onclick = () => { const [pid, c, v] = b.dataset.lim.split(":"); editKid(pid, c, s2 => { s2.dayLessons = +v; s2.dayLimit = null; }); setNote(`${pid}:${c}:lim`, `✓ ${nameOf(pid)} now gets ${+v ? v + " new lessons a day" : "no daily limit"} in ${COURSE_NAMES[c]}`); dashRedo(); });
+  app.querySelectorAll("[data-acorn]").forEach(b => b.onclick = () => { const [pid, c] = b.dataset.acorn.split(":"); let n = 0; editKid(pid, c, s2 => { s2.acorns = Math.min(9, (s2.acorns||0) + 1); n = s2.acorns; }); setNote(`${pid}:${c}:lim`, `✓ Acorn given to ${nameOf(pid)}. Now ${n} 🌰`); dashRedo(); });
+  app.querySelectorAll("[data-ex]").forEach(b => b.onchange = () => { const [pid, c, key] = b.dataset.ex.split(":"); const lab = {speakOn:"Speaking exercises", listenOn:"Listening exercises", translit:"English-letter spelling"}[key]; editKid(pid, c, s2 => { s2[key] = b.checked; }); setNote(`${pid}:${c}:ex`, `✓ ${lab} turned ${b.checked ? "on" : "off"} for ${nameOf(pid)} · ${COURSE_NAMES[c]}`); dashRedo(); });
+  app.querySelectorAll("[data-dc]").forEach(b => b.onclick = () => { const [pid, c] = b.dataset.dc.split(":"); dashCourse[pid] = c; dashRedo(); });
   app.querySelectorAll("[data-pm]").forEach(b => b.onclick = () => { const [pid, c] = b.dataset.pm.split(":"); progressManager(pid, c, parentDash); });
-  app.querySelectorAll("[data-ft]").forEach(h => h.onclick = () => { const k = h.dataset.ft; dashOpen[k] = !dashOpen[k]; h.parentElement.classList.toggle("open", dashOpen[k]); });
   app.querySelectorAll("[data-stats]").forEach(b => b.onclick = () => { const [pid, c] = b.dataset.stats.split(":"); statView.open = {}; statsScreen(pid, c); window.scrollTo(0, 0); });
-  $("#famSave").onclick = e => { P.family = {target: Math.max(10, +$("#famT").value || 60)}; saveP(); doneBtn(e.currentTarget, "✓ Saved"); toast("Family goal saved."); };
-  app.querySelectorAll("[data-delr]").forEach(b => b.onclick = () => askConfirm("Delete this reward?", "Yes, delete", () => { P.rewards = (P.rewards||[]).filter(r => r.id!==b.dataset.delr); saveP(); parentDash(); }));
-  app.querySelectorAll("[data-give]").forEach(b => b.onclick = () => { const [rid, pid] = b.dataset.give.split(":"); const r = P.rewards.find(x => x.id===rid); r.given = r.given || {}; r.given[pid] = todayKey(); saveP(); parentDash(); });
+  app.querySelectorAll("[data-av]").forEach(b => b.onclick = () => { const [pid, a] = b.dataset.av.split(":"), p = P.profiles.find(x => x.id===pid); if (!p || p.avatar===a) return; p.avatar = a; saveP(); setNote("av:" + pid, `✓ Animal changed to ${a}`); dashRedo(); });
+  app.querySelectorAll("[data-reset]").forEach(b => b.onclick = () => { const [pid, c] = b.dataset.reset.split(":"), nm = nameOf(pid);
+    askConfirm(`Reset all of ${nm}’s ${COURSE_NAMES[c]} progress? The other course is not touched.`, "Yes, reset", () => { const fresh = withAz(clone(DEFAULT)); fresh.itemsReset1 = true; putState(pid, c, fresh); setNote(`${pid}:${c}:danger`, `✓ ${nm}’s ${COURSE_NAMES[c]} progress was reset`); dashOpen[pid] = true; dashOpen[pid + ":danger"] = true; dashRedo(); }); });
+  app.querySelectorAll("[data-del]").forEach(b => b.onclick = () => deleteLearner(b.dataset.del, () => { P.profiles.length ? parentDash() : editLearner(null); }));
+  app.querySelectorAll("[data-delr]").forEach(b => b.onclick = () => askConfirm("Delete this reward?", "Yes, delete", () => { const r = (P.rewards||[]).find(x => x.id===b.dataset.delr); P.rewards = (P.rewards||[]).filter(x => x.id!==b.dataset.delr); saveP(); setNote("rw", `✓ Reward “${r ? r.title : ""}” deleted`); dashOpen.rw = true; dashRedo(); }));
+  app.querySelectorAll("[data-give]").forEach(b => b.onclick = () => { const [rid, pid] = b.dataset.give.split(":"); const r = P.rewards.find(x => x.id===rid); r.given = r.given || {}; r.given[pid] = todayKey(); saveP(); setNote("rw", `✓ “${r.title}” marked as given to ${nameOf(pid)}`); dashOpen.rw = true; dashRedo(); });
   $("#addRw").onclick = () => {
     const emojis = ["🍦","🍕","🎬","🎮","🧸","🏞️","🍫","📚","🎨","⚽","🎁","🛝"]; let em = "🍦";
     const bg = sheet(`<h2>New family reward</h2>
@@ -5274,20 +5384,11 @@ function parentDash(){
     $("#rwGo",bg).onclick = () => {
       const title = $("#rwT",bg).value.trim(); if (!title){ toast("Type the reward first."); return; }
       P.rewards = (P.rewards||[]).concat({id:"r"+Date.now(), title, emoji:em, kind:$("#rwK",bg).value, value:Math.max(5, +$("#rwV",bg).value||100), who:$("#rwW",bg).value, earned:{}, given:{}});
-      saveP(); bg.remove(); parentDash(); toast("Reward added. The children will see it on their home screen.");
+      saveP(); bg.remove(); setNote("rw", `✓ Reward “${title}” added. The children will see it on their home screen`); dashOpen.rw = true; dashRedo();
     };
   };
-  app.querySelectorAll("[data-edit]").forEach(b => b.onclick = () => {
-    const [eid, ec] = b.dataset.edit.split(":"), p = P.profiles.find(x => x.id===eid);
-    const bg = sheet(`<h2>${esc(p.name)}</h2><div style="display:grid;gap:10px">
-      <button class="btn" id="eEdit">Change name or animal</button>
-      <button class="btn ghost" id="eReset">Reset ${esc(p.name)}’s ${COURSE_NAMES[ec]} progress</button>
-      <button class="btn bad" id="eDel">Delete ${esc(p.name)}</button></div>`);
-    $("#eEdit",bg).onclick = () => { bg.remove(); editLearner(p.id); };
-    $("#eReset",bg).onclick = () => askConfirm(`Reset all of ${p.name}’s ${COURSE_NAMES[ec]} progress? The other course is not touched.`, "Yes, reset", () => { const fresh = withAz(clone(DEFAULT)); fresh.itemsReset1 = true; putState(p.id, ec, fresh); bg.remove(); parentDash(); toast(`${p.name}’s ${COURSE_NAMES[ec]} progress was reset.`); });
-    $("#eDel",bg).onclick = () => deleteLearner(p.id, () => { bg.remove(); P.profiles.length ? parentDash() : editLearner(null); });
-  });
 }
+
 function trackPron(res){
   if (L) L.pronList = (L.pronList || []).concat(res.score);
   if (res.score >= 80){ bumpCnt("speak80"); questProgress("speak80", 1); }
@@ -5395,12 +5496,13 @@ async function exportBackup(){
   const data = JSON.stringify(backupData(), null, 1);
   const name = `mishaling-backup-${todayKey()}.json`;
   const file = new File([data], name, {type:"application/json"});
+  const stamp = () => { P.lastBackup = new Date().toISOString(); saveP(); };
   try {
-    if (navigator.canShare && navigator.canShare({files:[file]})){ await navigator.share({files:[file], title:"Mishaling backup"}); toast("Backup ready. Keep it somewhere safe, like Google Drive."); return; }
-  } catch(e){ if (e && e.name==="AbortError") return; }
+    if (navigator.canShare && navigator.canShare({files:[file]})){ await navigator.share({files:[file], title:"Mishaling backup"}); stamp(); toast("Backup ready. Keep it somewhere safe, like Google Drive."); return true; }
+  } catch(e){ if (e && e.name==="AbortError") return false; }
   const a = document.createElement("a"); a.href = URL.createObjectURL(file); a.download = name; document.body.appendChild(a); a.click();
   setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 2000);
-  toast("Backup saved to Downloads.");
+  stamp(); toast("Backup saved to Downloads."); return true;
 }
 function importBackup(file, after){
   const r = new FileReader();
@@ -5514,7 +5616,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "16.6.3 (November 9, 2026)";
+const APP_VERSION = "16.7 (November 10, 2026)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */
