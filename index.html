@@ -3140,17 +3140,20 @@ async function imgsDownload(){
   for (const u of all){ const full = new URL(u, location.href).href; if (!navigator.onLine) break; try { if (await caches.match(full)) continue; const r = await fetch(full); if (r.ok) await cache.put(full, r); } catch(_){} }
 }
 /* Check for a newer version in the background; the app itself always opens straight from the phone */
-let updChecked = false;
+let updChecked = false, updAt = 0, updReady = false;
 function checkUpdate(){
-  if (updChecked || !navigator.onLine || !/^https?:/.test(location.protocol) || !navigator.serviceWorker || !navigator.serviceWorker.controller) return;
-  updChecked = true;
+  /* checked when the app opens, whenever it comes back to the front, and on the home screen: at most once every 5 minutes */
+  if (updReady){ updateBar(); return; }
+  if (Date.now() - updAt < 300000 || !navigator.onLine || !/^https?:/.test(location.protocol) || !navigator.serviceWorker || !navigator.serviceWorker.controller) return;
+  updChecked = true; updAt = Date.now();
+  try { navigator.serviceWorker.getRegistration().then(r => r && r.update()).catch(() => {}); } catch(_){}
   fetch("./index.html?fresh=" + Date.now(), {cache:"no-store"}).then(r => r.ok ? r.text() : "").then(t => {
     const m = t.match(/APP_VERSION = "(\d[^"]*)"/);   /* a digit first, so this line never matches itself */
-    if (m && m[1] !== APP_VERSION) updateBar();
+    if (m && m[1] !== APP_VERSION){ updReady = true; updateBar(); }
   }).catch(() => {});
 }
 function updateBar(){
-  if (document.querySelector(".updbar")) return;
+  if (document.querySelector(".updbar") || L) return;   /* never in the middle of a lesson: it shows on the home screen */
   const b = document.createElement("div"); b.className = "updbar";
   b.innerHTML = `<span>A new version of Mishaling is ready.</span><button>Update</button>`;
   b.querySelector("button").onclick = () => location.reload();
@@ -3158,10 +3161,10 @@ function updateBar(){
 }
 let vAutoDone = {};
 function voicesAuto(){
+  setTimeout(checkUpdate, 1500);
   const c = CC; if (vAutoDone[c] || !navigator.onLine || !/^https?:/.test(location.protocol)) return;
   /* wait until the app has settled, then pictures first, then voices, a few at a time */
   vAutoDone[c] = true;
-  setTimeout(checkUpdate, 5000);
   setTimeout(() => { const go = () => imgsDownload().then(() => voicesDownload(c)); window.requestIdleCallback ? requestIdleCallback(go, {timeout:5000}) : go(); }, 15000);
 }
 let curDone = null;
@@ -3265,6 +3268,7 @@ document.addEventListener("visibilitychange", () => {
   if (document.hidden){ hiddenAt = Date.now(); hush(); return; }
   if (hiddenAt && L && L.start) L.start += Date.now() - hiddenAt;   /* time away doesn't count as learning time */
   hiddenAt = 0;
+  setTimeout(checkUpdate, 1500);   /* back in front: look for a new version */
   if (document.querySelector(".greet .live")) homeIdle();
 });
 window.addEventListener("pagehide", hush);
@@ -5492,7 +5496,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "16.6.1 (November 9, 2026)";
+const APP_VERSION = "16.6.2 (November 9, 2026)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */
