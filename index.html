@@ -1473,7 +1473,7 @@ Object.assign(UNITS, {
     {who:"mama", ru:"Твой каранда́ш здесь, в су́мке!", en:"Your pencil is here, in the bag!"},
     {q:"Where is the pencil?", options:["in the bag", "on the table", "at school"], answer:0},
     {who:"misha", ru:"Ой! Спаси́бо, ма́ма!", en:"Oh! Thanks, Mom!"},
-    {who:"tima", ru:"У тебя́ есть каранда́ш, а у меня́ есть ру́чка. Отли́чно!", en:"You have a pencil, and I have a pen. Great!"},
+    {who:"tima", ru:"У тебя есть каранда́ш. А у меня есть ру́чка. Отли́чно!", en:"You have a pencil, and I have a pen. Great!"},
     {q:"How do you say “I have a pen”?", options:["У меня́ есть ру́чка.", "У тебя́ есть ру́чка?", "У неё есть ру́чка."], answer:0}
   ],
   chat:[["l", "У тебя́ есть велосипе́д?", "Do you have a bike?"], ["r", "Да, у меня́ есть велосипе́д.", "Yes, I have a bike."], ["l", "А компью́тер?", "And a computer?"], ["r", "Нет. А у тебя́?", "No. And you?"], ["l", "У меня́ есть компью́тер.", "I have a computer."]],
@@ -5717,7 +5717,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "16.9.17 (November 11, 2026, 10:49 AM EST)";
+const APP_VERSION = "16.9.18 (November 11, 2026, 11:13 AM EST)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */
