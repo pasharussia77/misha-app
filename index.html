@@ -335,8 +335,8 @@ img.chip.papa{filter:brightness(.8) saturate(.85)}
 .tag.rev{color:var(--primary)}.tag.rev i{background:var(--primary)}
 /* Profiles & parent dashboard */
 .top{gap:6px}.top .stat{white-space:nowrap;padding:6px 8px;font-size:16px}
-.avbtn{appearance:none;display:flex;align-items:center;gap:8px;background:var(--surface);color:var(--ink);border:2px solid var(--line);border-radius:999px;padding:4px 12px 4px 4px;font-weight:800;font-size:16px;cursor:pointer;max-width:46%}
-.avbtn span.n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.avbtn{appearance:none;display:flex;align-items:center;gap:8px;background:var(--surface);color:var(--ink);border:2px solid var(--line);border-radius:999px;padding:4px 12px 4px 4px;font-weight:800;font-size:16px;cursor:pointer;max-width:52%;min-width:0}
+.avbtn span.n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:4ch}
 .av{display:inline-grid;place-items:center;border-radius:50%;flex:none}
 .pgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
 .pcard{appearance:none;cursor:pointer;background:var(--surface);color:var(--ink);border:2px solid var(--line);border-bottom-width:5px;border-radius:22px;padding:16px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;font-weight:800;font-size:18px}
@@ -837,9 +837,20 @@ img.chip.wobble{animation:wobble .6s ease-in-out 1, breathe 3.4s ease-in-out .6s
 }
 .pp{position:relative;display:inline-block;line-height:1}.pp i{position:absolute;left:-.12em;bottom:.02em;font-size:.25em;font-style:normal;line-height:1}
 .ublk{position:relative}
-.ublk>.unitcard{position:sticky;top:max(8px, env(safe-area-inset-top,0px));z-index:6}
-.pathbtns{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:9;display:flex;gap:10px;white-space:nowrap}
+.ublk>.unitcard{position:sticky;top:calc(max(8px, env(safe-area-inset-top,0px)) + 40px);z-index:6}
+/* the two path buttons each have their own fixed spot and fade in/out, so one appearing never nudges the other */
+.pathbtns{position:fixed;left:0;right:0;max-width:560px;margin:0 auto;height:0;bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:9;pointer-events:none}
+.pathbtns .myspot{position:absolute;bottom:0;white-space:nowrap;pointer-events:auto;transition:opacity .18s}
+.pathbtns #mySpot{left:50%;transform:translateX(-50%);min-width:150px;text-align:center}
+.pathbtns #toTop{right:16px}
+.pathbtns .myspot[hidden]{display:block;visibility:hidden;opacity:0;pointer-events:none}
 body.popopen .pathbtns{display:none}
+/* little learner bubble that stays on screen once the top bar has scrolled away */
+.whobar{position:fixed;top:0;left:0;right:0;max-width:560px;margin:0 auto;z-index:11;height:calc(max(8px, env(safe-area-inset-top,0px)) + 40px);box-sizing:border-box;padding:0 16px 6px;display:flex;align-items:flex-end;background:var(--bg);box-shadow:0 2px 0 var(--line);opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .15s,transform .15s,visibility 0s .15s;pointer-events:none}
+.whobar.show{opacity:1;visibility:visible;transform:none;pointer-events:auto;transition:opacity .15s,transform .15s}
+.whochip{appearance:none;display:inline-flex;align-items:center;gap:6px;background:var(--surface);color:var(--ink);border:2px solid var(--line);border-radius:999px;padding:2px 12px 2px 2px;font:inherit;font-weight:800;font-size:15px;line-height:1;cursor:pointer;max-width:100%}
+.whochip .n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.whochip .cflag{margin-left:2px}
 .node.open{z-index:8}
 .myspot{background:var(--surface);color:var(--ink);border:2px solid var(--line);border-radius:999px;padding:9px 18px;font:inherit;font-family:var(--font-head);font-weight:800;font-size:16px;box-shadow:0 4px 0 var(--line);cursor:pointer}
 .myspot[hidden]{display:none}
@@ -3754,6 +3765,7 @@ function home(){
       }).join("")}
     </div>`}</section>
     ${UNIT_IDS.map(unitBlock).join("")}
+    <div class="whobar" id="whoBar"><button class="whochip" id="whoChip" aria-label="${esc(me().name)}, ${LN()} course. Switch learner">${avHTML(me().avatar, 26)}<span class="n">${esc(me().name)}</span><span class="cflag">${COURSE_FLAGS[COURSE]}</span></button></div>
     <div class="pathbtns"><button class="myspot" id="toTop" hidden aria-label="Go to the top of the path">⤒ Top</button><button class="myspot" id="mySpot" hidden>⬇ My spot</button></div>
     <div style="height:160px"></div>
     <p class="foot-note">Concept build for our family app. ${MN()} the chipmunk is Galina’s own character. Voices: Microsoft when connected in Settings, otherwise the phone’s own.</p>
@@ -3767,6 +3779,7 @@ function home(){
   wireNav();
   const td = $("#todayCard"); if (td) td.onclick = questsScreen;
   $("#whoBtn").onclick = whoScreen;
+  const wc = $("#whoChip"); if (wc) wc.onclick = () => { sfx.tap(); whoScreen(); };
   $("#streakStat").onclick = () => streakCalendar();
   markOfflineBadges(); voicesAuto();
   /* Stars fly into the counter after a lesson */
@@ -3795,25 +3808,58 @@ function home(){
   pathSpot(wasHome, keepY);
 }
 /* Path: open at your circle, and offer a way back when you scroll away (like Duolingo) */
-let spotObs = null;
+let spotObs = null, whoObs = null, lastSpot = null;
+/* the circle the learner last opened: coming back from a lesson lands right there, not on "current" */
+function spotNode(){
+  if (!lastSpot) return null;
+  const b = lastSpot.a != null ? app.querySelector(`[data-alpha="${lastSpot.a}"]`) : app.querySelector(`[data-unit="${lastSpot.u}"][data-level="${lastSpot.i}"]`);
+  return b ? b.closest(".node") : null;
+}
+/* long trips: hop most of the way, then glide the last screenful, so it never whips past at top speed */
+function glide(node){
+  try {
+    const r = node.getBoundingClientRect(), d = r.top + r.height/2 - innerHeight/2;
+    if (Math.abs(d) > innerHeight*1.5) window.scrollBy(0, d - Math.sign(d)*innerHeight);
+    node.scrollIntoView({block:"center", behavior:"smooth"});
+  } catch(_){ node.scrollIntoView(); }
+}
 function pathSpot(wasHome, keepY){
-  const cur = app.querySelector(".node.current") || app.querySelector(".node:not(.locked):not(.done)") || [...app.querySelectorAll(".node.done")].pop();
+  const cur = spotNode() || app.querySelector(".node.current") || app.querySelector(".node:not(.locked):not(.done)") || [...app.querySelectorAll(".node.done")].pop();
   if (wasHome) window.scrollTo(0, keepY);
-  else if (cur) requestAnimationFrame(() => { try { cur.scrollIntoView({block:"center"}); } catch(_){} });
+  else if (cur){
+    const center = () => { try { cur.scrollIntoView({block:"center"}); } catch(_){} };
+    let touched = false; const tk = () => { touched = true; };
+    addEventListener("touchstart", tk, {once:true, passive:true}); addEventListener("wheel", tk, {once:true, passive:true});
+    requestAnimationFrame(() => { center();
+      /* once fonts and pictures settle, nudge back onto the circle if the page shifted (only if nobody has scrolled yet) */
+      setTimeout(() => { if (touched || !cur.isConnected) return; const r = cur.getBoundingClientRect(); if (Math.abs(r.top + r.height/2 - innerHeight/2) > 40) center(); }, 350);
+    });
+  }
+  /* learner bubble: shows only once the top bar has scrolled off the screen */
+  const bar = $("#whoBar"), hd = app.querySelector(".top");
+  if (whoObs){ whoObs.disconnect(); whoObs = null; }
+  if (bar && hd && window.IntersectionObserver){
+    whoObs = new IntersectionObserver(es => { const e = es[es.length-1]; if (!bar.isConnected){ whoObs.disconnect(); return; } bar.classList.toggle("show", !e.isIntersecting && e.boundingClientRect.bottom <= 0); });
+    whoObs.observe(hd);
+  }
   const top = $("#toTop");
   if (top){
-    const showTop = () => { if (!top.isConnected){ removeEventListener("scroll", showTop); return; } top.hidden = window.scrollY < innerHeight * 1.2; };
-    addEventListener("scroll", showTop, {passive:true}); showTop();
-    top.onclick = () => { sfx.tap(); document.querySelectorAll(".popcard").forEach(p => { p.parentElement.classList.remove("open"); p.remove(); }); document.body.classList.remove("popopen"); try { window.scrollTo({top:0, behavior:"smooth"}); } catch(_){ window.scrollTo(0, 0); } };
+    let raf = 0;
+    const showTop = () => { raf = 0; if (!top.isConnected){ removeEventListener("scroll", onScr); return; } const h = window.scrollY < innerHeight * 1.2; if (top.hidden !== h) top.hidden = h; };
+    const onScr = () => { if (!raf) raf = requestAnimationFrame(showTop); };
+    addEventListener("scroll", onScr, {passive:true}); showTop();
+    top.onclick = () => { sfx.tap(); document.querySelectorAll(".popcard").forEach(p => { p.parentElement.classList.remove("open"); p.remove(); }); document.body.classList.remove("popopen");
+      try { if (window.scrollY > innerHeight*1.5) window.scrollTo(0, innerHeight); window.scrollTo({top:0, behavior:"smooth"}); } catch(_){ window.scrollTo(0, 0); } };
   }
   const btn = $("#mySpot"); if (!btn || !cur) return;
   if (spotObs) spotObs.disconnect();
   spotObs = new IntersectionObserver(es => es.forEach(e => {
     if (!btn.isConnected){ spotObs.disconnect(); return; }
-    btn.hidden = e.isIntersecting; btn.textContent = e.boundingClientRect.top < 0 ? "⬆ My spot" : "⬇ My spot";
-  }), {rootMargin:"-60px 0px -110px 0px"});
+    const hide = e.isIntersecting; if (btn.hidden !== hide) btn.hidden = hide;
+    const t = e.boundingClientRect.top < 0 ? "⬆ My spot" : "⬇ My spot"; if (btn.textContent !== t) btn.textContent = t;
+  }), {rootMargin:"-100px 0px -110px 0px"});
   spotObs.observe(cur);
-  btn.onclick = () => { sfx.tap(); try { cur.scrollIntoView({block:"center", behavior:"smooth"}); } catch(_){ cur.scrollIntoView(); } };
+  btn.onclick = () => { sfx.tap(); glide(cur); };
 }
 
 /* ---------- Guidebook & settings ---------- */
@@ -4474,11 +4520,13 @@ function sleepySheet(go, ck){
   $("#goPr", bg).onclick = () => { bg.remove(); startPractice("review"); };
 }
 function startAlpha(n){
+  lastSpot = {a:n};
   if (!lessonOk(0, n)) return sleepySheet(() => startAlpha(n), lvKey(0, n)); noteLesson(0, n);
   const r = resumeFor("a:" + n); if (r) return restoreLesson(r, {kind:"alpha", level:-1, n});
   runQueue(buildAlpha(n), {kind:"alpha", level:-1, n});
 }
 function startLesson(level, u=CU){
+  lastSpot = {u, i:level};
   if (!lessonOk(u, level)) return sleepySheet(() => startLesson(level, u), lvKey(u, level)); noteLesson(u, level);
   setUnit(u);
   const n = Math.min(D(u)[level], LEVELS[level].lessons-1);
@@ -5155,7 +5203,7 @@ document.addEventListener("click", e => {
 /* ---------- Profiles: who’s learning? ---------- */
 function enterCourse(id, c){
   save(); const p = P.profiles.find(x => x.id===id); if (p) p.course = c;
-  P.current = id; saveP(); COURSE = c; useCourse(c); S = withAz(loadS(id, c)); L = null; home();
+  P.current = id; saveP(); COURSE = c; useCourse(c); S = withAz(loadS(id, c)); L = null; lastSpot = null; home();
 }
 function switchTo(id){
   const p = P.profiles.find(x => x.id===id); if (!p) return;
@@ -5636,7 +5684,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "16.9.3 (published November 10, 2026, 10:31 PM EST)";
+const APP_VERSION = "16.9.4 (November 10, 2026, 11:01 PM EST)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */
