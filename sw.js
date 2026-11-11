@@ -1,7 +1,7 @@
 /* Mishaling helper: the app opens straight from the copy saved on the phone (fast, and works offline).
    The app checks for a newer version in the background and offers an Update button.
    Pictures and voices are kept in their own stores, so app updates don't download them again. */
-const CACHE = "misha-app-v51";
+const CACHE = "misha-app-v52";
 const VCACHE = "mishaling-voices-v2";   /* voice clips (v2: original quality) */
 const ICACHE = "mishaling-img-v1";      /* pictures */
 const CORE = ["./", "./index.html", "./manifest.json", "./mishaling-192.png", "./mishaling-512.png", "./mishaling-maskable-512.png", "./mishaling-apple-touch.png"];
