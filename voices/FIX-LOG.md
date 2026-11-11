@@ -4,6 +4,18 @@ Read this BEFORE generating any voice clip (Russian or Spanish). Add every new f
 Recipe (voices, settings, processing) lives in Claude's memory: "VOICE FIX RECIPE" and "NEW-VOICES RECIPE".
 Per-clip generation records (seed, request id, voice) are in voices/<lang>/gen-log.json.
 
+## Pre-generation checklist (scan the story text BEFORE generating; every item comes from a row below)
+1. **Stress marks:** only on content words (nouns, verbs, adjectives). None on это, моя, мой, твоя, мои, and none on pronouns like тебя/меня (rows 1, 24).
+2. **Statements:** if a two-part statement must sound finished, put a period between the parts, not a comma (row 24).
+3. **Questions:** for a question whose focus is the last word, send a short pause (ellipsis) before it in the audio text (row 25). Offers use the short form "Хочешь X?" with a mark on хочешь (row 12). Pointing-and-checking lines become two short questions with a mark on both words (row 2).
+4. **Introductions "Это X.":** no opening name plus comma; leave stress marks out of the audio text if it sounds like a discovery; never use a contrast or correction line as context; screen takes by the final pitch fall, -1 to -5 semitones (rows 11, 20).
+5. **Pronunciation differs from spelling:** words with -ого/-его (какого, него, его, чего...) get a phonetic spelling in the audio text only. The spelling must not be another real word (use hyphens: Ка-ко́-во) (rows 21, 22). Exceptions with a real г: много, немного, строго, дорого.
+6. **First sounds:** the first line of a story gets a neutral artificial previous line, and its first sound must not be confusable with the first sound of that previous line (п/б, т/д, к/г). Test any line starting with т using the detector; п/б is judged by Galina's ear (rows 8, 9, 23).
+7. **Context and settings:** previous line only, never next_text (row 6); per-role voices and stability, Tima +3 semitones; save seed and request id of every take (rows 3, 4, 16).
+8. **Checks on every clip:** ending (no stray sound, trim before regenerating), duration against the old clip, loudness (rows 5, 6).
+9. **Content:** every line fits the unit topic; never shorten a story (row 10); show new text to Galina before generating.
+10. **Delivery:** one listening page with Play all, numbered lines, stops at each unit end; update the same page. After Galina's notes, add a row with the case and the general rule.
+
 | # | Problem found | Cause | Fix | General rule (guardrail for new clips) |
 |---|---|---|---|---|
 | 1 | Wrong emphasis: "Это моя семья" sounded like "MY family, not yours" | Stress marks on unstressed words (это, моя, твоя, мои) were sent to the voice | Removed marks on function words in text and in the audio request | Never mark stress on это/моя/мой/твоя/твой/мои etc. Keep marks on content words. |
