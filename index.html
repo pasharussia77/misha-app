@@ -2030,39 +2030,39 @@ const LEVELS = [
 
 /* ---------- Alphabet: 33 letters in five friendly groups ---------- */
 let LETTERS = [
-  {u:"А",l:"а",snd:"a",hint:"a, as in “father”",name:"а",word:"ма́ма",wen:"mom",pic:"👩",g:0,ss:"а"},
-  {u:"К",l:"к",snd:"k",hint:"k, as in “kite”",name:"ка",word:"кот",wen:"cat",pic:"🐱",g:0,ss:"ка, ко, ку"},
-  {u:"М",l:"м",snd:"m",hint:"m, as in “mom”",name:"эм",word:"мак",wen:"poppy",pic:"🌺",g:0,ss:"ма, мо, му"},
-  {u:"О",l:"о",snd:"o",hint:"o, as in “more”",name:"о",word:"окно́",wen:"window",pic:"🪟",g:0,ss:"о"},
-  {u:"Т",l:"т",snd:"t",hint:"t, as in “top”",name:"тэ",word:"торт",wen:"cake",pic:"🎂",g:0,ss:"та, то, ту"},
-  {u:"В",l:"в",snd:"v",hint:"v, as in “van”",name:"вэ",word:"вода́",wen:"water",pic:"💧",g:1,looks:"B",ss:"ва, во, ву"},
-  {u:"Н",l:"н",snd:"n",hint:"n, as in “nose”",name:"эн",word:"нос",wen:"nose",pic:"👃",g:1,looks:"H",ss:"на, но, ну"},
-  {u:"Р",l:"р",snd:"r",hint:"a rolled r",name:"эр",word:"ры́ба",wen:"fish",pic:"🐟",g:1,looks:"P",ss:"ра, ро, ру"},
-  {u:"С",l:"с",snd:"s",hint:"s, as in “sun”",name:"эс",word:"сок",wen:"juice",pic:"🧃",g:1,looks:"C",ss:"са, со, су"},
-  {u:"У",l:"у",snd:"oo",hint:"oo, as in “moon”",name:"у",word:"у́тка",wen:"duck",pic:"🦆",g:1,looks:"Y",ss:"у"},
-  {u:"Х",l:"х",snd:"kh",hint:"kh, as in “Bach”",name:"ха",word:"хлеб",wen:"bread",pic:"🍞",g:1,looks:"X",ss:"ха, хо, ху"},
-  {u:"Е",sndShow:"ye / e",l:"е",snd:"ye",hint:"Е has two sounds.",name:"е",word:"ель",wen:"fir tree",pic:"🌲",g:1,looks:"E",ss:"е",two:[{snd:"ye",when:"at the start of a word or after a vowel",word:"ель",wen:"fir tree",pic:"🌲"},{snd:"e",when:"after a consonant, and the letter before it goes soft",word:"нет",wen:"no",pic:"👎"}]},
-  {u:"Б",l:"б",snd:"b",hint:"b, as in “bed”",name:"бэ",word:"бана́н",wen:"banana",pic:"🍌",g:2,ss:"ба, бо, бу"},
-  {u:"Г",l:"г",snd:"g",hint:"g, as in “go”",name:"гэ",word:"гриб",wen:"mushroom",pic:"🍄",g:2,ss:"га, го, гу"},
-  {u:"Д",l:"д",snd:"d",hint:"d, as in “dog”",name:"дэ",word:"дом",wen:"house",pic:"🏠",g:2,ss:"да, до, ду"},
-  {u:"З",l:"з",snd:"z",hint:"z, as in “zoo”",name:"зэ",word:"зо́нтик",wen:"umbrella",pic:"☂️",g:2,ss:"за, зо, зу"},
-  {u:"И",l:"и",snd:"ee",hint:"ee, as in “see”",name:"и",word:"игру́шка",wen:"toy",pic:"🧸",g:2,ss:"и"},
-  {u:"Л",l:"л",snd:"l",hint:"l, as in “lamp”",name:"эль",word:"лимо́н",wen:"lemon",pic:"🍋",g:2,ss:"ла, ло, лу"},
-  {u:"П",l:"п",snd:"p",hint:"p, as in “pen”",name:"пэ",word:"пингви́н",wen:"penguin",pic:"🐧",g:2,ss:"па, по, пу"},
-  {u:"Ф",l:"ф",snd:"f",hint:"f, as in “fun”",name:"эф",word:"флаг",wen:"flag",pic:"🚩",g:2,ss:"фа, фо, фу"},
-  {u:"Ж",l:"ж",snd:"zh",hint:"zh, like the s in “measure”",name:"жэ",word:"жук",wen:"beetle",pic:"🪲",g:3,ss:"жа, жо, жу"},
-  {u:"Ц",l:"ц",snd:"ts",hint:"ts, as in “cats”",name:"цэ",word:"цвето́к",wen:"flower",pic:"🌸",g:3,ss:"ца, цо, цу"},
-  {u:"Ч",l:"ч",snd:"ch",hint:"ch, as in “cheese”",name:"че",word:"чай",wen:"tea",pic:"🍵",g:3,ss:"ча, чу, чи"},
-  {u:"Ш",l:"ш",snd:"sh",hint:"sh, as in “shop”",name:"ша",word:"шар",wen:"balloon",pic:"🎈",g:3,ss:"ша, шо, шу"},
-  {u:"Щ",l:"щ",snd:"shch",hint:"a long, soft sh",name:"ща",word:"щено́к",wen:"puppy",pic:"🐶",g:3,ss:"ща, щу, щи"},
-  {u:"Й",l:"й",snd:"y (short)",hint:"a short y, as in “boy”",name:"и кра́ткое",word:"йо́гурт",wen:"yogurt",pic:"🥛",g:3,ss:"ай, ой, эй"},
-  {u:"Ы",l:"ы",snd:"ɨ",hint:"no English match: say “i” with your tongue pulled back",name:"ы",word:"сыр",wen:"cheese",pic:"🧀",g:3,ss:"ы"},
-  {u:"Э",l:"э",snd:"e",hint:"e, as in “met”",name:"э",word:"экра́н",wen:"screen",pic:"🖥️",g:3,ss:"э"},
-  {u:"Ё",sndShow:"yo / o",l:"ё",snd:"yo",hint:"Ё has two sounds.",name:"ё",word:"ёж",wen:"hedgehog",pic:"🦔",g:4,ss:"ё",two:[{snd:"yo",when:"at the start of a word or after a vowel",word:"ёж",wen:"hedgehog",pic:"🦔"},{snd:"o",when:"after a consonant, and the letter before it goes soft",word:"мёд",wen:"honey",pic:"🍯"}]},
-  {u:"Ю",sndShow:"yu / oo",l:"ю",snd:"yu",hint:"Ю has two sounds.",name:"ю",word:"ю́бка",wen:"skirt",pic:"👗",g:4,ss:"ю",two:[{snd:"yu",when:"at the start of a word or after a vowel",word:"ю́бка",wen:"skirt",pic:"👗"},{snd:"oo",when:"after a consonant, and the letter before it goes soft",word:"тюле́нь",wen:"seal",pic:"🦭"}]},
-  {u:"Я",sndShow:"ya / a",l:"я",snd:"ya",hint:"Я has two sounds.",name:"я",word:"я́блоко",wen:"apple",pic:"🍎",g:4,ss:"я",two:[{snd:"ya",when:"at the start of a word or after a vowel",word:"я́блоко",wen:"apple",pic:"🍎"},{snd:"a",when:"after a consonant, and the letter before it goes soft",word:"мяч",wen:"ball",pic:"⚽"}]},
-  {u:"Ь",l:"ь",snd:"soft sign",hint:"The soft sign has no sound of its own. It makes the letter before it soft.",name:"мя́гкий знак",word:"соль",wen:"salt",pic:"🧂",g:4,ss:"",sndShow:"no sound",more:"Listen to брат and брать: the т at the end goes soft.",pair:[{word:"брат",wen:"brother"},{word:"брать",wen:"to take"}]},
-  {u:"Ъ",l:"ъ",snd:"hard sign",hint:"The hard sign has no sound of its own. It makes a tiny stop before the next vowel.",name:"твёрдый знак",word:"подъе́зд",wen:"entrance hall",pic:"🏢",g:4,ss:"",sndShow:"no sound",more:"Listen to сел and съел: a tiny stop before the е.",pair:[{word:"сел",wen:"sat down"},{word:"съел",wen:"ate"}]}
+  {u:"А",l:"а",snd:"a",hint:"a, as in “father”",name:"а",word:"ма́ма",wen:"mom",pic:"<img class='wp' src='img/20aba7e4e906.webp' alt=''>",g:0,ss:"а"},
+  {u:"К",l:"к",snd:"k",hint:"k, as in “kite”",name:"ка",word:"кот",wen:"cat",pic:"<img class='wp' src='img/a65943d30c63.webp' alt=''>",g:0,ss:"ка, ко, ку"},
+  {u:"М",l:"м",snd:"m",hint:"m, as in “mom”",name:"эм",word:"мак",wen:"poppy",pic:"<img class='wp' src='img/dd9adf18b164.webp' alt=''>",g:0,ss:"ма, мо, му"},
+  {u:"О",l:"о",snd:"o",hint:"o, as in “more”",name:"о",word:"окно́",wen:"window",pic:"<img class='wp' src='img/b81578e9da4d.webp' alt=''>",g:0,ss:"о"},
+  {u:"Т",l:"т",snd:"t",hint:"t, as in “top”",name:"тэ",word:"торт",wen:"cake",pic:"<img class='wp' src='img/c22d8b5501f6.webp' alt=''>",g:0,ss:"та, то, ту"},
+  {u:"В",l:"в",snd:"v",hint:"v, as in “van”",name:"вэ",word:"вода́",wen:"water",pic:"<img class='wp' src='img/6159cae5b54f.webp' alt=''>",g:1,looks:"B",ss:"ва, во, ву"},
+  {u:"Н",l:"н",snd:"n",hint:"n, as in “nose”",name:"эн",word:"нос",wen:"nose",pic:"<img class='wp' src='img/b74f631599de.webp' alt=''>",g:1,looks:"H",ss:"на, но, ну"},
+  {u:"Р",l:"р",snd:"r",hint:"a rolled r",name:"эр",word:"ры́ба",wen:"fish",pic:"<img class='wp' src='img/1e53861d028b.webp' alt=''>",g:1,looks:"P",ss:"ра, ро, ру"},
+  {u:"С",l:"с",snd:"s",hint:"s, as in “sun”",name:"эс",word:"сок",wen:"juice",pic:"<img class='wp' src='img/9e9449fe82b3.webp' alt=''>",g:1,looks:"C",ss:"са, со, су"},
+  {u:"У",l:"у",snd:"oo",hint:"oo, as in “moon”",name:"у",word:"у́тка",wen:"duck",pic:"<img class='wp' src='img/e35623699d7a.webp' alt=''>",g:1,looks:"Y",ss:"у"},
+  {u:"Х",l:"х",snd:"kh",hint:"kh, as in “Bach”",name:"ха",word:"хлеб",wen:"bread",pic:"<img class='wp' src='img/72b89c42f990.webp' alt=''>",g:1,looks:"X",ss:"ха, хо, ху"},
+  {u:"Е",sndShow:"ye / e",l:"е",snd:"ye",hint:"Е has two sounds.",name:"е",word:"ель",wen:"fir tree",pic:"<img class='wp' src='img/82551d989c4d.webp' alt=''>",g:1,looks:"E",ss:"е",two:[{snd:"ye",when:"at the start of a word or after a vowel",word:"ель",wen:"fir tree",pic:"<img class='wp' src='img/82551d989c4d.webp' alt=''>"},{snd:"e",when:"after a consonant, and the letter before it goes soft",word:"нет",wen:"no",pic:"<img class='wp' src='img/a7091149f2aa.webp' alt=''>"}]},
+  {u:"Б",l:"б",snd:"b",hint:"b, as in “bed”",name:"бэ",word:"бана́н",wen:"banana",pic:"<img class='wp' src='img/5e9b781a6ef8.webp' alt=''>",g:2,ss:"ба, бо, бу"},
+  {u:"Г",l:"г",snd:"g",hint:"g, as in “go”",name:"гэ",word:"гриб",wen:"mushroom",pic:"<img class='wp' src='img/7907916ccaf2.webp' alt=''>",g:2,ss:"га, го, гу"},
+  {u:"Д",l:"д",snd:"d",hint:"d, as in “dog”",name:"дэ",word:"дом",wen:"house",pic:"<img class='wp' src='img/b20534b29ad4.webp' alt=''>",g:2,ss:"да, до, ду"},
+  {u:"З",l:"з",snd:"z",hint:"z, as in “zoo”",name:"зэ",word:"зо́нтик",wen:"umbrella",pic:"<img class='wp' src='img/42e275e5edba.webp' alt=''>",g:2,ss:"за, зо, зу"},
+  {u:"И",l:"и",snd:"ee",hint:"ee, as in “see”",name:"и",word:"игру́шка",wen:"toy",pic:"<img class='wp' src='img/3e44fc9fd6fb.webp' alt=''>",g:2,ss:"и"},
+  {u:"Л",l:"л",snd:"l",hint:"l, as in “lamp”",name:"эль",word:"лимо́н",wen:"lemon",pic:"<img class='wp' src='img/8a39aae28066.webp' alt=''>",g:2,ss:"ла, ло, лу"},
+  {u:"П",l:"п",snd:"p",hint:"p, as in “pen”",name:"пэ",word:"пингви́н",wen:"penguin",pic:"<img class='wp' src='img/075c00776ff8.webp' alt=''>",g:2,ss:"па, по, пу"},
+  {u:"Ф",l:"ф",snd:"f",hint:"f, as in “fun”",name:"эф",word:"флаг",wen:"flag",pic:"<img class='wp' src='img/dc3ab1c7db3a.webp' alt=''>",g:2,ss:"фа, фо, фу"},
+  {u:"Ж",l:"ж",snd:"zh",hint:"zh, like the s in “measure”",name:"жэ",word:"жук",wen:"beetle",pic:"<img class='wp' src='img/c3f9270f96bf.webp' alt=''>",g:3,ss:"жа, жо, жу"},
+  {u:"Ц",l:"ц",snd:"ts",hint:"ts, as in “cats”",name:"цэ",word:"цвето́к",wen:"flower",pic:"<img class='wp' src='img/8109c8f39c0b.webp' alt=''>",g:3,ss:"ца, цо, цу"},
+  {u:"Ч",l:"ч",snd:"ch",hint:"ch, as in “cheese”",name:"че",word:"чай",wen:"tea",pic:"<img class='wp' src='img/81b0a6ddc7f1.webp' alt=''>",g:3,ss:"ча, чу, чи"},
+  {u:"Ш",l:"ш",snd:"sh",hint:"sh, as in “shop”",name:"ша",word:"шар",wen:"balloon",pic:"<img class='wp' src='img/45879263d57c.webp' alt=''>",g:3,ss:"ша, шо, шу"},
+  {u:"Щ",l:"щ",snd:"shch",hint:"a long, soft sh",name:"ща",word:"щено́к",wen:"puppy",pic:"<img class='wp' src='img/1bfcb80b9408.webp' alt=''>",g:3,ss:"ща, щу, щи"},
+  {u:"Й",l:"й",snd:"y (short)",hint:"a short y, as in “boy”",name:"и кра́ткое",word:"йо́гурт",wen:"yogurt",pic:"<img class='wp' src='img/8fe3ac23f063.webp' alt=''>",g:3,ss:"ай, ой, эй"},
+  {u:"Ы",l:"ы",snd:"ɨ",hint:"no English match: say “i” with your tongue pulled back",name:"ы",word:"сыр",wen:"cheese",pic:"<img class='wp' src='img/cc3d7c225046.webp' alt=''>",g:3,ss:"ы"},
+  {u:"Э",l:"э",snd:"e",hint:"e, as in “met”",name:"э",word:"экра́н",wen:"screen",pic:"<img class='wp' src='img/f508f4392de5.webp' alt=''>",g:3,ss:"э"},
+  {u:"Ё",sndShow:"yo / o",l:"ё",snd:"yo",hint:"Ё has two sounds.",name:"ё",word:"ёж",wen:"hedgehog",pic:"<img class='wp' src='img/07825ddbcdc1.webp' alt=''>",g:4,ss:"ё",two:[{snd:"yo",when:"at the start of a word or after a vowel",word:"ёж",wen:"hedgehog",pic:"<img class='wp' src='img/07825ddbcdc1.webp' alt=''>"},{snd:"o",when:"after a consonant, and the letter before it goes soft",word:"мёд",wen:"honey",pic:"<img class='wp' src='img/ac1b97711553.webp' alt=''>"}]},
+  {u:"Ю",sndShow:"yu / oo",l:"ю",snd:"yu",hint:"Ю has two sounds.",name:"ю",word:"ю́бка",wen:"skirt",pic:"<img class='wp' src='img/49ce06ff357c.webp' alt=''>",g:4,ss:"ю",two:[{snd:"yu",when:"at the start of a word or after a vowel",word:"ю́бка",wen:"skirt",pic:"<img class='wp' src='img/49ce06ff357c.webp' alt=''>"},{snd:"oo",when:"after a consonant, and the letter before it goes soft",word:"тюле́нь",wen:"seal",pic:"<img class='wp' src='img/1a8a3d9a3d0b.webp' alt=''>"}]},
+  {u:"Я",sndShow:"ya / a",l:"я",snd:"ya",hint:"Я has two sounds.",name:"я",word:"я́блоко",wen:"apple",pic:"<img class='wp' src='img/98f33aa4b005.webp' alt=''>",g:4,ss:"я",two:[{snd:"ya",when:"at the start of a word or after a vowel",word:"я́блоко",wen:"apple",pic:"<img class='wp' src='img/98f33aa4b005.webp' alt=''>"},{snd:"a",when:"after a consonant, and the letter before it goes soft",word:"мяч",wen:"ball",pic:"<img class='wp' src='img/254b1c27e812.webp' alt=''>"}]},
+  {u:"Ь",l:"ь",snd:"soft sign",hint:"The soft sign has no sound of its own. It makes the letter before it soft.",name:"мя́гкий знак",word:"соль",wen:"salt",pic:"<img class='wp' src='img/cbc73d380871.webp' alt=''>",g:4,ss:"",sndShow:"no sound",more:"Listen to брат and брать: the т at the end goes soft.",pair:[{word:"брат",wen:"brother"},{word:"брать",wen:"to take"}]},
+  {u:"Ъ",l:"ъ",snd:"hard sign",hint:"The hard sign has no sound of its own. It makes a tiny stop before the next vowel.",name:"твёрдый знак",word:"съел",wen:"ate",pic:"<img class='wp' src='img/33fc1c4114d6.webp' alt=''>",g:4,ss:"",sndShow:"no sound",more:"Listen to сел and съел: a tiny stop before the е.",pair:[{word:"сел",wen:"sat down",pic:"<img class='wp' src='img/728802a30e50.webp' alt=''>"},{word:"съел",wen:"ate",pic:"<img class='wp' src='img/33fc1c4114d6.webp' alt=''>"}]}
 ];
 let ABC = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
 let ALPHA = [
@@ -2080,7 +2080,7 @@ const LP = (l, sp=true) => l.solo ? l.l : l.l.length > 1 ? `${l.du||l.u} ${l.l}`
 function letterCardHTML(l){
   let extra = "";
   if (l.two) extra = `<div class="lc-more"><b>When does it make each sound?</b>${l.two.map(t => `<button class="lc-row" data-say="${esc(t.word)}"><span class="lc-pic">${t.pic}</span><span class="lc-tx"><b class="lc-s">${esc(t.snd)}</b><span class="lc-when">${esc(t.when)}</span><span class="ru">${hl(t.word, l)}</span> <small>${esc(t.wen)}</small></span><span class="lc-sp">🔊</span></button>`).join("")}</div>`;
-  else if (l.pair) extra = `<div class="lc-more"><b>Listen to the difference</b><div class="lc-pairs">${l.pair.map(t => `<button class="lc-row" data-say="${esc(t.word)}"><span class="lc-tx"><span class="ru">${hl(t.word, l)}</span><br><small>${esc(t.wen)}</small></span><span class="lc-sp">🔊</span></button>`).join("")}</div></div>`;
+  else if (l.pair) extra = `<div class="lc-more"><b>Listen to the difference</b><div class="lc-pairs">${l.pair.map(t => `<button class="lc-row" data-say="${esc(t.word)}">${t.pic ? `<span class="lc-pic">${t.pic}</span>` : ""}<span class="lc-tx"><span class="ru">${hl(t.word, l)}</span><br><small>${esc(t.wen)}</small></span><span class="lc-sp">🔊</span></button>`).join("")}</div></div>`;
   return `<div class="lcard"><div class="bigletter">${LP(l)}</div>
     <div class="lc-btns"><button class="lc-b" data-say="${esc(l.name)}" aria-label="Hear the letter’s name"><small>Name</small><b class="ru">${l.name}</b><i>🔊</i></button>${l.pair ? `<button class="lc-b lc-quiet" data-quiet="1" aria-label="This letter makes no sound"><small>Sound</small><b>${esc(l.sndShow || l.snd)}</b><i>🤫</i></button>` : `<button class="lc-b" data-say="${esc(l.ss || l.name)}" aria-label="Hear the letter’s sound"><small>Sound</small><b>${esc(l.sndShow || l.snd)}</b><i>🔊</i></button>`}</div>
     <p class="lc-ex">${esc(l.hint.charAt(0).toUpperCase() + l.hint.slice(1))}${l.more ? " " + esc(l.more) : ""}</p>${extra}</div>`;
@@ -5636,7 +5636,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "16.9.1 (published November 10, 2026, 8:14 PM EST)";
+const APP_VERSION = "16.9.2 (published November 10, 2026, 9:11 PM EST)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */
@@ -5755,31 +5755,31 @@ document.addEventListener("focusout", e => {
 
 /* ==================== 🇪🇸 Spanish course (Latin American Spanish, voice es-MX) ==================== */
 const ES_LETTERS = [
-  {u:"A",l:"a",snd:"ah",hint:"ah, as in “father”, short and clear",name:"a",word:"mamá",wen:"mom",pic:"👩",g:0,ss:"a"},
-  {u:"E",l:"e",snd:"eh",hint:"eh, as in “bed”",name:"e",word:"elefante",wen:"elephant",pic:"🐘",g:0,ss:"e"},
-  {u:"I",l:"i",snd:"ee",hint:"ee, as in “see”, but short",name:"i",word:"isla",wen:"island",pic:"🏝️",g:0,ss:"i"},
-  {u:"O",l:"o",snd:"oh",hint:"oh, as in “more”, short and round",name:"o",word:"oso",wen:"bear",pic:"🐻",g:0,ss:"o"},
-  {u:"U",l:"u",snd:"oo",hint:"oo, as in “moon”",name:"u",word:"uva",wen:"grape",pic:"🍇",g:0,ss:"u"},
-  {u:"H",l:"h",snd:"silent",hint:"H is a silent letter: it never makes a sound.",name:"hache",word:"hola",wen:"hello",pic:"👋",g:1,ss:"",more:"The words hola and ola (a wave) sound exactly the same.",pair:[{word:"hola",wen:"hello"},{word:"ola",wen:"wave"}]},
-  {u:"J",l:"j",snd:"breathy h",hint:"a strong breathy h, like a cat’s hiss",name:"jota",word:"jugo",wen:"juice",pic:"🧃",g:1,ss:"ja, jo, ju"},
-  {u:"G",l:"g",snd:"g / h",hint:"G has two sounds.",name:"ge",word:"gato",wen:"cat",pic:"🐱",g:1,ss:"ga, go, gu. ge, gi",two:[{snd:"g, as in “go”",when:"before a, o and u",word:"gato",wen:"cat",pic:"🐱"},{snd:"breathy h, like j",when:"before e and i",word:"girasol",wen:"sunflower",pic:"🌻"}]},
-  {u:"LL",l:"ll",snd:"y",hint:"y, as in “yes”",more:"In Latin American Spanish, ll and y sound the same: llave, yoyó.",name:"doble ele",word:"llave",wen:"key",pic:"🔑",g:1,ss:"lla, llo, llu",du:"Ll"},
-  {u:"Y",sndShow:"y / ee",more:"Before a vowel, y sounds just like ll.",l:"y",snd:"y",hint:"Y has two sounds.",name:"ye",word:"yoyó",wen:"yo-yo",pic:"🪀",g:1,ss:"ya, yo, yu",two:[{snd:"y, as in “yes”",when:"before a vowel",word:"yoyó",wen:"yo-yo",pic:"🪀"},{snd:"ee",when:"on its own (then it means “and”) and at the end of a word",word:"rey",wen:"king",pic:"👑"}]},
-  {u:"R",l:"r",snd:"quick tap",hint:"a quick tap of the tongue, like the tt in “butter” said fast",name:"ere",word:"pera",wen:"pear",pic:"🍐",g:2,ss:"ara, oro, ere"},
-  {u:"RR",l:"rr",snd:"rolled r",hint:"a long rolled r, in the middle of a word: perro.",name:"erre",word:"perro",wen:"dog",pic:"🐶",g:2,ss:"perro, carro, torre",st:"arra, orro, urru",solo:true,more:"The double r never starts a word, so it has no capital letter. A single r at the start of a word rolls too: ratón."},
-  {u:"B",l:"b",snd:"b",hint:"b, as in “boy”; b and v sound the same",name:"be",word:"bebé",wen:"baby",pic:"👶",g:2,ss:"ba, be, bi"},
-  {u:"V",l:"v",snd:"b",hint:"sounds just like b: vaca is said “BAH-kah”",name:"uve",word:"vaca",wen:"cow",pic:"🐄",g:2,ss:"va, ve, vi"},
-  {u:"D",l:"d",snd:"soft d",hint:"a soft d; between vowels it is almost like the th in “this”",name:"de",word:"dedo",wen:"finger",pic:"☝️",g:2,ss:"da, de, di"},
-  {u:"Ñ",l:"ñ",snd:"ny",hint:"ny, as in “canyon”",name:"eñe",word:"niño",wen:"boy",pic:"🧒",g:3,ss:"ña, ñe, ño"},
-  {u:"CH",l:"ch",snd:"ch",hint:"ch, as in “cheese”",name:"che",word:"chocolate",wen:"chocolate",pic:"🍫",g:3,ss:"cha, che, chi",du:"Ch"},
-  {u:"QU",l:"qu",snd:"k",hint:"k, as in “kite”; the u is silent",name:"cu",word:"queso",wen:"cheese",pic:"🧀",g:3,ss:"que, qui",du:"Qu"},
-  {u:"Z",l:"z",snd:"s",hint:"s, as in “sun” (in Latin America)",name:"zeta",word:"zapato",wen:"shoe",pic:"👟",g:3,ss:"za, zo, zu"},
-  {u:"C",l:"c",snd:"k / s",hint:"C has two sounds.",name:"ce",word:"casa",wen:"house",pic:"🏠",g:3,ss:"ca, co, cu. ce, ci",two:[{snd:"k",when:"before a, o and u",word:"casa",wen:"house",pic:"🏠"},{snd:"s",when:"before e and i",word:"cielo",wen:"sky",pic:"☁️"}]},
-  {u:"Á",l:"á",snd:"loud a",hint:"the accent mark shows the loudest part of the word: pa-PÁ",name:"a con tilde",word:"papá",wen:"dad",pic:"👨",g:4,ss:"papá"},
-  {u:"É",l:"é",snd:"loud e",hint:"say this part louder: ca-FÉ",name:"e con tilde",word:"café",wen:"coffee",pic:"☕",g:4,ss:"café"},
-  {u:"Í",l:"í",snd:"loud i",hint:"say this part louder: ma-ÍZ",name:"i con tilde",word:"maíz",wen:"corn",pic:"🌽",g:4,ss:"maíz"},
-  {u:"Ó",l:"ó",snd:"loud o",hint:"say this part louder: ra-TÓN",name:"o con tilde",word:"ratón",wen:"mouse",pic:"🐭",g:4,ss:"ratón"},
-  {u:"Ú",l:"ú",snd:"loud u",hint:"say this part louder: MÚ-si-ca",name:"u con tilde",word:"música",wen:"music",pic:"🎵",g:4,ss:"música"}
+  {u:"A",l:"a",snd:"ah",hint:"ah, as in “father”, short and clear",name:"a",word:"mamá",wen:"mom",pic:"<img class='wp' src='img/20aba7e4e906.webp' alt=''>",g:0,ss:"a"},
+  {u:"E",l:"e",snd:"eh",hint:"eh, as in “bed”",name:"e",word:"elefante",wen:"elephant",pic:"<img class='wp' src='img/4a26bcfddff0.webp' alt=''>",g:0,ss:"e"},
+  {u:"I",l:"i",snd:"ee",hint:"ee, as in “see”, but short",name:"i",word:"isla",wen:"island",pic:"<img class='wp' src='img/8e2cf54ea1ae.webp' alt=''>",g:0,ss:"i"},
+  {u:"O",l:"o",snd:"oh",hint:"oh, as in “more”, short and round",name:"o",word:"oso",wen:"bear",pic:"<img class='wp' src='img/7a8baf3aef7b.webp' alt=''>",g:0,ss:"o"},
+  {u:"U",l:"u",snd:"oo",hint:"oo, as in “moon”",name:"u",word:"uva",wen:"grape",pic:"<img class='wp' src='img/da4022b42ac2.webp' alt=''>",g:0,ss:"u"},
+  {u:"H",l:"h",snd:"silent",hint:"H is a silent letter: it never makes a sound.",name:"hache",word:"hola",wen:"hello",pic:"<img class='wp' src='img/4967ccdce6e5.webp' alt=''>",g:1,ss:"",more:"The words hola and ola (a wave) sound exactly the same.",pair:[{word:"hola",wen:"hello"},{word:"ola",wen:"wave"}]},
+  {u:"J",l:"j",snd:"breathy h",hint:"a strong breathy h, like a cat’s hiss",name:"jota",word:"jugo",wen:"juice",pic:"<img class='wp' src='img/9e9449fe82b3.webp' alt=''>",g:1,ss:"ja, jo, ju"},
+  {u:"G",l:"g",snd:"g / h",hint:"G has two sounds.",name:"ge",word:"gato",wen:"cat",pic:"<img class='wp' src='img/a65943d30c63.webp' alt=''>",g:1,ss:"ga, go, gu. ge, gi",two:[{snd:"g, as in “go”",when:"before a, o and u",word:"gato",wen:"cat",pic:"<img class='wp' src='img/a65943d30c63.webp' alt=''>"},{snd:"breathy h, like j",when:"before e and i",word:"girasol",wen:"sunflower",pic:"<img class='wp' src='img/2df99d7b173c.webp' alt=''>"}]},
+  {u:"LL",l:"ll",snd:"y",hint:"y, as in “yes”",more:"In Latin American Spanish, ll and y sound the same: llave, yoyó.",name:"doble ele",word:"llave",wen:"key",pic:"<img class='wp' src='img/e68f8556907d.webp' alt=''>",g:1,ss:"lla, llo, llu",du:"Ll"},
+  {u:"Y",sndShow:"y / ee",more:"Before a vowel, y sounds just like ll.",l:"y",snd:"y",hint:"Y has two sounds.",name:"ye",word:"yoyó",wen:"yo-yo",pic:"<img class='wp' src='img/056359445a93.webp' alt=''>",g:1,ss:"ya, yo, yu",two:[{snd:"y, as in “yes”",when:"before a vowel",word:"yoyó",wen:"yo-yo",pic:"<img class='wp' src='img/056359445a93.webp' alt=''>"},{snd:"ee",when:"on its own (then it means “and”) and at the end of a word",word:"rey",wen:"king",pic:"<img class='wp' src='img/baa55369f4f7.webp' alt=''>"}]},
+  {u:"R",l:"r",snd:"quick tap",hint:"a quick tap of the tongue, like the tt in “butter” said fast",name:"ere",word:"pera",wen:"pear",pic:"<img class='wp' src='img/eff5ec13845f.webp' alt=''>",g:2,ss:"ara, oro, ere"},
+  {u:"RR",l:"rr",snd:"rolled r",hint:"a long rolled r, in the middle of a word: perro.",name:"erre",word:"perro",wen:"dog",pic:"<img class='wp' src='img/d5019c35a82a.webp' alt=''>",g:2,ss:"perro, carro, torre",st:"arra, orro, urru",solo:true,more:"The double r never starts a word, so it has no capital letter. A single r at the start of a word rolls too: ratón."},
+  {u:"B",l:"b",snd:"b",hint:"b, as in “boy”; b and v sound the same",name:"be",word:"bebé",wen:"baby",pic:"<img class='wp' src='img/b60963e0c128.webp' alt=''>",g:2,ss:"ba, be, bi"},
+  {u:"V",l:"v",snd:"b",hint:"sounds just like b: vaca is said “BAH-kah”",name:"uve",word:"vaca",wen:"cow",pic:"<img class='wp' src='img/4cfb07efd3ab.webp' alt=''>",g:2,ss:"va, ve, vi"},
+  {u:"D",l:"d",snd:"soft d",hint:"a soft d; between vowels it is almost like the th in “this”",name:"de",word:"dedo",wen:"finger",pic:"<img class='wp' src='img/7cf63bd00c79.webp' alt=''>",g:2,ss:"da, de, di"},
+  {u:"Ñ",l:"ñ",snd:"ny",hint:"ny, as in “canyon”",name:"eñe",word:"niño",wen:"boy",pic:"<img class='wp' src='img/e2fda7cd9796.webp' alt=''>",g:3,ss:"ña, ñe, ño"},
+  {u:"CH",l:"ch",snd:"ch",hint:"ch, as in “cheese”",name:"che",word:"chocolate",wen:"chocolate",pic:"<img class='wp' src='img/046dedd77b05.webp' alt=''>",g:3,ss:"cha, che, chi",du:"Ch"},
+  {u:"QU",l:"qu",snd:"k",hint:"k, as in “kite”; the u is silent",name:"cu",word:"queso",wen:"cheese",pic:"<img class='wp' src='img/cc3d7c225046.webp' alt=''>",g:3,ss:"que, qui",du:"Qu"},
+  {u:"Z",l:"z",snd:"s",hint:"s, as in “sun” (in Latin America)",name:"zeta",word:"zapato",wen:"shoe",pic:"<img class='wp' src='img/2cbb2954fa2c.webp' alt=''>",g:3,ss:"za, zo, zu"},
+  {u:"C",l:"c",snd:"k / s",hint:"C has two sounds.",name:"ce",word:"casa",wen:"house",pic:"<img class='wp' src='img/b20534b29ad4.webp' alt=''>",g:3,ss:"ca, co, cu. ce, ci",two:[{snd:"k",when:"before a, o and u",word:"casa",wen:"house",pic:"<img class='wp' src='img/b20534b29ad4.webp' alt=''>"},{snd:"s",when:"before e and i",word:"cielo",wen:"sky",pic:"<img class='wp' src='img/bedf970c2ae1.webp' alt=''>"}]},
+  {u:"Á",l:"á",snd:"loud a",hint:"the accent mark shows the loudest part of the word: pa-PÁ",name:"a con tilde",word:"papá",wen:"dad",pic:"<img class='wp' src='img/1128b38453ac.webp' alt=''>",g:4,ss:"papá"},
+  {u:"É",l:"é",snd:"loud e",hint:"say this part louder: ca-FÉ",name:"e con tilde",word:"café",wen:"coffee",pic:"<img class='wp' src='img/346ac9111421.webp' alt=''>",g:4,ss:"café"},
+  {u:"Í",l:"í",snd:"loud i",hint:"say this part louder: ma-ÍZ",name:"i con tilde",word:"maíz",wen:"corn",pic:"<img class='wp' src='img/6867a6593563.webp' alt=''>",g:4,ss:"maíz"},
+  {u:"Ó",l:"ó",snd:"loud o",hint:"say this part louder: ra-TÓN",name:"o con tilde",word:"ratón",wen:"mouse",pic:"<img class='wp' src='img/cc39f898258e.webp' alt=''>",g:4,ss:"ratón"},
+  {u:"Ú",l:"ú",snd:"loud u",hint:"say this part louder: MÚ-si-ca",name:"u con tilde",word:"música",wen:"music",pic:"<img class='wp' src='img/a583289ee9f6.webp' alt=''>",g:4,ss:"música"}
 ];
 const ES_ABC = ES_LETTERS.map(l => l.u);
 const ES_ALPHA = [
