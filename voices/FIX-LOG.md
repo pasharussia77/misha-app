@@ -1,0 +1,34 @@
+# Mishaling voice fix log and guardrails
+
+Read this BEFORE generating any voice clip (Russian or Spanish). Add every new fix at the end. When Galina reports a NEW KIND of problem, add a row with the specific case AND the general rule it teaches (last column), so later stories come out right the first time.
+Recipe (voices, settings, processing) lives in Claude's memory: "VOICE FIX RECIPE" and "NEW-VOICES RECIPE".
+Per-clip generation records (seed, request id, voice) are in voices/<lang>/gen-log.json.
+
+| # | Problem found | Cause | Fix | General rule (guardrail for new clips) |
+|---|---|---|---|---|
+| 1 | Wrong emphasis: "Это моя семья" sounded like "MY family, not yours" | Stress marks on unstressed words (это, моя, твоя, мои) were sent to the voice | Removed marks on function words in text and in the audio request | Never mark stress on это/моя/мой/твоя/твой/мои etc. Keep marks on content words. |
+| 2 | "Ой! Это яблоко?" sounded contrastive | Voice stresses the noun, or "это" contrastively, when a line follows "Это не X! Это Y!" | Wrote it as two short questions: "Ой! А э́то? Я́блоко?" | For pointing-and-checking lines, write two short questions with a stress mark on both words. Avoid contrast lines right before. |
+| 3 | Re-recorded clips sounded like a different voice | Used default settings for every voice; original settings differed per role | Matched each role to the ORIGINAL generation (voice, stability) read from ElevenLabs history | Use the per-role settings in the recipe, never defaults. |
+| 4 | Re-recorded Tima sounded like another person | Tima's original clips were pitch-shifted +3 semitones with a resample shift, I used a pitch-only tool | asetrate=44100*2^(3/12), aresample=44100, atempo=1/2^(3/12) | Every Russian Tima clip gets this shift. Spanish Tima (Sebastian) gets none. |
+| 5 | Slow clips ~2x too long | Text had no final punctuation | Always end sentences with . ? or ! | Every line sent to the voice ends in punctuation. Check new duration against old (0.6-1.5x). |
+| 6 | Little new-word sound at the end of clips | Sent next_text; the voice starts the next line's first word | Removed next_text; trim isolated short tail locally | Never send next_text. Run the tail check on every clip; trim before regenerating. |
+| 7 | Voice cheerfulness differed between lines of one story | Lines generated in different batches, different context | Regenerated a whole unit's lines for one speaker in one batch | Generate a story's lines together, in order, with the previous line as context. |
+| 8 | "ты"/"три" said as "ды"/"дри" | ElevenLabs drift at low stability (0.35) | Several seeds + previous_text variants, keep the take that passes the local т/д check | Test any clip starting with т before sending it. Detector: prevoicing ratio below 0.05 = "т". |
+| 9 | First line of a story sounded like another voice | No previous line for context | Gave an artificial previous line (Misha's last line of the previous story) | Never generate a story's first line without some previous_text. |
+| 10 | Off-topic line in a story (juice offer in the numbers/age unit) | Story drift | Replaced with on-topic lines, story kept the same length or longer | Check every story line against the unit topic and words. Never shorten a story. |
+| 11 | Misha's "Это мама." was suspected of sounding like the middle of an argument | Possibly the previous-line context | Tested 3 versions (current with previous line, no context, neutral lead-in): Galina chose the CURRENT one, so no change | Keep the previous line as context for introductions ("Это ..."); only test alternatives when Galina reports a specific line. |
+| 12 | Misha's offer "Ой! Ты хочешь яблоко?" (unit 7) sounded like working out what the thing is | Stress fell on "яблоко"; the previous sad line also pushed that reading | Shorter offer with the stress on the verb: "Ой! Хо́чешь я́блоко?" (Galina chose variant C of 3) | For an offer, use the short form "Хочешь X?" with a mark on хочешь; keep the noun unmarked or lightly marked; test 2-3 variants. |
+| 13 | Spanish unit 8 has the same off-topic juice offer | Same as #10 | Not fixed yet | Fix together with the Spanish redo. |
+| 14 | Unit 8 juice offer replaced; I generated lines for two options when Galina chose one | An ambiguous reply ("A to B") was read as "both" and I generated before confirming (about 30 credits for 2 clips wasted) | Removed the unused lines; kept only the chosen option B | When a choice is ambiguous and generating costs credits, ask which one before generating. |
+| 15 | Identical sentences in two units (e.g. Tima's "Привет, Миша! Что это?" in units 2 and 3) share one recording key | The app finds a clip by its text, so the later unit's recording replaces the earlier one | Accepted, same text and role means same clip | Before installing a batch, check for repeated texts per role; give them one agreed take, not one per unit. |
+| 16 | Request id of one chosen take was not saved ("Три плюс три", unit 8) | Several takes were generated in a loop and only the winner's id was kept by hand | Log shows a placeholder for that clip | Record seed and request id for EVERY generated take at generation time, not afterwards. |
+| 17 | Misha's original "Привет, Тима!" (unit 2) could not be traced to any ElevenLabs recording | The recording was made before generation records were kept | Could not use it as an anchor for neighbouring lines | Keep request ids for all clips from now on, so any line can be anchored or redone consistently. |
+| 18 | A detector falsely flagged a correct "т" as "д" | It looked for the burst in the wrong part of the clip when a loud fricative came later (words like "Три плюс") | Re-measured the burst only in the first 200 ms and calibrated on known good and bad clips | Calibrate any automatic check on known right and wrong examples before trusting it. |
+| 19 | 12 teacher lines with "а ты?" / "тоже" were suspected of wrong stress | Contrast-type wording | Galina listened: all correct, left alone | Do not regenerate teacher lines unless Galina reports a wrong accent; check by listening, not by assumption. |
+
+## Process guardrails
+- Credits: about 0.2 ElevenLabs credit per character. Test 1-3 items first, state cost for big jobs, trim before regenerating.
+- Do not run `pkill -f` (kills the shell). Run long jobs with setsid nohup, resumable.
+- git commit needs user.email and user.name configured in the repo.
+- Present audio in one page that autoplays a unit and stops at the end of each unit, with line numbers.
+- Keep the spoken text and the displayed text identical, and the teacher voice untouched unless its accent is wrong.
