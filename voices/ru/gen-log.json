@@ -1318,5 +1318,18 @@
   "request_id": "BYTGOwKVHymFVPTXeA8u",
   "clip_id": "9604514de8d3",
   "date": "2026-11-11"
+ },
+ {
+  "role": "misha",
+  "lang": "ru",
+  "text": "Приве́т, Ти́ма! Как дела́?",
+  "voice_id": "rSfuQoQ3FY8SVKeraMAp",
+  "model": "eleven_v4_turbo",
+  "stability": 0.35,
+  "seed": 605322549,
+  "request_id": "7noNy7p2KutJv5ZeVaaX",
+  "clip_id": "125109f95c07",
+  "date": "2026-11-11",
+  "note": "no previous line (the previous line started with Д and its sound carried into the first П); Galina picked this take"
  }
 ]
