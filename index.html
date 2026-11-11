@@ -837,7 +837,7 @@ img.chip.wobble{animation:wobble .6s ease-in-out 1, breathe 3.4s ease-in-out .6s
 }
 .pp{position:relative;display:inline-block;line-height:1}.pp i{position:absolute;left:-.12em;bottom:.02em;font-size:.25em;font-style:normal;line-height:1}
 .ublk{position:relative}
-.ublk>.unitcard{position:sticky;top:calc(var(--sat,0px) + 42px);z-index:6}
+.ublk>.unitcard{position:sticky;top:calc(var(--sat,0px) + 48px);z-index:6}
 /* the two path buttons each have their own fixed spot and fade in/out, so one appearing never nudges the other */
 .pathbtns{position:fixed;left:0;right:0;max-width:560px;margin:0 auto;height:0;bottom:calc(88px + var(--sab,0px));z-index:9;pointer-events:none}
 .pathbtns .myspot{position:absolute;bottom:0;white-space:nowrap;pointer-events:auto;transition:opacity .18s}
@@ -848,8 +848,7 @@ img.chip.wobble{animation:wobble .6s ease-in-out 1, breathe 3.4s ease-in-out .6s
 .pathbtns .myspot[hidden]{display:block;visibility:hidden;opacity:0;pointer-events:none}
 body.popopen .pathbtns{display:none}
 /* little learner bubble that stays on screen once the top bar has scrolled away */
-html.resizing *,html.resizing *::before,html.resizing *::after{animation-play-state:paused!important;transition:none!important}
-.whobar{position:fixed;top:0;left:0;right:0;max-width:560px;margin:0 auto;z-index:11;height:calc(var(--sat,0px) + 38px);box-sizing:border-box;padding:var(--sat,0px) 4px 0 3px;display:flex;align-items:flex-start;justify-content:space-between;background:var(--bg);box-shadow:0 2px 0 var(--line);opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .15s,transform .15s,visibility 0s .15s;pointer-events:none}
+.whobar{position:fixed;top:0;left:0;right:0;max-width:560px;margin:0 auto;z-index:11;height:calc(var(--sat,0px) + 44px);box-sizing:border-box;padding:calc(var(--sat,0px) + 6px) 14px 0 14px;display:flex;align-items:flex-start;justify-content:space-between;background:var(--bg);box-shadow:0 2px 0 var(--line);opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .15s,transform .15s,visibility 0s .15s;pointer-events:none}
 .whobar.show{opacity:1;visibility:visible;transform:none;pointer-events:auto;transition:opacity .15s,transform .15s}
 .whochip{appearance:none;display:inline-flex;align-items:center;gap:6px;background:var(--surface);color:var(--ink);border:2px solid var(--line);border-radius:999px;padding:2px 12px 2px 2px;font:inherit;font-weight:800;font-size:15px;line-height:1;cursor:pointer;max-width:100%}
 .whochip .n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -878,6 +877,14 @@ html.tab .sheet-bg.typing .sheet{max-height:calc(52vh / var(--z))}
   settle();
   addEventListener("resize", function(){ root.classList.add("resizing"); clearTimeout(t); t = setTimeout(function(){ root.classList.remove("resizing"); settle(); }, 300); });
   addEventListener("orientationchange", function(){ sat = sab = 0; setTimeout(settle, 500); });
+  /* A swipe that starts at the very bottom or top edge is Android's gesture for showing/hiding its buttons.
+     The page used to scroll along with it (that was the jitter), so touches that begin there never scroll the page. */
+  var edge = false;
+  function zone(e){ var t = e.touches && e.touches[0]; if (!t || root.classList.contains("tab")) return false; return t.clientY > innerHeight - 48 || t.clientY < 26; }
+  addEventListener("touchstart", function(e){ edge = zone(e); }, {passive:true, capture:true});
+  addEventListener("touchmove", function(e){ if (edge && e.cancelable) e.preventDefault(); }, {passive:false, capture:true});
+  addEventListener("touchend", function(){ edge = false; }, {passive:true, capture:true});
+  addEventListener("touchcancel", function(){ edge = false; }, {passive:true, capture:true});
 })();
 </script>
 </head>
@@ -5706,7 +5713,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "16.9.7 (November 10, 2026, 11:22 PM EST)";
+const APP_VERSION = "16.9.8 (November 10, 2026, 11:30 PM EST)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */
