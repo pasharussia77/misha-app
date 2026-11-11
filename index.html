@@ -27,7 +27,7 @@
   --font-body:"Nunito", "Segoe UI", system-ui, -apple-system, sans-serif;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
-  padding-bottom:env(safe-area-inset-bottom,0px);
+  padding-bottom:var(--sab,0px);
 }
 @media (prefers-color-scheme: dark){
   :root[data-theme="auto"]{
@@ -101,7 +101,7 @@ button{font:inherit;color:inherit}
 .speaker{flex:none;width:58px;height:58px;border-radius:18px;border:0;background:var(--primary);color:#fff;font-size:26px;cursor:pointer;box-shadow:0 5px 0 var(--primary-lip)}
 .speaker.slow{width:46px;height:46px;font-size:20px;background:var(--chip);color:var(--primary);box-shadow:0 4px 0 var(--line)}
 .speaker:active{transform:translateY(4px);box-shadow:none}
-.updbar{position:fixed;left:50%;transform:translateX(-50%);width:min(536px, calc(100% - 24px));box-sizing:border-box;bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:60;display:flex;align-items:center;gap:10px;padding:10px 12px 10px 16px;border-radius:16px;background:var(--ink);color:var(--bg);font-weight:700;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+.updbar{position:fixed;left:50%;transform:translateX(-50%);width:min(536px, calc(100% - 24px));box-sizing:border-box;bottom:calc(84px + var(--sab,0px));z-index:60;display:flex;align-items:center;gap:10px;padding:10px 12px 10px 16px;border-radius:16px;background:var(--ink);color:var(--bg);font-weight:700;box-shadow:0 6px 18px rgba(0,0,0,.25)}
 .updbar span{flex:1}.updbar button{border:0;border-radius:12px;padding:9px 14px;font:inherit;font-weight:800;background:var(--primary);color:#fff}
 .ru{font-family:var(--font-body);font-weight:800;font-size:28px;line-height:1.2}
 .ru.big{font-size:44px}
@@ -142,7 +142,7 @@ button{font:inherit;color:inherit}
 .line.new .bub{border-color:var(--primary)}
 
 /* Bottom bar & feedback */
-.footer{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:2px solid var(--line);padding:14px 18px calc(14px + env(safe-area-inset-bottom,0px))}
+.footer{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:2px solid var(--line);padding:14px 18px calc(14px + var(--sab,0px))}
 .footer .inner{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
 .footer.ok{background:var(--good-bg);border-color:transparent}
 .footer.no{background:var(--bad-bg);border-color:transparent}
@@ -172,7 +172,7 @@ button{font:inherit;color:inherit}
 
 /* Sheets */
 .sheet-bg{position:fixed;inset:0;background:rgba(10,15,30,.45);display:flex;align-items:flex-end;justify-content:center;z-index:20}
-.sheet{background:var(--surface);width:100%;max-width:560px;max-height:85vh;max-height:85dvh;overflow:auto;border-radius:26px 26px 0 0;padding:20px 20px calc(24px + env(safe-area-inset-bottom,0px))}
+.sheet{background:var(--surface);width:100%;max-width:560px;max-height:85vh;max-height:85dvh;overflow:auto;border-radius:26px 26px 0 0;padding:20px 20px calc(24px + var(--sab,0px))}
 .sheet h2{font-family:var(--font-head);margin:0 0 12px;font-size:24px}
 .sheet h3{font-family:var(--font-head);margin:18px 0 8px;font-size:18px}
 .wordrow{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:2px solid var(--line)}
@@ -557,7 +557,7 @@ img.chip.wobble{animation:wobble .6s ease-in-out 1, breathe 3.4s ease-in-out .6s
 .frzbox{display:flex;align-items:center;gap:12px;background:#E8F4FF;border-radius:16px;padding:12px;margin-top:12px;color:#20507F;font-weight:700}
 .stat.dim{opacity:.55;filter:grayscale(1)}
 /* Tab bar */
-.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--surface);border-top:2px solid var(--line);display:flex;justify-content:center;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--surface);border-top:2px solid var(--line);display:flex;justify-content:center;padding:6px 6px calc(6px + var(--sab,0px))}
 .tabbar .in{display:flex;width:100%;max-width:560px}
 .tabbar button{flex:1;appearance:none;border:0;background:none;color:var(--muted);font:inherit;font-size:24px;display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 0;border-radius:14px;cursor:pointer;position:relative}
 .tabbar button span{font-size:11px;font-weight:800}
@@ -837,16 +837,16 @@ img.chip.wobble{animation:wobble .6s ease-in-out 1, breathe 3.4s ease-in-out .6s
 }
 .pp{position:relative;display:inline-block;line-height:1}.pp i{position:absolute;left:-.12em;bottom:.02em;font-size:.25em;font-style:normal;line-height:1}
 .ublk{position:relative}
-.ublk>.unitcard{position:sticky;top:calc(max(8px, env(safe-area-inset-top,0px)) + 40px);z-index:6}
+.ublk>.unitcard{position:sticky;top:calc(max(4px, env(safe-area-inset-top,0px)) + 40px);z-index:6}
 /* the two path buttons each have their own fixed spot and fade in/out, so one appearing never nudges the other */
-.pathbtns{position:fixed;left:0;right:0;max-width:560px;margin:0 auto;height:0;bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:9;pointer-events:none}
+.pathbtns{position:fixed;left:0;right:0;max-width:560px;margin:0 auto;height:0;bottom:calc(88px + var(--sab,0px));z-index:9;pointer-events:none}
 .pathbtns .myspot{position:absolute;bottom:0;white-space:nowrap;pointer-events:auto;transition:opacity .18s}
 .pathbtns #mySpot{left:50%;transform:translateX(-50%);min-width:150px;text-align:center}
 .pathbtns #toTop{right:16px}
 .pathbtns .myspot[hidden]{display:block;visibility:hidden;opacity:0;pointer-events:none}
 body.popopen .pathbtns{display:none}
 /* little learner bubble that stays on screen once the top bar has scrolled away */
-.whobar{position:fixed;top:0;left:0;right:0;max-width:560px;margin:0 auto;z-index:11;height:calc(max(8px, env(safe-area-inset-top,0px)) + 40px);box-sizing:border-box;padding:0 16px 6px;display:flex;align-items:flex-end;background:var(--bg);box-shadow:0 2px 0 var(--line);opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .15s,transform .15s,visibility 0s .15s;pointer-events:none}
+.whobar{position:fixed;top:0;left:0;right:0;max-width:560px;margin:0 auto;z-index:11;height:calc(max(4px, env(safe-area-inset-top,0px)) + 36px);box-sizing:border-box;padding:max(4px, env(safe-area-inset-top,0px)) 8px 0;display:flex;align-items:flex-start;background:var(--bg);box-shadow:0 2px 0 var(--line);opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .15s,transform .15s,visibility 0s .15s;pointer-events:none}
 .whobar.show{opacity:1;visibility:visible;transform:none;pointer-events:auto;transition:opacity .15s,transform .15s}
 .whochip{appearance:none;display:inline-flex;align-items:center;gap:6px;background:var(--surface);color:var(--ink);border:2px solid var(--line);border-radius:999px;padding:2px 12px 2px 2px;font:inherit;font-weight:800;font-size:15px;line-height:1;cursor:pointer;max-width:100%}
 .whochip .n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -858,6 +858,12 @@ html.tab #app{min-height:calc(100vh / var(--z))}
 html.tab .sheet{max-height:calc(85dvh / var(--z))}
 html.tab .sheet-bg.typing .sheet{max-height:calc(52vh / var(--z))}
 </style>
+<script>
+/* The bottom inset changes while Android's gesture bar slides in and out, which made the page resize and jitter. Measure it once and keep it constant. */
+(function(){ var p = document.createElement("div"); p.style.cssText = "position:fixed;left:0;top:0;visibility:hidden;pointer-events:none;padding-bottom:env(safe-area-inset-bottom,0px)"; document.documentElement.appendChild(p);
+  var m = function(){ document.documentElement.style.setProperty("--sab", (parseFloat(getComputedStyle(p).paddingBottom) || 0) + "px"); };
+  m(); addEventListener("orientationchange", function(){ setTimeout(m, 500); }); })();
+</script>
 </head>
 <body>
 <div id="app"></div>
@@ -5684,7 +5690,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "16.9.5 (November 10, 2026, 11:07 PM EST)";
+const APP_VERSION = "16.9.6 (November 10, 2026, 11:13 PM EST)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */
