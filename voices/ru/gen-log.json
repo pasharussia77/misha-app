@@ -1,0 +1,15 @@
+[
+ {
+  "role": "misha",
+  "lang": "ru",
+  "text": "Ой! А э́то? Я́блоко?",
+  "voice_id": "rSfuQoQ3FY8SVKeraMAp",
+  "model": "eleven_v4_turbo",
+  "stability": 0.35,
+  "seed": 2292164437,
+  "request_id": "Vyw2XWpn085em96SKsNR",
+  "clip_id": "889fa7559a75",
+  "date": "2026-11-11",
+  "note": "two-question reading chosen by Galina; context: previous/next story lines"
+ }
+]
