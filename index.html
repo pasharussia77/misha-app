@@ -26,7 +26,7 @@
   --font-head:"Rubik", "Arial Rounded MT Bold", "Trebuchet MS", system-ui, sans-serif;
   --font-body:"Nunito", "Segoe UI", system-ui, -apple-system, sans-serif;
   box-sizing:border-box;
-  padding-top:env(safe-area-inset-top,0px);
+  padding-top:var(--sat,0px);
   padding-bottom:var(--sab,0px);
 }
 @media (prefers-color-scheme: dark){
@@ -44,10 +44,10 @@
   --good-bg:#1F3A26; --good-ink:#8FE0A6; --bad-bg:#45231F; --bad-ink:#FF9C90; --lock:#4A3D33;
 }
 *,*::before,*::after{box-sizing:inherit}
-html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+html{height:100%;scroll-padding-top:var(--sat,0px)}
 body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:17px;line-height:1.4;-webkit-tap-highlight-color:transparent}
 button{font:inherit;color:inherit}
-#app{max-width:560px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+#app{max-width:560px;margin:0 auto;min-height:var(--appH,100vh);display:flex;flex-direction:column}
 .hidden{display:none!important}
 :focus-visible{outline:3px solid var(--sun);outline-offset:3px}
 
@@ -237,7 +237,7 @@ img.chip.papa{filter:brightness(.8) saturate(.85)}
 .legend{font-size:13px;color:var(--muted);text-align:center}
 .field{display:flex;flex-direction:column;gap:6px;padding:10px 0;font-weight:700}
 .field input,.field select{font:inherit;font-weight:600;padding:12px;border-radius:12px;border:2px solid var(--line);background:var(--bg);color:var(--ink)}
-.toast{position:fixed;left:50%;top:calc(12px + env(safe-area-inset-top,0px));transform:translateX(-50%);max-width:92%;background:var(--ink);color:var(--surface);padding:10px 14px;border-radius:14px;font-weight:700;font-size:15px;z-index:30;box-shadow:0 6px 20px rgba(0,0,0,.2)}
+.toast{position:fixed;left:50%;top:calc(12px + var(--sat,0px));transform:translateX(-50%);max-width:92%;background:var(--ink);color:var(--surface);padding:10px 14px;border-radius:14px;font-weight:700;font-size:15px;z-index:30;box-shadow:0 6px 20px rgba(0,0,0,.2)}
 .spin{width:38px;height:38px;border:5px solid var(--line);border-top-color:var(--primary);border-radius:50%;animation:spin 1s linear infinite;margin:6px auto}
 @keyframes spin{to{transform:rotate(360deg)}}
 /* Alphabet */
@@ -668,7 +668,7 @@ img.chip.wobble{animation:wobble .6s ease-in-out 1, breathe 3.4s ease-in-out .6s
 .emo{display:flex;flex-wrap:wrap;gap:6px}.emo button{font-size:26px;appearance:none;border:2px solid var(--line);background:var(--surface);border-radius:12px;padding:4px 8px;cursor:pointer}
 .emo button[aria-pressed="true"]{border-color:var(--primary);background:var(--chip)}
 /* 7c: always-visible way back */
-.navtop{position:sticky;top:0;z-index:12;background:var(--bg);padding-top:max(8px, env(safe-area-inset-top,0px));box-shadow:0 2px 0 var(--line)}
+.navtop{position:sticky;top:0;z-index:12;background:var(--bg);padding-top:max(8px, var(--sat,0px));box-shadow:0 2px 0 var(--line)}
 .iconbtn.back,.xbtn{width:52px;height:52px;font-size:28px;font-weight:800;color:var(--ink);background:var(--chip);border-radius:16px}
 .lessonbar{position:sticky;top:0;z-index:12;background:var(--bg)}
 #quit{font-size:28px;width:50px;height:50px;color:var(--ink)}
@@ -825,7 +825,7 @@ img.chip.wobble{animation:wobble .6s ease-in-out 1, breathe 3.4s ease-in-out .6s
 .btn.kept{background:var(--good)!important;color:#fff!important;box-shadow:0 5px 0 var(--good-lip)!important;border-color:transparent!important}
 /* 8: while typing, the pop-up sits at the TOP of the screen so the keyboard (from the bottom) never covers it */
 .sheet-bg.typing{align-items:flex-start}
-.sheet-bg.typing .sheet{border-radius:0 0 26px 26px;max-height:52vh;padding-top:calc(14px + env(safe-area-inset-top,0px));animation:dropin .2s ease-out}
+.sheet-bg.typing .sheet{border-radius:0 0 26px 26px;max-height:52vh;padding-top:calc(14px + var(--sat,0px));animation:dropin .2s ease-out}
 @keyframes dropin{from{transform:translateY(-30px);opacity:.6}to{transform:none;opacity:1}}
 .node.current.cont::before{content:"Continue"}
 .walker.walking{animation:none}
@@ -837,16 +837,19 @@ img.chip.wobble{animation:wobble .6s ease-in-out 1, breathe 3.4s ease-in-out .6s
 }
 .pp{position:relative;display:inline-block;line-height:1}.pp i{position:absolute;left:-.12em;bottom:.02em;font-size:.25em;font-style:normal;line-height:1}
 .ublk{position:relative}
-.ublk>.unitcard{position:sticky;top:calc(max(4px, env(safe-area-inset-top,0px)) + 40px);z-index:6}
+.ublk>.unitcard{position:sticky;top:calc(var(--sat,0px) + 42px);z-index:6}
 /* the two path buttons each have their own fixed spot and fade in/out, so one appearing never nudges the other */
 .pathbtns{position:fixed;left:0;right:0;max-width:560px;margin:0 auto;height:0;bottom:calc(88px + var(--sab,0px));z-index:9;pointer-events:none}
 .pathbtns .myspot{position:absolute;bottom:0;white-space:nowrap;pointer-events:auto;transition:opacity .18s}
 .pathbtns #mySpot{left:50%;transform:translateX(-50%);min-width:150px;text-align:center}
-.pathbtns #toTop{right:16px}
+.whobar #toTop{position:static;margin:0 0 0 auto;padding:0 12px;height:34px;display:inline-flex;align-items:center;font-size:15px;box-shadow:0 2px 0 var(--line);border-radius:999px}
+.whobar #toTop[hidden]{display:none}
+.whochip{min-height:34px;box-sizing:border-box}
 .pathbtns .myspot[hidden]{display:block;visibility:hidden;opacity:0;pointer-events:none}
 body.popopen .pathbtns{display:none}
 /* little learner bubble that stays on screen once the top bar has scrolled away */
-.whobar{position:fixed;top:0;left:0;right:0;max-width:560px;margin:0 auto;z-index:11;height:calc(max(4px, env(safe-area-inset-top,0px)) + 36px);box-sizing:border-box;padding:max(4px, env(safe-area-inset-top,0px)) 8px 0;display:flex;align-items:flex-start;background:var(--bg);box-shadow:0 2px 0 var(--line);opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .15s,transform .15s,visibility 0s .15s;pointer-events:none}
+html.resizing *,html.resizing *::before,html.resizing *::after{animation-play-state:paused!important;transition:none!important}
+.whobar{position:fixed;top:0;left:0;right:0;max-width:560px;margin:0 auto;z-index:11;height:calc(var(--sat,0px) + 38px);box-sizing:border-box;padding:var(--sat,0px) 4px 0 3px;display:flex;align-items:flex-start;justify-content:space-between;background:var(--bg);box-shadow:0 2px 0 var(--line);opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .15s,transform .15s,visibility 0s .15s;pointer-events:none}
 .whobar.show{opacity:1;visibility:visible;transform:none;pointer-events:auto;transition:opacity .15s,transform .15s}
 .whochip{appearance:none;display:inline-flex;align-items:center;gap:6px;background:var(--surface);color:var(--ink);border:2px solid var(--line);border-radius:999px;padding:2px 12px 2px 2px;font:inherit;font-weight:800;font-size:15px;line-height:1;cursor:pointer;max-width:100%}
 .whochip .n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -854,15 +857,28 @@ body.popopen .pathbtns{display:none}
 .node.open{z-index:8}
 .myspot{background:var(--surface);color:var(--ink);border:2px solid var(--line);border-radius:999px;padding:9px 18px;font:inherit;font-family:var(--font-head);font-weight:800;font-size:16px;box-shadow:0 4px 0 var(--line);cursor:pointer}
 .myspot[hidden]{display:none}
-html.tab #app{min-height:calc(100vh / var(--z))}
+html.tab #app{min-height:calc(var(--appH,100vh) / var(--z))}
 html.tab .sheet{max-height:calc(85dvh / var(--z))}
 html.tab .sheet-bg.typing .sheet{max-height:calc(52vh / var(--z))}
 </style>
 <script>
-/* The bottom inset changes while Android's gesture bar slides in and out, which made the page resize and jitter. Measure it once and keep it constant. */
-(function(){ var p = document.createElement("div"); p.style.cssText = "position:fixed;left:0;top:0;visibility:hidden;pointer-events:none;padding-bottom:env(safe-area-inset-bottom,0px)"; document.documentElement.appendChild(p);
-  var m = function(){ document.documentElement.style.setProperty("--sab", (parseFloat(getComputedStyle(p).paddingBottom) || 0) + "px"); };
-  m(); addEventListener("orientationchange", function(){ setTimeout(m, 500); }); })();
+/* While Android's bars slide in and out the window resizes many times a second. The page used to re-lay itself out on every
+   one of those frames (insets and screen height were live values). Now they only ever grow, settle after the motion stops,
+   and the pretty animations pause during the motion. */
+(function(){
+  var root = document.documentElement, W = innerWidth, H = 0, sat = 0, sab = 0, t = 0;
+  var p = document.createElement("div"); p.style.cssText = "position:fixed;left:0;top:0;visibility:hidden;pointer-events:none;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)"; root.appendChild(p);
+  function settle(){
+    var cs = getComputedStyle(p), a = parseFloat(cs.paddingTop) || 0, b = parseFloat(cs.paddingBottom) || 0;
+    if (innerWidth !== W){ W = innerWidth; H = 0; }
+    if (a > sat){ sat = a; root.style.setProperty("--sat", sat + "px"); }
+    if (b > sab){ sab = b; root.style.setProperty("--sab", sab + "px"); }
+    if (innerHeight > H){ H = innerHeight; root.style.setProperty("--appH", H + "px"); }
+  }
+  settle();
+  addEventListener("resize", function(){ root.classList.add("resizing"); clearTimeout(t); t = setTimeout(function(){ root.classList.remove("resizing"); settle(); }, 300); });
+  addEventListener("orientationchange", function(){ sat = sab = 0; setTimeout(settle, 500); });
+})();
 </script>
 </head>
 <body>
@@ -3771,8 +3787,8 @@ function home(){
       }).join("")}
     </div>`}</section>
     ${UNIT_IDS.map(unitBlock).join("")}
-    <div class="whobar" id="whoBar"><button class="whochip" id="whoChip" aria-label="${esc(me().name)}, ${LN()} course. Switch learner">${avHTML(me().avatar, 26)}<span class="n">${esc(me().name)}</span><span class="cflag">${COURSE_FLAGS[COURSE]}</span></button></div>
-    <div class="pathbtns"><button class="myspot" id="toTop" hidden aria-label="Go to the top of the path">⤒ Top</button><button class="myspot" id="mySpot" hidden>⬇ My spot</button></div>
+    <div class="whobar" id="whoBar"><button class="whochip" id="whoChip" aria-label="${esc(me().name)}, ${LN()} course. Switch learner">${avHTML(me().avatar, 26)}<span class="n">${esc(me().name)}</span><span class="cflag">${COURSE_FLAGS[COURSE]}</span></button><button class="myspot" id="toTop" hidden aria-label="Go to the top of the path">⤒ Top</button></div>
+    <div class="pathbtns"><button class="myspot" id="mySpot" hidden>⬇ My spot</button></div>
     <div style="height:160px"></div>
     <p class="foot-note">Concept build for our family app. ${MN()} the chipmunk is Galina’s own character. Voices: Microsoft when connected in Settings, otherwise the phone’s own.</p>
     ${navHTML("home")}`;
@@ -5690,7 +5706,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "16.9.6 (November 10, 2026, 11:13 PM EST)";
+const APP_VERSION = "16.9.7 (November 10, 2026, 11:22 PM EST)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */
@@ -6973,7 +6989,9 @@ function withContent(c, fn){ const old = CC, oldU = CU; if (c===old) return fn()
 function fitScreen(force){
   const st = force || matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: fullscreen)").matches || navigator.standalone;
   const w = window.innerWidth, h = document.documentElement;
-  if (st && w >= 700){ const z = w / 560; h.style.zoom = String(z); h.style.setProperty("--z", z); h.classList.add("tab"); }
+  const key = (st && w >= 700) ? String(w / 560) : "";
+  if (fitScreen.key === key) return; fitScreen.key = key;
+  if (key){ h.style.zoom = key; h.style.setProperty("--z", key); h.classList.add("tab"); }
   else { h.style.zoom = ""; h.style.removeProperty("--z"); h.classList.remove("tab"); }
 }
 fitScreen(); window.addEventListener("resize", () => fitScreen());
