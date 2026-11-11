@@ -4939,7 +4939,7 @@ const RENDER = {
     lessonShell(`<p class="prompt">${UNITS[CU].storyTitle}</p><div class="story">${storyHTML()}</div>`, `<button class="btn" id="go">Continue</button>`);
     app.querySelectorAll("[data-line]").forEach(b => b.onclick = () => { const st = L.storyShown.find(s => s.ru===b.dataset.line); speaker = st ? st.who : "misha"; speak(b.dataset.line, false, speaker); });
     speak(ex.ru, false, ex.who); $("#go").onclick = advance;
-    const last = app.querySelector(".line.new"); if (last) last.scrollIntoView({block:"nearest"});
+    storyScroll();
   },
   storyQ(ex){
     lessonShell(`<p class="prompt">${UNITS[CU].storyTitle}</p><div class="story">${storyHTML(true)}</div>
@@ -4947,9 +4947,16 @@ const RENDER = {
       <div class="opts">${ex.options.map((o,k) => `<button class="opt" data-k="${k}" aria-pressed="false">${/[а-яё]/i.test(o) ? `<span class="ru" style="font-size:22px">${o}</span>` : esc(o)}</button>`).join("")}</div>`, checkFooter());
     app.querySelectorAll("[data-line]").forEach(b => b.onclick = () => { const st = L.storyShown.find(s => s.ru===b.dataset.line); speaker = st ? st.who : "misha"; speak(b.dataset.line, false, speaker); });
     choice(ex.options, (o,k) => k===ex.answer, () => ex.options[ex.answer]);
+    storyScroll();
   }
 };
 const plainShow = s => s;
+/* Story screen: always end up scrolled to the very bottom, so the newest bubble (or the answer choices) sits fully above the footer.
+   Instant jumps, repeated while the slide-in animation and layout settle, so no smooth scroll is left running to swallow the next tap. */
+function storyScroll(){
+  const go = () => { const h = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight); window.scrollTo(0, h); };
+  go(); requestAnimationFrame(go); setTimeout(go, 120); setTimeout(go, 420);
+}
 function storyHTML(noNew){
   return L.storyShown.map((st, i) => {
     const right = st.who==="misha";
@@ -5717,7 +5724,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "16.9.19 (November 11, 2026, 11:48 AM EST)";
+const APP_VERSION = "16.9.20 (November 11, 2026, 12:21 PM EST)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */
