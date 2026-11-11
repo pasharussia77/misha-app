@@ -4573,12 +4573,20 @@ function startLesson(level, u=CU){
   }
   runQueue(q, {level, n, unit:u});
 }
-function lessonShell(inner, footerHTML){
+function lessonShell(inner, footerHTML, soft){
   const pct = Math.round(100 * L.i / L.total);
   const cur = L.queue[L.i] || {};
   const tag = cur.spaced && !cur.retry ? `<div class="tag rev"><i>⟳</i>Review</div>` : (L.kind==="practice" && L.practice==="mistakes" && !cur.retry) ? `<div class="tag mistake"><i>↻</i>Mistake review</div>` : cur.retry ? `<div class="tag mistake"><i>↻</i>Previous mistake</div>` : (cur.type==="intro" ? `<div class="tag new"><i>✦</i>New word</div>` : cur.type==="lintro" ? `<div class="tag new"><i>✦</i>New letter</div>` : "");
   const cc = L.combo>=10 ? "orange" : L.combo>=5 ? "gold" : "";
   inner = tag + inner;
+  /* Story screens: update the bubbles, footer and progress bar in place. Rebuilding the whole screen replays the slide-in
+     animation, so every old bubble would fade out and back in on each Continue (flicker). */
+  if (soft && app.dataset.story === "1" && app.querySelector(".lessonbar") && app.querySelector(".body")){
+    app.querySelector(".body").innerHTML = inner;
+    const ft = $("#footer"); ft.className = "footer"; ft.innerHTML = `<div class="inner">${footerHTML}</div>`;
+    const pi = app.querySelector(".lessonbar .progress i"); if (pi) pi.style.width = pct + "%";
+    return;
+  }
   app.innerHTML = `
     <div class="lessonbar">
       <button class="iconbtn" id="quit" aria-label="Leave lesson">✕</button>
@@ -4588,6 +4596,7 @@ function lessonShell(inner, footerHTML){
     <div class="body">${inner}</div>
     <div class="footer" id="footer"><div class="inner">${footerHTML}</div></div>`;
   $("#quit").onclick = confirmLeave;
+  app.dataset.story = soft ? "1" : "0";
 }
 const trHTML = w => S.translit && !L.queue[L.i].review ? `<div class="tr">${esc(w.tr)}</div>` : "";
 const sayBtn1 = text => `<button class="speaker" data-say="${esc(text)}" aria-label="Play">🔊</button>`;   /* letter sounds: never slowed */
@@ -4936,7 +4945,7 @@ const RENDER = {
   },
   storyLine(ex){
     L.storyShown.push(ex); speaker = ex.who;
-    lessonShell(`<p class="prompt">${UNITS[CU].storyTitle}</p><div class="story">${storyHTML()}</div>`, `<button class="btn" id="go">Continue</button>`);
+    lessonShell(`<p class="prompt">${UNITS[CU].storyTitle}</p><div class="story">${storyHTML()}</div>`, `<button class="btn" id="go">Continue</button>`, true);
     app.querySelectorAll("[data-line]").forEach(b => b.onclick = () => { const st = L.storyShown.find(s => s.ru===b.dataset.line); speaker = st ? st.who : "misha"; speak(b.dataset.line, false, speaker); });
     speak(ex.ru, false, ex.who); $("#go").onclick = advance;
     storyScroll();
@@ -4944,7 +4953,7 @@ const RENDER = {
   storyQ(ex){
     lessonShell(`<p class="prompt">${UNITS[CU].storyTitle}</p><div class="story">${storyHTML(true)}</div>
       <p class="prompt" style="font-size:20px">${esc(ex.q)}</p>
-      <div class="opts">${ex.options.map((o,k) => `<button class="opt" data-k="${k}" aria-pressed="false">${/[а-яё]/i.test(o) ? `<span class="ru" style="font-size:22px">${o}</span>` : esc(o)}</button>`).join("")}</div>`, checkFooter());
+      <div class="opts">${ex.options.map((o,k) => `<button class="opt" data-k="${k}" aria-pressed="false">${/[а-яё]/i.test(o) ? `<span class="ru" style="font-size:22px">${o}</span>` : esc(o)}</button>`).join("")}</div>`, checkFooter(), true);
     app.querySelectorAll("[data-line]").forEach(b => b.onclick = () => { const st = L.storyShown.find(s => s.ru===b.dataset.line); speaker = st ? st.who : "misha"; speak(b.dataset.line, false, speaker); });
     choice(ex.options, (o,k) => k===ex.answer, () => ex.options[ex.answer]);
     storyScroll();
@@ -4955,7 +4964,7 @@ const plainShow = s => s;
    Instant jumps, repeated while the slide-in animation and layout settle, so no smooth scroll is left running to swallow the next tap. */
 function storyScroll(){
   const go = () => { const h = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight); window.scrollTo(0, h); };
-  go(); requestAnimationFrame(go); setTimeout(go, 120); setTimeout(go, 420);
+  go(); requestAnimationFrame(go); setTimeout(go, 150);
 }
 function storyHTML(noNew){
   return L.storyShown.map((st, i) => {
@@ -5724,7 +5733,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "16.9.20 (November 11, 2026, 12:21 PM EST)";
+const APP_VERSION = "16.9.21 (November 11, 2026, 12:28 PM EST)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */
