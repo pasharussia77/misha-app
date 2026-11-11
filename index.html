@@ -848,6 +848,9 @@ img.chip.wobble{animation:wobble .6s ease-in-out 1, breathe 3.4s ease-in-out .6s
 .pathbtns .myspot[hidden]{display:block;visibility:hidden;opacity:0;pointer-events:none}
 body.popopen .pathbtns{display:none}
 /* little learner bubble that stays on screen once the top bar has scrolled away */
+.tabbar{transition:opacity .28s ease-out}
+.pathbtns{transition:opacity .28s ease-out}
+html.resizing .tabbar,html.resizing .whobar,html.resizing .pathbtns{opacity:0!important;transition:opacity .07s linear!important}
 .whobar{position:fixed;top:0;left:0;right:0;max-width:560px;margin:0 auto;z-index:11;height:calc(var(--sat,0px) + 44px);box-sizing:border-box;padding:calc(var(--sat,0px) + 6px) 14px 0 14px;display:flex;align-items:flex-start;justify-content:space-between;background:var(--bg);box-shadow:0 2px 0 var(--line);opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .15s,transform .15s,visibility 0s .15s;pointer-events:none}
 .whobar.show{opacity:1;visibility:visible;transform:none;pointer-events:auto;transition:opacity .15s,transform .15s}
 .whochip{appearance:none;display:inline-flex;align-items:center;gap:6px;background:var(--surface);color:var(--ink);border:2px solid var(--line);border-radius:999px;padding:2px 12px 2px 2px;font:inherit;font-weight:800;font-size:15px;line-height:1;cursor:pointer;max-width:100%}
@@ -875,7 +878,7 @@ html.tab .sheet-bg.typing .sheet{max-height:calc(52vh / var(--z))}
     if (innerHeight > H){ H = innerHeight; root.style.setProperty("--appH", H + "px"); }
   }
   settle();
-  addEventListener("resize", function(){ root.classList.add("resizing"); clearTimeout(t); t = setTimeout(function(){ root.classList.remove("resizing"); settle(); }, 300); });
+  addEventListener("resize", function(){ root.classList.add("resizing"); clearTimeout(t); t = setTimeout(function(){ root.classList.remove("resizing"); settle(); }, 220); });
   addEventListener("orientationchange", function(){ sat = sab = 0; setTimeout(settle, 500); });
   /* A swipe that starts at the very bottom or top edge is Android's gesture for showing/hiding its buttons.
      The page used to scroll along with it (that was the jitter), so touches that begin there never scroll the page. */
@@ -5713,7 +5716,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "16.9.8 (November 10, 2026, 11:30 PM EST)";
+const APP_VERSION = "16.9.9 (November 10, 2026, 11:34 PM EST)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */
