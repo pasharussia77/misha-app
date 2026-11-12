@@ -5733,7 +5733,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "16.9.21 (November 11, 2026, 12:28 PM EST)";
+const APP_VERSION = "16.9.22 (November 11, 2026, 9:57 PM EST)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */
@@ -6312,8 +6312,9 @@ ESU[8] = {title:"Numbers 1 to 10", cls:"u8", icon:"<img class='wp' src='img/b2cb
     {who:"misha", ru:"¿Cuántos? ¿Seis?", en:"How many? Six?"},
     {who:"tima", ru:"¡Sí, seis!", en:"Yes, six!"},
     {q:"How old is Tima?", options:["six","five","seven"], answer:0},
-    {who:"misha", ru:"¿Quieres jugo?", en:"Do you want juice?"},
-    {who:"tima", ru:"Sí, gracias.", en:"Yes, thank you."},
+    {who:"tima", ru:"Misha, ¿dos más dos?", en:"Misha, two plus two?"},
+    {who:"misha", ru:"¡Cuatro!", en:"Four!"},
+    {who:"tima", ru:"¡Sí! ¿Y tres más tres?", en:"Yes! And three plus three?"},
     {who:"misha", ru:"¡Tres más tres son seis!", en:"Three plus three is six!"},
     {q:"Three plus three is…", options:["seis","cinco","ocho"], answer:0}
   ],
