@@ -3984,21 +3984,43 @@ function cpParse(raw){
     return (o && typeof o === "object") ? o : null;
   } catch(e){ return null; }
 }
+/* what a code holds, in words (secrets shown only in part) */
+const cpTail = (v, n) => v.length > n + 3 ? "…" + v.slice(-n) : v;
 function cpSummary(o){
   const L = [];
-  if (o.f) L.push("the family code");
-  if (o.k) L.push("the Microsoft key and region (" + (o.r || "eastus") + ")");
-  if (o.n) L.push("the notification channel");
-  if (o.v || o.e) L.push("the backup voices");
+  if (o.f) L.push("family code (starts " + o.f.slice(0, 5) + ")");
+  if (o.k) L.push("Microsoft key (ends " + cpTail(o.k, 4) + ") and region " + (o.r || "eastus"));
+  if (o.n) L.push("notification channel " + o.n);
+  if (L.length && (o.v || o.e)) L.push("backup voices");
   return L;
 }
-async function cpApply(o){
+function cpMissing(o){
+  const M = [];
+  if (!o.f) M.push("family code");
+  if (!o.k) M.push("Microsoft key");
+  if (!o.n) M.push("notification channel");
+  return M;
+}
+function cpApplyLocal(o){
   const done = [], bad = [];
-  if (o.f){ const r = await syncJoin(o.f); (r.ok ? done : bad).push(r.ok ? "family code" : "family code (" + r.err.replace(/^✓ /, "") + ")"); }
-  if (o.k){ azStore({key: o.k, region: o.r || "eastus", voice: o.v || undefined, voiceEs: o.e || undefined}); done.push("Microsoft key and region"); }
-  else if (o.v || o.e){ azStore({voice: o.v || undefined, voiceEs: o.e || undefined}); done.push("backup voices"); }
-  if (o.n){ if (okTopic(o.n)){ P.ntfy = o.n; saveP(); done.push("notification channel"); } else bad.push("notification channel (not valid)"); }
+  try {
+    if (o.k){
+      azStore({key: o.k, region: o.r || "eastus", voice: o.v || undefined, voiceEs: o.e || undefined});
+      if (P.az.key === o.k && S.azKey === o.k) done.push("Microsoft key and region"); else bad.push("Microsoft key (could not be saved)");
+    }
+    if (o.n){
+      if (okTopic(o.n)){ P.ntfy = o.n; saveP(); if (P.ntfy === o.n) done.push("notification channel"); else bad.push("notification channel (could not be saved)"); }
+      else bad.push("notification channel (not valid)");
+    }
+  } catch(err){ bad.push("settings (" + String((err && err.message) || err).slice(0, 80) + ")"); }
   return {done, bad};
+}
+async function cpJoinFamily(o){
+  try {
+    const r = await syncJoin(o.f);
+    if (r.ok && syncOn() && P.sync.code === cleanCode(o.f)) return {ok:true};
+    return {ok:false, why:String(r.err || r.ok || "not joined").replace(/^✓ /, "")};
+  } catch(err){ return {ok:false, why:String((err && err.message) || err).slice(0, 80)}; }
 }
 function gRedo(){ const y = window.scrollY; grownSettings(); window.scrollTo(0, y); }
 function openGrown(){ resetUI(); gsWho = null; cpCode = ""; grownSettings(); }
@@ -4094,7 +4116,8 @@ function grownSettings(){
   wireLocks(app, gRedo, H);
   const busy = (b, t) => { b.disabled = true; b.textContent = t; };
   /* copy settings to another phone */
-  $("#cpMake").onclick = () => { cpCode = cpMake(); dashOpen["g:copy"] = true; setNote("copy", "✓ Code made. Copy it and send it to yourself, then paste it on the other phone."); gRedo(); };
+  $("#cpMake").onclick = () => { cpCode = cpMake(); dashOpen["g:copy"] = true; { const o = cpParse(cpCode), inc = cpSummary(o), miss = cpMissing(o);
+      setNote("copy", (inc.length ? "✓ This code holds: " + inc.join("; ") + ". " : "This code is empty. ") + (miss.length ? "NOT included, because this phone has none saved: " + miss.join(", ") + ". Make the code on a phone that has them set up." : "Copy it and send it to yourself, then paste it on the other phone."), miss.length > 0); } gRedo(); };
   const cpC = $("#cpCopy"); if (cpC) cpC.onclick = async () => {
     const ta = $("#cpOut"); let ok = false;
     try { await navigator.clipboard.writeText(cpCode); ok = true; } catch(e){}
@@ -4104,11 +4127,14 @@ function grownSettings(){
     const o = cpParse($("#cpIn").value); dashOpen["g:copy"] = true;
     if (!o){ setNote("copy", "That is not a complete settings code. Copy the whole code, starting with MSH1-.", true); gRedo(); return; }
     const L = cpSummary(o);
-    if (!L.length){ setNote("copy", "That code has nothing to set up.", true); gRedo(); return; }
-    askConfirm("This will set up this phone with " + L.join(", ") + ". Anything already saved for those will be replaced.", "Yes, use it", async () => {
-      const r = await cpApply(o);
-      setNote("copy", (r.done.length ? "✓ Set up: " + r.done.join(", ") + ". " : "") + (r.bad.length ? "Not set: " + r.bad.join("; ") + "." : ""), !r.done.length);
-      dashOpen["g:copy"] = true; gRedo(); }); };
+    if (!L.length){ setNote("copy", "That code has no family code, no Microsoft key and no channel in it, so there is nothing to set up. It was probably made on a phone where those were not saved yet. Make the code again on a phone that has them set up.", true); gRedo(); return; }
+    askConfirm("This code holds: " + L.join("; ") + (cpMissing(o).length ? ". Not in the code: " + cpMissing(o).join(", ") : "") + ". Anything already saved for those will be replaced.", "Yes, use it", async () => {
+      const r = cpApplyLocal(o), say = (extra, err) => { setNote("copy", (r.done.length ? "✓ Saved on this phone: " + r.done.join(", ") + ". " : "") + (r.bad.length ? "Not saved: " + r.bad.join("; ") + ". " : "") + (extra || ""), !!err); dashOpen["g:copy"] = true; gRedo(); };
+      if (!o.f){ say("", !r.done.length); return; }
+      say("Joining the family…", false);
+      const j = await cpJoinFamily(o);
+      say(j.ok ? "✓ Joined the family." : "Family code not joined (" + j.why + "). You can join with the family code in Sync between phones.", !j.ok && !r.done.length);
+    }); };
   /* sync */
   const syN = $("#syNow"); if (syN) syN.onclick = async () => { busy(syN, "Syncing…"); const ok = await syncNow(true); setNote("sync", ok ? "✓ Synced with the family" : "Couldn’t connect. Check the internet and try again.", !ok); dashOpen["g:sync"] = true; gRedo(); };
   const syO = $("#syOff"); if (syO) syO.onclick = () => askConfirm("Stop syncing this phone? Its progress stays here.", "Yes, turn off", () => { P.sync = null; saveP(); setNote("sync", "✓ Sync turned off on this phone"); gRedo(); });
@@ -5792,7 +5818,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "16.9.25 (November 21, 2026, 10:54 PM EST)";
+const APP_VERSION = "16.9.26 (November 22, 2026, 3:47 PM EST)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */
