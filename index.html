@@ -3964,8 +3964,44 @@ function askConfirm(msg, okLabel, onOk){
 }
 /* ---------- Grown-up settings: the app and this phone ---------- */
 let gsWho = null;
+/* ---------- Copy this phone's settings to another phone: one text code, no cloud ---------- */
+let cpCode = "";
+const cpSum = t => { let h = 7; for (let i = 0; i < t.length; i++) h = (h * 31 + t.charCodeAt(i)) % 65521; return h.toString(16).padStart(4, "0"); };
+function cpMake(){
+  const o = {k: S.azKey || "", r: S.azRegion || "eastus", v: (P.az && P.az.voice) || "", e: (P.az && P.az.voiceEs) || "", n: P.ntfy || "", f: (P.sync && P.sync.code) || ""};
+  const bytes = new TextEncoder().encode(JSON.stringify(o));
+  let bin = ""; bytes.forEach(b => bin += String.fromCharCode(b));
+  const b64 = btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  return "MSH1-" + b64 + "-" + cpSum(b64);
+}
+function cpParse(raw){
+  const t = String(raw || "").replace(/\s+/g, "");
+  const m = /^MSH1-([A-Za-z0-9_-]+)-([0-9a-f]{4})$/.exec(t);
+  if (!m || cpSum(m[1]) !== m[2]) return null;
+  try {
+    const b64 = m[1].replace(/-/g, "+").replace(/_/g, "/"), bin = atob(b64 + "=".repeat((4 - b64.length % 4) % 4));
+    const o = JSON.parse(new TextDecoder().decode(Uint8Array.from(bin, c => c.charCodeAt(0))));
+    return (o && typeof o === "object") ? o : null;
+  } catch(e){ return null; }
+}
+function cpSummary(o){
+  const L = [];
+  if (o.f) L.push("the family code");
+  if (o.k) L.push("the Microsoft key and region (" + (o.r || "eastus") + ")");
+  if (o.n) L.push("the notification channel");
+  if (o.v || o.e) L.push("the backup voices");
+  return L;
+}
+async function cpApply(o){
+  const done = [], bad = [];
+  if (o.f){ const r = await syncJoin(o.f); (r.ok ? done : bad).push(r.ok ? "family code" : "family code (" + r.err.replace(/^✓ /, "") + ")"); }
+  if (o.k){ azStore({key: o.k, region: o.r || "eastus", voice: o.v || undefined, voiceEs: o.e || undefined}); done.push("Microsoft key and region"); }
+  else if (o.v || o.e){ azStore({voice: o.v || undefined, voiceEs: o.e || undefined}); done.push("backup voices"); }
+  if (o.n){ if (okTopic(o.n)){ P.ntfy = o.n; saveP(); done.push("notification channel"); } else bad.push("notification channel (not valid)"); }
+  return {done, bad};
+}
 function gRedo(){ const y = window.scrollY; grownSettings(); window.scrollTo(0, y); }
-function openGrown(){ resetUI(); gsWho = null; grownSettings(); }
+function openGrown(){ resetUI(); gsWho = null; cpCode = ""; grownSettings(); }
 const okTopic = v => /^[-_A-Za-z0-9]{6,64}$/.test(v);
 function azStore(o){
   const key = o.key != null ? o.key : (S.azKey || ""), region = o.region != null ? o.region : (S.azRegion || "eastus");
@@ -3999,6 +4035,12 @@ function grownSettings(){
   const testingOn = P.tryAll || combos.some(x => stateOf(x.p.id, x.c).unlockAll);
   const mins = Math.round(((P.stt||{})[todayKey().slice(0,7)]||0)/60), pct = Math.min(100, Math.round(100*mins/300));
   const lastBk = P.lastBackup ? new Date(P.lastBackup).toLocaleString([], {day:"numeric", month:"short", hour:"numeric", minute:"2-digit"}) : null;
+  const copyHTML = `<p class="note" style="text-align:left;margin:0">Moves this phone’s settings to another phone without typing: the family code, the Microsoft key and region, the notification channel and the backup voices. On the phone that is already set up, tap “Make a settings code”, copy it and send it to yourself. On the other phone, paste it in the box below. It does not go through the cloud. The code contains your secret keys, so delete the message afterwards.</p>
+    <div class="rowbtns"><button class="btn small" id="cpMake">📋 Make a settings code</button></div>
+    ${cpCode ? `<textarea id="cpOut" readonly rows="6" style="width:100%;margin-top:8px;font:13px/1.35 monospace;border:2px solid var(--line);border-radius:12px;padding:8px;background:var(--card,#fff);color:inherit;box-sizing:border-box;word-break:break-all">${esc(cpCode)}</textarea>
+    <div class="rowbtns"><button class="btn small" id="cpCopy">Copy the code</button></div>` : ""}
+    <label class="field" style="margin-top:12px">Paste a settings code from another phone<textarea id="cpIn" rows="3" placeholder="MSH1-…" style="width:100%;font:13px/1.35 monospace;box-sizing:border-box;word-break:break-all"></textarea></label>
+    <div class="rowbtns"><button class="btn small" id="cpApply">Use this code</button></div>${noteHTML("copy")}`;
   const syncHTML = `<p class="note" style="text-align:left;margin:0">Keeps every learner’s stars, streak, wardrobe and progress, plus the family goal and rewards, the same on all the family’s phones (free Google Firebase). On the first phone tap “Make a new code”. On each other phone tap Change, enter the same code and tap Join. Keep the code private, like a password.</p>
     ${lockHTML("syncCode", "Family code", (P.sync && P.sync.code) || "", {secret:true, saveLabel:"Join with this code"})}
     <p class="note" style="text-align:left;margin:4px 0 0">${syncStatus()}</p>
@@ -4036,6 +4078,7 @@ function grownSettings(){
       ${fcard("g:speech", "🎙️", "Speech scoring", speechHTML, chip2(azOn() ? "Connected" : "Not connected", azOn() ? "on" : "warn"))}
       ${dgroup("This phone’s data", "Save a copy, or bring one back.")}
       ${fcard("g:backup", "💾", "Backup and restore", backupHTML, chip2(lastBk ? "Saved " + lastBk : "No backup yet", lastBk ? "on" : "warn"))}
+      ${fcard("g:copy", "📲", "Copy settings to another phone", copyHTML, "")}
       ${dgroup("Testing", "Tools for checking the app. Not part of normal use.")}
       ${fcard("g:test", "🧪", "Testing tools", testHTML, chip2(testingOn ? "Testing is on" : "Off", testingOn ? "warn" : ""))}
       <button class="linkcard" id="goDash"><span aria-hidden="true" style="font-size:22px">👪</span><span>Learners, progress, daily limits, exercises, family goal, rewards and orders are in the Parent dashboard</span><span aria-hidden="true">→</span></button></div>`;
@@ -4050,6 +4093,22 @@ function grownSettings(){
   };
   wireLocks(app, gRedo, H);
   const busy = (b, t) => { b.disabled = true; b.textContent = t; };
+  /* copy settings to another phone */
+  $("#cpMake").onclick = () => { cpCode = cpMake(); dashOpen["g:copy"] = true; setNote("copy", "✓ Code made. Copy it and send it to yourself, then paste it on the other phone."); gRedo(); };
+  const cpC = $("#cpCopy"); if (cpC) cpC.onclick = async () => {
+    const ta = $("#cpOut"); let ok = false;
+    try { await navigator.clipboard.writeText(cpCode); ok = true; } catch(e){}
+    if (!ok){ try { ta.focus(); ta.select(); ta.setSelectionRange(0, 99999); ok = document.execCommand("copy"); } catch(e){} }
+    toast(ok ? "Copied. Now paste it in a message to yourself." : "Press and hold the code, then choose Copy."); };
+  $("#cpApply").onclick = () => {
+    const o = cpParse($("#cpIn").value); dashOpen["g:copy"] = true;
+    if (!o){ setNote("copy", "That is not a complete settings code. Copy the whole code, starting with MSH1-.", true); gRedo(); return; }
+    const L = cpSummary(o);
+    if (!L.length){ setNote("copy", "That code has nothing to set up.", true); gRedo(); return; }
+    askConfirm("This will set up this phone with " + L.join(", ") + ". Anything already saved for those will be replaced.", "Yes, use it", async () => {
+      const r = await cpApply(o);
+      setNote("copy", (r.done.length ? "✓ Set up: " + r.done.join(", ") + ". " : "") + (r.bad.length ? "Not set: " + r.bad.join("; ") + "." : ""), !r.done.length);
+      dashOpen["g:copy"] = true; gRedo(); }); };
   /* sync */
   const syN = $("#syNow"); if (syN) syN.onclick = async () => { busy(syN, "Syncing…"); const ok = await syncNow(true); setNote("sync", ok ? "✓ Synced with the family" : "Couldn’t connect. Check the internet and try again.", !ok); dashOpen["g:sync"] = true; gRedo(); };
   const syO = $("#syOff"); if (syO) syO.onclick = () => askConfirm("Stop syncing this phone? Its progress stays here.", "Yes, turn off", () => { P.sync = null; saveP(); setNote("sync", "✓ Sync turned off on this phone"); gRedo(); });
@@ -5733,7 +5792,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "16.9.24 (November 16, 2026, 7:08 PM EST)";
+const APP_VERSION = "16.9.25 (November 21, 2026, 10:54 PM EST)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */
