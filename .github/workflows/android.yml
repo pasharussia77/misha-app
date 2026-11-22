@@ -36,7 +36,15 @@ jobs:
           KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           VERSION_CODE: ${{ github.run_number }}
-        run: gradle assembleRelease --no-daemon
+        run: gradle assembleRelease --no-daemon 2>&1 | tee ../build.log
+      - name: Save the build log to a side branch (so problems can be read)
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir /tmp/bl && cp build.log /tmp/bl/build.log || echo "no log" > /tmp/bl/build.log
+          cd /tmp/bl && git init -q && git checkout -q -b build-log && git add . && git -c user.name=ci -c user.email=ci@users.noreply.github.com commit -qm "build log"
+          git push -q -f "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}" build-log
       - name: Publish the APK
         env:
           GH_TOKEN: ${{ github.token }}
