@@ -1,0 +1,46 @@
+name: Build Android app
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'android/**'
+      - '.github/workflows/android.yml'
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - name: Bundle the offline copy of the app (no voices)
+        run: |
+          W=android/app/src/main/assets/www
+          mkdir -p $W
+          cp index.html manifest.json sw.js mishaling-*.png $W/
+          cp -r img $W/img
+      - name: Signing key
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
+        run: echo "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/mishaling.jks"
+      - name: Build
+        working-directory: android
+        env:
+          KEYSTORE_FILE: ${{ runner.temp }}/mishaling.jks
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          VERSION_CODE: ${{ github.run_number }}
+        run: gradle assembleRelease --no-daemon
+      - name: Publish the APK
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp android/app/build/outputs/apk/release/app-release.apk Mishaling.apk
+          gh release delete apk-latest --yes --cleanup-tag || true
+          gh release create apk-latest Mishaling.apk --title "Mishaling Android app" --notes "Latest build of the Mishaling Android app (loads the live app; updates arrive without reinstalling)."
