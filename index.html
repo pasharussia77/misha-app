@@ -2317,7 +2317,8 @@ const PRICE_STEPS = [40, 80, 160], WEEK_PRICE = 280;
 const shopPrice = id => { const i = SHOP_LINE.indexOf(id); return i < 0 ? WEEK_PRICE : (PRICE_STEPS[i] ?? WEEK_PRICE); };
 /* old saves wore one item per slot; now Миша wears one item */
 function migrateWear(o){ if (o && typeof o === "object") return o.head || o.neck || o.hand || null; return o || null; }
-function currentWear(){ return P.tryAll ? migrateWear(P.tryWear) : migrateWear(S.wear); }
+function tryAllOn(){ if (P.tryAll){ P.tryFor = P.tryFor || {}; (P.profiles||[]).forEach(p => { P.tryFor[p.id] = true; }); delete P.tryAll; try { saveP(); } catch(_){} } return !!(P.tryFor && P.current && P.tryFor[P.current]); }
+function currentWear(){ return tryAllOn() ? migrateWear(P.tryWear) : migrateWear(S.wear); }
 /* His mouth: a box over the picture's own mouth, cut to its shape (measured for every picture), with one moving part inside */
 const mouthHTML = m => `<i class="mouth ${m.k}" style="left:${m.b[0]}%;top:${m.b[1]}%;width:${m.b[2]}%;height:${m.b[3]}%;clip-path:polygon(${m.p})${m.k === "w" ? `;--sk:${m.sk};--a:${m.a}deg` : `;--z:${m.z}%`}"><b></b>${m.k === "w" ? `<u style="clip-path:polygon(${m.q})"><b></b></u>` : ""}</i>`;
 /* A Миша who blinks and moves his mouth while he talks (eyelids and mouth drawn over Galina’s “neutral” pose). */
@@ -2697,9 +2698,9 @@ function wsDashWire(editKid){
 
 let tryOn = null;   /* the next item, tried on but not bought */
 function wardrobeScreen(){
-  ensureFields(S); S.owned = S.owned || []; S.wear = migrateWear(S.wear); if (P.tryAll) P.tryWear = migrateWear(P.tryWear); save();
-  const wearing = currentWear(), has = id => P.tryAll || S.owned.includes(id);
-  const setWear = id => { if (P.tryAll){ P.tryWear = id; saveP(); } else { S.wear = id; save(); } };
+  ensureFields(S); S.owned = S.owned || []; S.wear = migrateWear(S.wear); if (tryAllOn()) P.tryWear = migrateWear(P.tryWear); save();
+  const wearing = currentWear(), has = id => tryAllOn() || S.owned.includes(id);
+  const setWear = id => { if (tryAllOn()){ P.tryWear = id; saveP(); } else { S.wear = id; save(); } };
   const shop = SHOP_LINE.map(id => ITEMS.find(i => i.id===id)).filter(Boolean);
   const left = shop.filter(it => !has(it.id)), next = left[0], hint = left[1];
   const prizes = ITEMS.filter(i => i.badge), mine = CUSTOM_ITEMS.filter(c => S.owned.includes(c.id));
@@ -2714,16 +2715,16 @@ function wardrobeScreen(){
   const prize = it => { const st = wearing===it.id ? "wearing" : has(it.id) ? "owned" : "mystery";
     return `<button class="item ${st}" data-item="${it.id}" data-st="${st==="mystery" ? "prize" : st}"><img class="pic" src="${DRESS.wave[it.id]}" alt="" loading="lazy"><b>${st==="mystery" ? "?" : esc(it.name)}</b><small>${st==="wearing" ? "✓ Wearing" : st==="owned" ? "Tap to wear" : "🏅 Win a badge"}</small></button>`; };
   app.innerHTML = `<div class="phead2" style="background:#B86A2E"><div><h2>${MN()}’s wardrobe</h2><p>⭐ ${S.stars} stars · one item at a time</p></div></div>
-    ${P.tryAll ? `<div class="trybar">🔓 Try-everything mode (grown-up): try anything on. Nothing is bought or saved for the children.</div>` : ""}
-    ${P.tryAll ? "" : wsCardHTML()}
+    ${tryAllOn() ? `<div class="trybar">🔓 Try-everything mode (grown-up): try anything on. Nothing is bought or saved for the children.</div>` : ""}
+    ${tryAllOn() ? "" : wsCardHTML()}
     <div class="wprev">${liveMisha("", "wave", shown || null)}</div>
     ${tryOn ? `<p class="note" style="text-align:center;margin:0">Trying on: ${esc(next.name)}</p>` : wearing ? `<div style="text-align:center"><button class="btn small ghost" id="takeOff">Take it off</button></div>` : ""}
-    ${next && !P.tryAll ? `<div class="nextcard">
+    ${next && !tryAllOn() ? `<div class="nextcard">
       <img src="${DRESS.wave[next.id]}" alt="">
       <div class="tx"><small>Next for ${MN()}</small><b>${esc(next.name)}</b>
         <div class="nbar"><i style="width:${pct}%"></i><em>⭐ ${Math.min(S.stars, shopPrice(next.id))} / ${shopPrice(next.id)}</em></div>
         <div class="nbtns"><button class="btn small ghost" id="tryBtn">${tryOn ? "Take off" : "👀 Try on"}</button><button class="btn small" id="buyBtn" ${S.stars >= shopPrice(next.id) ? "" : "disabled"}>${S.stars >= shopPrice(next.id) ? "Buy it!" : `${shopPrice(next.id) - S.stars} ⭐ to go`}</button></div>
-      </div></div>` : !next && !P.tryAll && shop.length ? `<p class="note" style="text-align:center">${MN()} has every item in the shop. New ones are coming!</p>` : ""}
+      </div></div>` : !next && !tryAllOn() && shop.length ? `<p class="note" style="text-align:center">${MN()} has every item in the shop. New ones are coming!</p>` : ""}
     <div style="padding:6px 16px 16px">
       ${shop.length ? `<h3 style="font-family:var(--font-head);margin:12px 0 8px">Shop <small style="color:var(--muted);font-size:14px">· ${shop.length - left.length} of ${shop.length}</small></h3>
       <div class="igrid">${shop.map(card).join("")}</div>` : `<div class="emptygal"><div style="font-size:44px">🖼️</div><b>Misha’s ${LN()} gallery is coming soon!</b><small>New items are being made for this course. Keep collecting stars: they’ll be waiting for you.</small></div>`}
@@ -2731,13 +2732,13 @@ function wardrobeScreen(){
       ${prizes.length ? `<h3 style="font-family:var(--font-head);margin:18px 0 8px">Badge prizes <small style="color:var(--muted);font-size:14px">· ${prizes.filter(i => has(i.id)).length} of ${prizes.length}</small></h3>
       <div class="igrid">${prizes.map(prize).join("")}</div>
       <p class="note" style="margin-top:12px">Items open one at a time. Badge prizes are a surprise: win a badge to find out what they are!</p>` : ""}
-      ${P.tryAll ? `<div style="margin-top:12px"><button class="btn ghost" id="galBtn">🎬 See all 30 results scenes</button></div>` : ""}</div>${navHTML("misha")}`;
+      ${tryAllOn() ? `<div style="margin-top:12px"><button class="btn ghost" id="galBtn">🎬 See all 30 results scenes</button></div>` : ""}</div>${navHTML("misha")}`;
   wireNav();
   const tk = $("#takeOff"); if (tk) tk.onclick = () => { setWear(null); sfx.pop(); wardrobeScreen(); };
   const gb = $("#galBtn"); if (gb) gb.onclick = sceneGallery;
   const tb = $("#tryBtn"); if (tb) tb.onclick = () => { tryOn = tryOn ? null : next.id; sfx.pop(); if (tryOn) sfx.giggle(); wardrobeScreen(); window.scrollTo({top:0, behavior:"smooth"}); };
   const bb = $("#buyBtn"); if (bb) bb.onclick = () => buyItem(next);
-  if (!P.tryAll) wsWire();
+  if (!tryAllOn()) wsWire();
   app.querySelectorAll("[data-item]").forEach(b => b.onclick = () => {
     const it = ITEMS.find(i => i.id===b.dataset.item) || CUSTOM_ITEMS.find(i => i.id===b.dataset.item), st = b.dataset.st;
     if (st==="wearing"){ setWear(null); tryOn = null; return wardrobeScreen(); }
@@ -3963,7 +3964,7 @@ function askConfirm(msg, okLabel, onOk){
   $("#cfYes", bg).onclick = () => { bg.remove(); onOk(); };
 }
 /* ---------- Grown-up settings: the app and this phone ---------- */
-let gsWho = null;
+let gsWho = null, gsStars = {};
 /* ---------- Copy this phone's settings to another phone: one text code, no cloud ---------- */
 let cpCode = "";
 const cpSum = t => { let h = 7; for (let i = 0; i < t.length; i++) h = (h * 31 + t.charCodeAt(i)) % 65521; return h.toString(16).padStart(4, "0"); };
@@ -4023,7 +4024,7 @@ async function cpJoinFamily(o){
   } catch(err){ return {ok:false, why:String((err && err.message) || err).slice(0, 80)}; }
 }
 function gRedo(){ const y = window.scrollY; grownSettings(); window.scrollTo(0, y); }
-function openGrown(){ resetUI(); gsWho = null; cpCode = ""; grownSettings(); }
+function openGrown(){ resetUI(); gsWho = null; gsStars = {}; cpCode = ""; grownSettings(); }
 const okTopic = v => /^[-_A-Za-z0-9]{6,64}$/.test(v);
 function azStore(o){
   const key = o.key != null ? o.key : (S.azKey || ""), region = o.region != null ? o.region : (S.azRegion || "eastus");
@@ -4054,7 +4055,7 @@ function grownSettings(){
   const combos = P.profiles.flatMap(p => ["ru","es"].map(c => ({id:p.id + ":" + c, p, c})));
   if (!gsWho || !combos.some(x => x.id===gsWho)) gsWho = (P.current || (P.profiles[0] && P.profiles[0].id)) + ":" + courseOf(P.current || (P.profiles[0] && P.profiles[0].id));
   const [wp, wc] = gsWho.split(":"), ws = P.profiles.length ? stateOf(wp, wc) : {}, wname = (P.profiles.find(x => x.id===wp) || {name:""}).name;
-  const testingOn = P.tryAll || combos.some(x => stateOf(x.p.id, x.c).unlockAll);
+  const testingOn = P.profiles.some(p => (P.tryFor||{})[p.id]) || P.tryAll || combos.some(x => stateOf(x.p.id, x.c).unlockAll);
   const mins = Math.round(((P.stt||{})[todayKey().slice(0,7)]||0)/60), pct = Math.min(100, Math.round(100*mins/300));
   const lastBk = P.lastBackup ? new Date(P.lastBackup).toLocaleString([], {day:"numeric", month:"short", hour:"numeric", minute:"2-digit"}) : null;
   const copyHTML = `<p class="note" style="text-align:left;margin:0">Moves this phone’s settings to another phone without typing: the family code, the Microsoft key and region, the notification channel and the backup voices. On the phone that is already set up, tap “Make a settings code”, copy it and send it to yourself. On the other phone, paste it in the box below. It does not go through the cloud. The code contains your secret keys, so delete the message afterwards.</p>
@@ -4083,11 +4084,15 @@ function grownSettings(){
     <div style="display:grid;gap:10px;margin-top:10px"><button class="btn" id="bkBtn">💾 Back up now</button><button class="btn ghost" id="rsBtn">📂 Restore from a backup</button></div>
     <p class="note" style="text-align:left;margin:8px 0 0">${lastBk ? "Last backup from this phone: " + lastBk + "." : "No backup made from this phone yet."} Restoring shows what the file contains before anything is replaced.</p>
     <input type="file" id="rsFile" accept=".json,application/json" hidden>${noteHTML("backup")}`;
+  const tryF = P.tryFor || {};
+  const kidRows = P.profiles.map(p => { const bothAll = ["ru","es"].every(c => stateOf(p.id, c).unlockAll);
+    return `<tr><td class="tkn">${esc(p.name)}</td><td><input type="checkbox" class="tkAll" data-p="${p.id}" aria-label="Open all levels for ${esc(p.name)}" ${bothAll ? "checked" : ""}></td><td><input type="checkbox" class="tkTry" data-p="${p.id}" aria-label="Try everything for ${esc(p.name)}" ${tryF[p.id] ? "checked" : ""}></td><td><input type="checkbox" class="tkStar" data-p="${p.id}" aria-label="Stars for ${esc(p.name)}" ${gsStars[p.id] ? "checked" : ""}></td></tr>`; }).join("");
+  const kidsTable = `<table style="width:100%;border-collapse:collapse;text-align:center"><thead><tr style="font-size:13px;color:var(--muted)"><th style="text-align:left;padding:4px 0">Student</th><th>Open all levels</th><th>Try everything</th><th>Stars</th></tr></thead><tbody>${kidRows}</tbody></table>
+    <p class="note" style="text-align:left;margin:8px 0 0">Each tick applies to both languages of that student. “Try everything” shows all of ${MN()}’s items to try on; nothing is bought or saved.</p>`;
+  const nAll = P.profiles.filter(p => ["ru","es"].every(c => stateOf(p.id, c).unlockAll)).length, nTry = P.profiles.filter(p => tryF[p.id]).length;
   const testHTML = `<p class="note" style="text-align:left;margin:0">For trying things out, not for normal use. Stars added here don’t count as earned and don’t change the family goal.</p>
-    ${P.profiles.length ? `<label class="field">Test on<select id="gsWho">${combos.map(x => `<option value="${x.id}" ${x.id===gsWho?"selected":""}>${esc(x.p.name)} · ${COURSE_FLAGS[x.c]} ${COURSE_NAMES[x.c]}</option>`).join("")}</select></label>
-    ${togHTML("Open all levels", `Nothing locked and no daily limit, for ${esc(wname)} · ${COURSE_NAMES[wc]}.`, !!ws.unlockAll, 'id="tAll"')}` : ""}
-    ${togHTML("Try everything", `All of ${MN()}’s items to try on. Nothing is bought or saved. Applies to all learners on this phone.`, !!P.tryAll, 'id="tTry"')}
-    ${P.profiles.length ? `<div class="row" style="align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px"><span style="flex:1;min-width:120px;font-weight:800">⭐ ${ws.stars||0} stars<small style="display:block;color:var(--muted);font-weight:700;font-size:13px">${esc(wname)} · ${COURSE_NAMES[wc]}</small></span><button class="btn small ghost" id="tStarsUp">＋300</button><button class="btn small ghost" id="tStarsDn">−300</button></div>` : ""}
+    ${P.profiles.length ? `<div style="margin-top:10px">${fcard("g:testkids", "👧", "Students", kidsTable, chip2(nAll || nTry ? `${nAll} open · ${nTry} try` : "None", nAll || nTry ? "on" : ""))}</div>
+    <div class="row" style="align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px"><span style="flex:1;min-width:120px;font-weight:800">⭐ Stars<small style="display:block;color:var(--muted);font-weight:700;font-size:13px">Goes to the students ticked in “Stars” (both languages)</small></span><button class="btn small ghost" id="tStarsUp">＋300</button><button class="btn small ghost" id="tStarsDn">−300</button></div>` : ""}
     <button class="btn ghost" id="tParty" style="margin-top:12px">🎆 Preview the celebration</button>${noteHTML("test")}`;
   app.innerHTML = `<div class="top navtop"><button class="iconbtn back" id="back" aria-label="Back">←</button><div class="grow"></div></div>
     <div style="padding:0 16px 8px"><h2 style="font-family:var(--font-head);margin:0;font-size:28px">🔓 Grown-up settings</h2>
@@ -4162,10 +4167,14 @@ function grownSettings(){
   $("#rsBtn").onclick = () => $("#rsFile").click();
   $("#rsFile").onchange = e => { const f = e.target.files[0]; if (f) importBackup(f, () => { setNote("backup", "✓ Restored from the backup file"); dashOpen["g:backup"] = true; grownSettings(); }); };
   /* testing */
-  const tw = $("#gsWho"); if (tw) tw.onchange = e => { gsWho = e.target.value; const x = combos.find(y => y.id===gsWho); setNote("test", `✓ Now testing on ${x.p.name} · ${COURSE_NAMES[x.c]}`); dashOpen["g:test"] = true; gRedo(); };
-  const ta = $("#tAll"); if (ta) ta.onchange = e => { editKidState(wp, wc, s2 => { s2.unlockAll = e.target.checked; }); setNote("test", `✓ Open all levels turned ${e.target.checked ? "on" : "off"} for ${wname} · ${COURSE_NAMES[wc]}`); gRedo(); };
-  $("#tTry").onchange = e => { P.tryAll = e.target.checked; if (!P.tryAll) P.tryWear = {}; saveP(); setNote("test", `✓ Try everything turned ${P.tryAll ? "on. Open the 🐿️ Ми́ша tab" : "off. Back to earned items"}`); gRedo(); };
-  const star = d => { let n = 0; editKidState(wp, wc, s2 => { s2.stars = Math.max(0, (s2.stars||0) + d); s2.shownStars = s2.stars; n = s2.stars; }); setNote("test", `✓ ${d > 0 ? "+300" : "−300"} stars. ${wname} · ${COURSE_NAMES[wc]} now has ⭐ ${n}`); gRedo(); };
+  const nm = id => (P.profiles.find(x => x.id===id) || {name:""}).name;
+  document.querySelectorAll(".tkAll").forEach(el => el.onchange = () => { const id = el.dataset.p; ["ru","es"].forEach(c => editKidState(id, c, s2 => { s2.unlockAll = el.checked; })); setNote("test", `✓ Open all levels turned ${el.checked ? "on" : "off"} for ${nm(id)}`); dashOpen["g:test"] = true; dashOpen["g:testkids"] = true; gRedo(); });
+  document.querySelectorAll(".tkTry").forEach(el => el.onchange = () => { const id = el.dataset.p; P.tryFor = P.tryFor || {}; P.tryFor[id] = el.checked; if (!el.checked && id===P.current) P.tryWear = {}; saveP(); setNote("test", `✓ Try everything turned ${el.checked ? "on" : "off"} for ${nm(id)}${el.checked ? ". Open the 🐿️ Ми́ша tab on that student" : ""}`); dashOpen["g:test"] = true; dashOpen["g:testkids"] = true; gRedo(); });
+  document.querySelectorAll(".tkStar").forEach(el => el.onchange = () => { gsStars[el.dataset.p] = el.checked; });
+  const star = d => { const ids = P.profiles.filter(p => gsStars[p.id]).map(p => p.id); dashOpen["g:test"] = true; dashOpen["g:testkids"] = true;
+    if (!ids.length){ setNote("test", "Tick at least one student in the Stars column first.", true); gRedo(); return; }
+    ids.forEach(id => ["ru","es"].forEach(c => editKidState(id, c, s2 => { s2.stars = Math.max(0, (s2.stars||0) + d); s2.shownStars = s2.stars; })));
+    setNote("test", `✓ ${d > 0 ? "+300" : "−300"} stars for ${ids.map(nm).join(", ")} (both languages)`); gRedo(); };
   const su = $("#tStarsUp"), sd = $("#tStarsDn"); if (su) su.onclick = () => star(300); if (sd) sd.onclick = () => star(-300);
   $("#tParty").onclick = () => { const it = ITEMS.find(i => i.id===SHOP_LINE.find(id => !(S.owned||[]).includes(id))) || ITEMS.find(i => i.id==="crown"); if (!it){ setNote("test", "This course has no items yet.", true); gRedo(); return; } buyParty(it, true); };
 }
@@ -5818,7 +5827,7 @@ new MutationObserver(stripHostBadges).observe(document.documentElement, {childLi
 new MutationObserver(stripHostBadges).observe(document.body, {childList:true});
 setTimeout(stripHostBadges, 500); setTimeout(stripHostBadges, 2500);
 
-const APP_VERSION = "16.9.26 (November 22, 2026, 3:47 PM EST)";
+const APP_VERSION = "16.9.27 (November 23, 2026, 4:15 PM EST)";
 /* ---------- Full screen in the installed app: hides the phone’s bars after the first tap ---------- */
 function goFull(force){
   if (matchMedia("(display-mode: fullscreen)").matches) return;   /* Android opened it full screen: nothing to do, no message */
