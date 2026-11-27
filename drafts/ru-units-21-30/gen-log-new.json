@@ -259,7 +259,8 @@
    "tail_after": 0.13,
    "tail_fail": false,
    "lufs": "-19.0"
-  }
+  },
+  "superseded": true
  },
  {
   "unit": 21,
@@ -285,7 +286,8 @@
    "tail_after": 0.12,
    "tail_fail": false,
    "lufs": "-18.8"
-  }
+  },
+  "superseded": true
  },
  {
   "unit": 22,
@@ -417,7 +419,8 @@
    "tail_after": 0.11,
    "tail_fail": false,
    "lufs": "-19.4"
-  }
+  },
+  "superseded": true
  },
  {
   "unit": 22,
@@ -1259,7 +1262,8 @@
    "tail_after": 0.07,
    "tail_fail": false,
    "lufs": "-19.5"
-  }
+  },
+  "superseded": true
  },
  {
   "unit": 25,
@@ -1973,7 +1977,8 @@
    "tail_after": 0.18,
    "tail_fail": false,
    "lufs": "-19.4"
-  }
+  },
+  "superseded": true
  },
  {
   "unit": 28,
@@ -2470,5 +2475,168 @@
    "tail_fail": false,
    "lufs": "-19.6"
   }
+ },
+ {
+  "unit": 22,
+  "line": 5,
+  "role": "misha",
+  "lang": "ru",
+  "text": "Почему рюкзак здесь?",
+  "previous_text": "Да, это мой рюкзак.",
+  "voice_id": "rSfuQoQ3FY8SVKeraMAp",
+  "model": "eleven_v4_turbo",
+  "stability": 0.35,
+  "seed": 511143222,
+  "request_id": "dDP3Jo3p3jVcWBgKFbwt",
+  "file": "audio/u22_05.mp3",
+  "date": "2026-11-27",
+  "processing": "",
+  "trial": "no-stress-marks",
+  "check": {
+   "dur": 1.68,
+   "segments": 1,
+   "last_seg": 1.54,
+   "gap_before_last": 9,
+   "tail_after": 0.1,
+   "tail_fail": false,
+   "lufs": "-19.4"
+  },
+  "fix": "ellipsis before last word (checklist rule 3) after Galina flagged wrong emphasis",
+  "superseded": true
+ },
+ {
+  "unit": 22,
+  "line": 5,
+  "role": "misha",
+  "lang": "ru",
+  "text": "Почему рюкзак... здесь?",
+  "previous_text": "Да, это мой рюкзак.",
+  "voice_id": "rSfuQoQ3FY8SVKeraMAp",
+  "model": "eleven_v4_turbo",
+  "stability": 0.35,
+  "seed": 3325048967,
+  "request_id": "wXIEowcLH7fIsoyKyheO",
+  "file": "audio/u22_05.mp3",
+  "date": "2026-11-27",
+  "processing": "",
+  "trial": "no-stress-marks",
+  "check": {
+   "dur": 2.48,
+   "segments": 2,
+   "last_seg": 0.79,
+   "gap_before_last": 0.24,
+   "tail_after": 0.11,
+   "tail_fail": false,
+   "lufs": "-19.4"
+  },
+  "fix": "ellipsis before last word (checklist rule 3) after Galina flagged wrong emphasis"
+ },
+ {
+  "unit": 21,
+  "line": 8,
+  "role": "misha",
+  "lang": "ru",
+  "text": "Мама, ты поёшь отлично!",
+  "previous_text": "Миша, тихо! Мама поёт.",
+  "voice_id": "rSfuQoQ3FY8SVKeraMAp",
+  "model": "eleven_v4_turbo",
+  "stability": 0.35,
+  "seed": 3054049845,
+  "request_id": "JSILpnE47V3yzXdmHsSM",
+  "file": "audio/u21_08.mp3",
+  "date": "2026-11-27",
+  "processing": "",
+  "trial": "no-stress-marks",
+  "check": {
+   "dur": 2.56,
+   "segments": 3,
+   "last_seg": 1.51,
+   "gap_before_last": 0.14,
+   "tail_after": 0.14,
+   "tail_fail": false,
+   "lufs": "-20.4"
+  },
+  "fix": "text rewritten by Galina (note on unit 21 line 9), sent with no stress marks"
+ },
+ {
+  "unit": 21,
+  "line": 9,
+  "role": "mama",
+  "lang": "ru",
+  "text": "Спасибо, Миша! Тима, не волнуйся! Я пою громко!",
+  "previous_text": "Мама, ты поёшь отлично!",
+  "voice_id": "PZhi1QpQl0Z9H9WfRfYS",
+  "model": "eleven_v4_turbo",
+  "stability": 0.5,
+  "seed": 316155469,
+  "request_id": "eGcSsfLQmEMIIngz5dW6",
+  "file": "audio/u21_09.mp3",
+  "date": "2026-11-27",
+  "processing": "",
+  "trial": "no-stress-marks",
+  "check": {
+   "dur": 5.28,
+   "segments": 4,
+   "last_seg": 1.4,
+   "gap_before_last": 0.36,
+   "tail_after": 0.12,
+   "tail_fail": false,
+   "lufs": "-19.9"
+  },
+  "fix": "text rewritten by Galina (note on unit 21 line 9), sent with no stress marks"
+ },
+ {
+  "unit": 25,
+  "line": 8,
+  "role": "tima",
+  "lang": "ru",
+  "text": "Миша, я люблю... марки!",
+  "previous_text": "Да! Я танцую и играю в видеоигры.",
+  "voice_id": "drOVtcvHhJKNEXv5h1l5",
+  "model": "eleven_v4_turbo",
+  "stability": 0.45,
+  "seed": 653962030,
+  "request_id": "zgBkFo6DFE7L7TANiHNi",
+  "file": "audio/u25_08.mp3",
+  "date": "2026-11-27",
+  "processing": "+3 semitones asetrate",
+  "trial": "no-stress-marks",
+  "check": {
+   "dur": 2.86,
+   "segments": 2,
+   "last_seg": 0.8,
+   "gap_before_last": 0.23,
+   "tail_after": 0.07,
+   "tail_fail": false,
+   "lufs": "-19.4"
+  },
+  "fix": "ellipsis before last word"
+ },
+ {
+  "unit": 28,
+  "line": 8,
+  "role": "mama",
+  "lang": "ru",
+  "text": "Миша, какой красивый велосипед!",
+  "previous_text": "Спасибо! А ты весёлый!",
+  "voice_id": "PZhi1QpQl0Z9H9WfRfYS",
+  "model": "eleven_v4_turbo",
+  "stability": 0.5,
+  "seed": 527388819,
+  "request_id": "9lR2tU7PpoW6PbLMzNhG",
+  "file": "audio/u28_08.mp3",
+  "date": "2026-11-27",
+  "processing": "",
+  "trial": "no-stress-marks",
+  "check": {
+   "dur": 3.2,
+   "segments": 3,
+   "last_seg": 1.9,
+   "gap_before_last": 0.14,
+   "tail_after": 0.12,
+   "tail_fail": false,
+   "lufs": "-20.3"
+  },
+  "fix": "new text, no marks"
  }
 ]

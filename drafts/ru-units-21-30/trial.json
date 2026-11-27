@@ -1,0 +1,43 @@
+[
+ {
+  "unit": 22,
+  "line": 5,
+  "problem": "wrong emphasis (on рюкзак, should be on здесь)",
+  "step": "ellipsis before last word",
+  "chars": 23,
+  "date": "2026-11-26",
+  "wasted_take_chars": 20
+ },
+ {
+  "unit": 21,
+  "line": 8,
+  "problem": "text rewritten (flow of lines 8-9)",
+  "step": "new text, no marks",
+  "chars": 23,
+  "date": "2026-11-26"
+ },
+ {
+  "unit": 21,
+  "line": 9,
+  "problem": "text rewritten (flow of lines 8-9)",
+  "step": "new text, no marks",
+  "chars": 47,
+  "date": "2026-11-26"
+ },
+ {
+  "unit": 25,
+  "line": 8,
+  "problem": "wrong emphasis (on люблю, should be on марки)",
+  "step": "ellipsis before last word",
+  "chars": 23,
+  "date": "2026-11-27"
+ },
+ {
+  "unit": 28,
+  "line": 8,
+  "problem": "text replaced (Galina: line did not fit the story)",
+  "step": "new text, no marks",
+  "chars": 31,
+  "date": "2026-11-27"
+ }
+]

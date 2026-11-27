@@ -18,11 +18,11 @@ U[21] = dict(title="Music", icon="🎵", storyTitle="The forest concert", doneLi
   ("q","What does Misha play?",["guitar","piano","nothing"],0),
   ("tima","На пиани`но? Хорошо`!","The piano? OK!"),("misha","А кто поёт?","And who sings?"),("mama","Я пою`. Э`то моя` пе`сня.","I sing. This is my song."),
   ("q","Who sings at the concert?",["Mom","Tima","Misha"],0),
-  ("tima","Ми`ша, ти`хо! Ма`ма поёт.","Misha, quiet! Mom is singing."),("misha","Хорошо`. Ма`ма поёт отли`чно!","OK. Mom sings great!"),
-  ("mama","Спаси`бо! А я пою` гро`мко!","Thank you! And I sing loudly!"),
+  ("tima","Ми`ша, ти`хо! Ма`ма поёт.","Misha, quiet! Mom is singing."),("misha","Ма`ма, ты поёшь отли`чно!","Mom, you sing great!"),
+  ("mama","Спаси`бо, Ми`ша! Ти`ма, не волну`йся! Я пою` гро`мко!","Thank you, Misha! Tima, don't worry! I sing loudly!"),
   ("q","How do you say “I play the guitar”?",["Я игра`ю на гита`ре.","Я пою` на гита`ре.","Па`па игра`ет на гита`ре."],0)],
  chat=[("l","Ты лю`бишь му`зыку?","Do you like music?"),("r","Да! Я игра`ю на гита`ре. А ты?","Yes! I play the guitar. And you?"),("l","Я пою` до`ма.","I sing at home."),("r","Отли`чно!","Great!")],
- tips=["«Игра`ть на гита`ре» = to play the guitar. Russian says “on the guitar”: «на».","«Пою`, поёшь, поёт»: the stress jumps, and «ё» is always stressed."],
+ tips=["«Игра`ть на гита`ре» = to play the guitar. Russian says “on the guitar”: «на».","«Пою`, поёшь, поёт»: the stress jumps, and «ё» is always stressed.","«Не волну`йся!» = Don't worry! You say it to a friend (ты). To an adult you say «Не волну`йтесь!»"],
  qa=[("Ты лю`бишь му`зыку?","Say: yes, I like music","🎵","Да, я люблю` му`зыку."),("Ты поёшь до`ма?","Say: yes, I sing at home","🎤","Да, я пою` до`ма."),
   ("Па`па игра`ет на гита`ре?","Say: yes, Dad plays the guitar","🎸","Да, па`па игра`ет на гита`ре."),("Ты игра`ешь на пиани`но?","Say: no, I play the guitar","🎹","Нет, я игра`ю на гита`ре."),
   ("Ма`ма поёт гро`мко?","Say: no, Mom sings quietly","🤫","Нет, ма`ма поёт ти`хо."),("Что сего`дня?","Say: there's a concert today","🎪","Сего`дня конце`рт.")])
@@ -83,7 +83,7 @@ U[24] = dict(title="Where are you going?", icon="🚌", storyTitle="To the stadi
  story=[("misha","Ти`ма, куда` ты идёшь?","Tima, where are you going?"),("tima","Я иду` в магази`н. А ты?","I'm going to the store. And you?"),
   ("misha","Я иду` на стадио`н. Па`па там.","I'm going to the stadium. Dad is there."),("q","Where is Misha going?",["to the stadium","to the store","home"],0),
   ("tima","На стадио`н? Я то`же иду` на стадио`н!","To the stadium? I'm going to the stadium too!"),("misha","Отли`чно! Ты идёшь пешко`м?","Great! Are you walking?"),
-  ("tima","Нет, на авто`бусе.","No, by bus."),("misha","Хорошо`. Вот авто`бус!","OK. Here's the bus!"),
+  ("tima","Нет, на авто`бусе.","No, I'm taking the bus."),("misha","Хорошо`. Вот авто`бус!","OK. Here's the bus!"),
   ("tima","Куда` идёт авто`бус?","Where is the bus going?"),("misha","Авто`бус идёт на стадио`н.","The bus is going to the stadium."),
   ("q","How does Tima go?",["by bus","on foot","by bike"],0),
   ("papa","Ми`ша, Ти`ма! Вот я!","Misha, Tima! Here I am!"),("q","How do you say “I'm going home”?",["Я иду` домо`й.","Я иду` в шко`лу.","Ты идёшь домо`й?"],0)],
@@ -172,7 +172,7 @@ U[28] = dict(title="Describing things", icon="🌈", storyTitle="My family and m
   ("tima","А э`то твой велосипе`д?","And is this your bike?"),("misha","Да, э`то мой но`вый велосипе`д. Бы`стрый!","Yes, it's my new bike. Fast!"),
   ("tima","Ми`ша, ты у`мный!","Misha, you're smart!"),("misha","А ты весёлый!","And you're cheerful!"),
   ("q","Is Misha's bike old?",["No, it's new","Yes","Maybe"],0),
-  ("mama","Ми`ша, вот краси`вая су`мка!","Misha, here's a beautiful bag!"),("misha","Ма`ма, ты до`брая!","Mom, you're kind!"),
+  ("mama","Ми`ша, како`й краси`вый велосипе`д!","Misha, what a beautiful bike!"),("misha","Ма`ма, ты до`брая!","Mom, you're kind!"),
   ("q","How do you say “Grandma is kind”?",["Ба`бушка до`брая.","Де`душка до`брый.","Ба`бушка ста`рая."],0)],
  chat=[("l","Како`й твой де`душка?","What is your grandpa like?"),("r","Он ста`рый и весёлый. А твоя` ба`бушка?","He is old and cheerful. And your grandma?"),("l","Ба`бушка до`брая и у`мная.","Grandma is kind and smart."),("r","Отли`чно!","Great!")],
  tips=["Describing words match the thing: boys «-ый» (до`брый па`па), girls «-ая» (до`брая ма`ма).","«Ста`рый» (old) is the opposite of «но`вый» (new)."],
@@ -256,7 +256,7 @@ U[28]['story']=[("misha","Э`то моя` ба`бушка. Ба`бушка до`
  ("tima","А э`то твой велосипе`д?","And is this your bike?"),("misha","Да, э`то мой но`вый велосипе`д. Бы`стрый!","Yes, it's my new bike. Fast!"),
  ("tima","Ми`ша, ты у`мный!","Misha, you're smart!"),("misha","Спаси`бо! А ты весёлый!","Thanks! And you're cheerful!"),
  ("q","Is Misha's bike old?",["No, it's new","Yes","Maybe"],0),
- ("mama","Ми`ша, вот краси`вая су`мка!","Misha, here's a beautiful bag!"),("misha","Спаси`бо, ма`ма!","Thank you, Mom!"),
+ ("mama","Ми`ша, како`й краси`вый велосипе`д!","Misha, what a beautiful bike!"),("misha","Спаси`бо, ма`ма!","Thank you, Mom!"),
  ("q","How do you say “Grandma is kind”?",["Ба`бушка до`брая.","Де`душка до`брый.","Ба`бушка ста`рая."],0)]
 U[28]['sentences']=[(("Мой де`душка у`мный и весёлый.","My grandpa is smart and cheerful.",1) if 'ста`рый, а я' in s[0] else s) for s in U[28]['sentences']]
 U[28]['chat']=[("l","Како`й твой де`душка?","What is your grandpa like?"),("r","Он у`мный и весёлый. А твоя` ба`бушка?","He is smart and cheerful. And your grandma?"),("l","Ба`бушка до`брая и у`мная.","Grandma is kind and smart."),("r","Отли`чно!","Great!")]

@@ -1,0 +1,67 @@
+# mode: draw | reuse | none ;  (idea, conflict note, existing-gloss for thumbnails)
+P={}
+def S(i,mode,idea,conf='',ex=()): P[i]=(mode,idea,conf,tuple(ex))
+# 21 Music
+S('muzyka','draw','Colorful musical notes floating in the air','Unit 13 already has «music» as headphones (emoji)')
+S('pyesnya','draw','One big music note inside a speech bubble','Close to «music»: keep notes in a bubble vs floating notes')
+S('pyet','draw','Misha singing, mouth open, a few notes')
+S('payu','reuse','Same picture as «петь» (Misha singing)','Same art as «to sing»; they should not be answer choices together')
+S('payosh','draw','Pointing hand at the viewer + notes (the «you» picture style)')
+S('payot','draw','Tima singing')
+S('gitara','draw','Acoustic guitar alone')
+S('na_gitarye','draw','Misha playing the guitar')
+S('pianino','draw','Upright piano alone')
+S('gromko','draw','Big loudspeaker with sound waves')
+S('tikho','draw','Misha with a finger on his lips')
+S('kontsert','draw','Small stage with curtain and microphone')
+# 22 Questions
+for i in ['kogda','pachemu','patamu_shto','kak','chey','chya','chyo']: S(i,'none','Cannot be drawn clearly (question word)')
+S('vapros','draw','Misha raising his hand with a «?» above','Unit 1 «what / who / where» may also show «?»; here it is a raised hand',('what','who'))
+S('atvyet','draw','Speech bubble with a big «!»','Not the same as «yes»',('yes',))
+S('znayu','draw','Misha pointing at his head, light bulb')
+S('znayesh','draw','Pointing hand at the viewer + light bulb')
+S('nye_znayu','draw','Misha shrugging','Unit 13 «he / she does» is the 🤷 emoji',())
+# 23 In town
+S('magazin','draw','Small shop with awning'); S('v_magazinye','draw','Misha inside the shop, shelves behind him')
+S('ulitsa','draw','Street with road and houses'); S('na_ulitsye','draw','Misha standing on the street')
+S('kafye','draw','Café front with tables'); S('v_kafye','draw','Misha at a café table')
+S('muzyey','draw','Museum with columns','Similar building style to «school»',('school',)); S('v_muzyeye','draw','Misha looking at a framed painting')
+S('kino','draw','Movie theater screen with popcorn'); S('v_kino','draw','Misha holding popcorn, seat')
+S('biblioteka','draw','Bookshelves'); S('v_bibliotyekye','draw','Misha reading between bookshelves','Close to «to read»',('to read',))
+# 24 Going
+S('kuda','none','Cannot be drawn clearly (question word)')
+S('idu','draw','Misha walking','Unit 13 «I\'m going for a walk» is the 🚶 emoji'); S('idyosh','draw','Pointing hand + walking feet'); S('idyot','draw','Tima walking')
+S('v_magazin','draw','Misha walking toward the shop, big arrow','Differs from «в магазине» (Misha inside)',()); S('v_shkolu','draw','Misha walking toward the school, big arrow','Differs from «at school»',('school','at school'))
+S('v_biblioteku','draw','Misha walking toward the library, big arrow'); S('na_stadion','draw','Stadium with arrow and Misha')
+S('damoy','draw','Misha walking toward his house, big arrow','Differs from «at home»',('at home',)); S('pyeshkom','draw','Two sneakers walking')
+S('avtobus','draw','City bus'); S('na_avtobusye','draw','Misha at a bus window')
+# 25 Hobbies
+S('khobbi','draw','Box with paintbrush, ball and camera'); S('tantsevat','draw','Misha dancing'); S('tantsuyu','reuse','Same picture as «танцевать»','Same art as «to dance»'); S('tantsuyesh','draw','Pointing hand + dancing')
+S('fotografirovat','draw','Misha holding a camera'); S('fotografiruyu','reuse','Same picture as «фотографировать»'); S('sabirat','draw','Misha with a jar of collected things'); S('sabirayu','reuse','Same picture as «собирать»'); S('sabirayesh','draw','Pointing hand + jar')
+S('markee','draw','Three postage stamps'); S('kamni','draw','Pile of rocks'); S('videoigry','draw','Misha with a game controller, TV','Units 11–20 «I play 🎮 / you play 🕹️» are emoji',())
+# 26 Yesterday
+for i in ['vchyera','byl','byla','byli','chital','chitala','smatryel','smatryela','igral','igrala','gulyal','gulyala']:
+    S(i,'none','A picture cannot show past tense; it would look like the present-tense picture','Would clash with «читаю, смотрю, играю, гуляю» if both were answer choices')
+# 27 Trip
+S('payezdka','draw','Suitcase with a ticket'); S('poyezd','draw','Train'); S('mashina','draw','Car'); S('samalyot','draw','Airplane')
+S('na_poyezdye','draw','Misha at a train window'); S('na_mashinye','draw','Misha at a car window'); S('na_samalyotye','draw','Misha at a plane window')
+for i in ['yedu','yedyesh','yedyet']: S(i,'none','Would look like «на машине / на поезде»; the vehicle already has a picture')
+S('morye','draw','Sea waves with a sun'); S('na_morye','draw','Misha on a beach','Unit 15 «in summer» is the 🏖️ emoji')
+# 28 Describing
+S('staryy','draw','Old cracked phone (he-word: phone)'); S('staraya','draw','Old patched bag (she-word: bag)')
+S('krasivyy','draw','Shiny phone with sparkles'); S('krasivaya','draw','Bag with sparkles')
+S('dobryy','draw','Misha giving a gift'); S('dobraya','draw','Mom giving a hug')
+S('umnyy','draw','Misha with glasses and a book'); S('umnaya','draw','Mom with glasses and a book')
+S('vesyolyy','draw','Misha laughing'); S('vesyolaya','draw','Mom laughing')
+S('bystryy','draw','Bike with speed lines','Existing «bike» is an emoji',()); S('bystraya','draw','Horse with speed lines','Existing picture: horse',('horse',))
+# 29 School
+S('urok','draw','Notebook, pencil and a clock','Close to «класс»'); S('na_uroke','draw','Misha raising a hand at his desk')
+S('uchityel','draw','Man teacher at a board'); S('uchityelnitsa','draw','Woman teacher at a board')
+S('klass','draw','Classroom with desks','Existing «school» picture',('school','at school')); S('v_klassye','draw','Misha sitting at a desk')
+S('matyematika','draw','Ruler, protractor and a triangle','Unit 8 «plus» is already a math picture',('plus',)); S('pyeryemyena','draw','School bell')
+S('na_pyeryemyenye','draw','Misha running outside','Close to soccer pictures',('soccer',)); S('pishu','draw','Misha writing'); S('pishyesh','draw','Pointing hand + pencil'); S('pishyet','draw','Tima writing')
+# 30 Seasons
+S('zima','draw','Snowy tree'); S('vyesna','draw','Flowers and a rain cloud'); S('lyeto','draw','Big sun'); S('osyen','draw','Falling leaves')
+S('vyesnoy','reuse','Same picture as «весна»','Same art as the season; not together as answer choices'); S('osyenyu','reuse','Same picture as «осень»')
+S('myesyats','draw','One calendar page'); S('dyen_razhdyeniya','draw','Gift box with balloons','Existing «cake» picture; avoid candles',('cake',))
+for i in ['v_mae','v_iyule','v_dyekabrye','v_yanvarye']: S(i,'none','A month cannot be drawn without writing its name')
