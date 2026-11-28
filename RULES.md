@@ -46,6 +46,8 @@ PHRASE RULE (Galina Nov 27 2026): every useful or common phrase used in a story 
 
 Note: units 1-20 English was never audited against this rule (offered to Galina Nov 26 2026, no decision yet).
 
+- ENGLISH CHECK OF RUSSIAN UNITS 1-20 DONE (Galina approved all, Nov 28 2026, v16.11.0): color/favorite/Colors, yummy (not tasty) for «вкусно», closet (not wardrobe), couch (not sofa), oatmeal for «каша», OK (not okay), «What’s your name?», idёт = "falling (snow, rain)", no "(at me)/(at you)" in «у меня/у тебя» glosses, curly apostrophes (’) everywhere. STILL OPEN: the Spanish course English text (units 9, 14, 18 and tap-translations) still has colour/favourite/sofa; do it in the Spanish chat.
+
 ## 3. Releases, pushes and reports
 
 - After every update, push the new version to GitHub Pages (repo pasharussia77/misha-app, branch main, keep .nojekyll). The GitHub token is pasted per chat or kept in Galina's hand-off note by her explicit choice; never commit it; mask it in chat output (sed); remind her to revoke it if a phone is lost or the note is shared.
@@ -138,6 +140,11 @@ Recorded Nov 26 2026 from the earlier picture-redesign chats (how the existing ~
 - 16.4 (letters/sounds fixes, 11 items) released Nov 8 2026, 16.4.1 (Nov 9: one sound per tap, no card blink, silent letters show 🤫). Later versions up to 16.9.27 (Nov 23 2026) released; no longer open plans.
 - To-do: after the workshop (custom orders) is built, walk Galina through ntfy phone notification setup together (install ntfy, subscribe to private channel, enter it in Grown-up settings on each phone); new orders only. Her channel is Mishaling2026.
 - Unit plan: 100+ units; Duolingo-style goals as a guide, adapted for kids; Russian units 21-30 drafted Nov 26 2026 (text approved by Galina pending her fresh reread; audio and pictures not yet made).
+
+- WEAK WORDS (Galina, Nov 28 2026, v16.11.0): a session takes 8 words (WK_N). At most 2 may be "pronunciation-weak" (answered right and remembered, but pronunciation score under 75; needs Microsoft scoring). A pronunciation-weak word that has appeared in 2 sessions rests for the next 2 sessions (S.wkPron, S.wkSess). Forgotten or missed words (wkFirst, mistakes, accuracy under 70, memory under 60) skip the cooldown and come first. The matching game runs in groups of 4.
+- SPEAKING-QUESTION HINTS: the hint must say the whole answer ("Say: yes, he’s my brother"), never just "Say yes".
+- PICTURE CHOICE (pickPicEx): always at least 3 options; early lessons top up from ALLWORDS with pictures, else a listening question.
+- MICROSOFT 429 = "too many requests", not necessarily the monthly allowance. Scoring retries once after 3 s; the message differs for scoring and for voice. One free key is shared by all devices; the Settings meter counts only the device it is on. Family emoji: use 👨‍👩‍👦, never 👪 (draws two men on Samsung).
 
 ## 8. Open trials
 
