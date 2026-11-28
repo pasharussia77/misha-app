@@ -7720,7 +7720,7 @@ const QPOOL = [
   {id:"practice1", icon:"🏋️", label:"Finish a practice session", target:1, m:"practice", g:2},
   {id:"listen8", icon:"🎧", label:"Get 8 listening exercises right", target:8, m:"listen", g:2},
   {id:"mm1", icon:"⏲️", label:"Play Match Madness", target:1, m:"mm", g:2},
-  {id:"weak5", icon:"💪", label:"Practise your 5 weakest words", target:1, m:"weak", g:9}
+  {id:"weak5", icon:"💪", label:"Practise your 8 weakest words", target:1, m:"weak", g:9}
 ];
 function seeded(str){ let h = fnv(str); return () => { h = Math.imul(h ^ (h >>> 15), 2246822507) >>> 0; h = Math.imul(h ^ (h >>> 13), 3266489909) >>> 0; return (h >>> 0) / 4294967296; }; }
 function questsToday(){
@@ -7838,7 +7838,7 @@ function practiceScreen(){
     <div class="pheader">${chip("teach")}<div><h2>Practice</h2><p>Short sessions to make it stick.</p></div></div>
     <div style="padding:16px;display:grid;gap:12px">
       <button class="prow" data-p="mm"><span class="tx"><b>⏲️ Match Madness</b><small>60 seconds, beat your best: ${S.mmBest||0}</small></span><span class="ic" style="background:#FFE7B8">⚡</span></button>
-      <button class="prow" data-p="weak"><span class="tx"><b>💪 Weak words</b><small>${learnedWords().length >= 3 ? "Learn your 5 weakest words, then say them from memory" : "Learn 3 words first"}</small></span><span class="ic" style="background:#FFE3D6">💪</span></button>
+      <button class="prow" data-p="weak"><span class="tx"><b>💪 Weak words</b><small>${learnedWords().length >= 3 ? "Learn your 8 weakest words, then say them from memory" : "Learn 3 words first"}</small></span><span class="ic" style="background:#FFE3D6">💪</span></button>
       <button class="prow" data-p="review"><span class="tx"><b>Smart review</b><small>${(() => { const d = dueCount(); return d ? `${d} item${d>1?"s are":" is"} fading. Bring ${d>1?"them":"it"} back!` : "Everything is fresh. Review anyway?"; })()}</small></span><span class="ic" style="background:#FFF1C9">🧠${dueCount()?`<span class="badge">${dueCount()}</span>`:""}</span></button>
       <button class="prow" data-p="mistakes"><span class="tx"><b>Mistakes</b><small>${mist.length ? `Fix ${mist.length} recent mistake${mist.length>1?"s":""}` : "No mistakes to fix. Great!"}</small></span><span class="ic" style="background:#FFE6C7">↻${mist.length?`<span class="badge">${mist.length}</span>`:""}</span></button>
       <button class="prow" data-p="words"><span class="tx"><b>Words</b><small>${words.length} of ${ALLWORDS.length} words learned</small></span><span class="ic" style="background:var(--chip)">🗂️</span></button>
@@ -7891,25 +7891,52 @@ function startPractice(kind){
   if (!q.length){ toast("Nothing to practise yet."); return; }
   runQueue(shuffle(q).map(e => ({...e, practice:true})), {kind:"practice", practice:kind});
 }
-/* ---------- 💪 Weak words: learn 5 words, then say them from memory until each one sticks ---------- */
-function weakestWords(n=5){
+/* ---------- 💪 Weak words: learn 8 words, then say them from memory until each one sticks ---------- */
+const WK_N = 8, WK_PRON_MAX = 2;
+function weakestWords(n=WK_N){
   const words = learnedWords(); if (!words.length) return [];
+  const first = S.wkFirst||[], mist = S.mistakes||[], sess = (S.wkSess||0) + 1, log = S.wkPron||{};
+  const info = w => { const st = wordStats(S, w), sc = st && st.score != null ? st.score : 50;
+    const memWeak = first.includes(w.id) || mist.includes("w:" + w.id) || (st && ((st.accuracy != null && st.accuracy < 70) || st.memory < 60));
+    /* pronunciation-weak = known and remembered, but the sound is still not right */
+    const pronWeak = !memWeak && st && st.pron != null && st.pron < 75;
+    return {w, pronWeak, rank:(first.includes(w.id) ? -1000 : 0) + (mist.includes("w:" + w.id) ? -300 : 0) + sc}; };
+  const all = words.map(info).sort((a,b) => a.rank - b.rank);
+  const picked = [], held = []; let pron = 0;
+  for (const x of all){
+    if (picked.length >= n) break;
+    if (x.pronWeak){
+      const resting = (log[x.w.id]||{}).until >= sess;       /* on its 2-session break */
+      if (resting || pron >= WK_PRON_MAX){ held.push(x); continue; }
+      pron++;
+    }
+    picked.push(x);
+  }
+  for (const x of held){ if (picked.length >= Math.min(3, words.length)) break; picked.push(x); }   /* tiny vocabulary: never fewer than 3 */
+  return picked.map(x => x.w);
+}
+/* a pronunciation-weak word that has had 2 sessions rests for the next 2 */
+function wkNoteSession(words){
+  S.wkSess = (S.wkSess||0) + 1; S.wkPron = S.wkPron||{};
   const first = S.wkFirst||[], mist = S.mistakes||[];
-  const rank = w => { const st = wordStats(S, w), sc = st && st.score != null ? st.score : 50;
-    return (first.includes(w.id) ? -1000 : 0) + (mist.includes("w:" + w.id) ? -300 : 0) + sc; };
-  return words.slice().sort((a,b) => rank(a) - rank(b)).slice(0, n);
+  words.forEach(w => { const st = wordStats(S, w);
+    const memWeak = first.includes(w.id) || mist.includes("w:" + w.id) || (st && ((st.accuracy != null && st.accuracy < 70) || st.memory < 60));
+    if (memWeak || !st || st.pron == null || st.pron >= 75) return;
+    const o = S.wkPron[w.id] = S.wkPron[w.id] || {n:0, until:0};
+    o.n++; if (o.n >= 2){ o.n = 0; o.until = S.wkSess + 2; } });
 }
 const wkRecall = (w, t) => speakEx(w.ru, w.en, "recall", {wk:{id:w.id, t}});
 function weakWorkout(){
-  const words = weakestWords(5);
+  const words = weakestWords();
   if (words.length < 3){ toast("Learn a few more words first, then come back!"); return; }
+  wkNoteSession(words);
   const q = [];
   words.forEach(w => { q.push({type:"intro", word:w, wk:{learn:true}}); q.push(speakEx(w.ru, w.en, "repeat", {wk:{learn:true}})); });
-  q.push({...matchEx(words), wk:{learn:true}});
+  for (let i = 0; i < words.length; i += 4) if (words.slice(i, i+4).length >= 2) q.push({...matchEx(words.slice(i, i+4)), wk:{learn:true}});
   q.push({type:"wround", r:2});
   L = Object.assign({level:0, n:0, queue:q, i:0, total:q.length, firstTry:0, graded:0, requeued:new Set(), start:Date.now(), storyShown:[], combo:0, pendingCombo:0, reviewShown:true},
     {kind:"practice", practice:"weak", wkWords:words.map(w => w.id), wkNext:[], wkOk:[], wkLater:[]});
-  splash(chip("teach"), "Round 1: let’s learn 5 words!", "Look, listen and say them. Then you’ll say them from memory.");
+  splash(chip("teach"), `Round 1: let’s learn ${words.length} words!`, "Look, listen and say them. Then you’ll say them from memory.");
   $("#go").onclick = showExercise;
 }
 /* called after each from-memory try */
