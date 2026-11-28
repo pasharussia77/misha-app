@@ -955,7 +955,7 @@ let WORDS = [
   {id:"net", ru:"нет", en:"no", tr:"nyet", pic:"<img class='wp' src='img/a7091149f2aa.webp' alt=''>"},
   {id:"zdr", ru:"здра́вствуйте", en:"hello (polite)", tr:"zdrastvuytye", pic:"<img class='wp' src='img/87b579766278.webp' alt=''>"},
   {id:"menya", ru:"меня́ зову́т", en:"my name is", tr:"minya zavut", pic:"<img class='wp' src='img/67899eb7e291.webp' alt=''>"},
-  {id:"kak", ru:"как тебя́ зову́т?", en:"what is your name?", tr:"kak tibya zavut?", pic:"<img class='wp' src='img/8c2710640c59.webp' alt=''>"}
+  {id:"kak", ru:"как тебя́ зову́т?", en:"what’s your name?", tr:"kak tibya zavut?", pic:"<img class='wp' src='img/8c2710640c59.webp' alt=''>"}
 ];
 let GROUPS = [["privet","mama","papa"],["eto","da","net"],["zdr","menya","kak"]];
 let SENTENCES = [
@@ -966,7 +966,7 @@ let SENTENCES = [
   {ru:"Да, это ма́ма.", en:"Yes, this is Mom.", set:0},
   {ru:"Нет, это па́па.", en:"No, this is Dad.", set:0},
   {ru:"Меня́ зову́т А́ня.", en:"My name is Anya.", set:1},
-  {ru:"Как тебя́ зову́т?", en:"What is your name?", set:1},
+  {ru:"Как тебя́ зову́т?", en:"What’s your name?", set:1},
   {ru:"Здра́вствуйте! Меня́ зову́т Ми́ша.", en:"Hello! My name is Misha.", set:1},
   {ru:"Это А́ня?", en:"Is this Anya?", set:1},
   {ru:"Да, это А́ня.", en:"Yes, this is Anya.", set:1},
@@ -975,7 +975,7 @@ let SENTENCES = [
 let BLANKABLE = ["ма́ма","па́па","э́то","да","нет","приве́т","зову́т","А́ня","Ми́ша"];
 let STORY = [
   {who:"tima", ru:"Приве́т!", en:"Hi!"},
-  {who:"misha", ru:"Приве́т! Меня́ зову́т Ми́ша. Как тебя́ зову́т?", en:"Hi! My name is Misha. What is your name?"},
+  {who:"misha", ru:"Приве́т! Меня́ зову́т Ми́ша. Как тебя́ зову́т?", en:"Hi! My name is Misha. What’s your name?"},
   {who:"tima", ru:"Меня́ зову́т Ти́ма.", en:"My name is Tima."},
   {q:"What is the hedgehog’s name?", options:["Ти́ма","Ми́ша","А́ня"], answer:0},
   {who:"misha", ru:"Это ма́ма.", en:"This is Mom."},
@@ -989,12 +989,12 @@ let STORY = [
 ];
 let GLOSS = {
   "привет":"hi", "мама":"mom", "папа":"dad", "это":"this is / this", "да":"yes", "нет":"no",
-  "здравствуйте":"hello (polite)", "меня":"me · «меня зовут» = my name is · «у меня» = I have (at me)", "зовут":"(they) call · «меня зовут» = my name is",
-  "как":"how / what", "тебя":"you · «как тебя зовут?» = what is your name? · «у тебя» = you have (at you)",
+  "здравствуйте":"hello (polite)", "меня":"me · «меня зовут» = my name is · «у меня» = I have", "зовут":"(they) call · «меня зовут» = my name is",
+  "как":"how / what", "тебя":"you · «как тебя зовут?» = what’s your name? · «у тебя» = you have",
   "что":"what (said «што»)", "кто":"who", "кот":"cat", "собака":"dog", "дом":"house", "книга":"book", "мяч":"ball",
   "телефон":"phone", "школа":"school", "и":"and", "не":"not",
   "хлеб":"bread", "сыр":"cheese", "сок":"juice", "чай":"tea", "молоко":"milk (said «малако»)", "яблоко":"apple",
-  "вкусно":"tasty!", "спасибо":"thank you", "я":"I", "ты":"you", "хочу":"I want", "хочешь":"you want", "ой":"oops!",
+  "вкусно":"yummy!", "спасибо":"thank you", "я":"I", "ты":"you", "хочу":"I want", "хочешь":"you want", "ой":"oops!",
   "мой":"my (he-words)", "моя":"my (she-words)", "мое":"my (it-words)", "твой":"your (he-words)", "твоя":"your (she-words)",
   "семья":"family", "брат":"brother", "сестра":"sister", "бабушка":"grandma", "дедушка":"grandpa", "друг":"friend (boy)", "подруга":"friend (girl)",
   "вот":"here is", "а":"and, but",
@@ -1002,20 +1002,20 @@ let GLOSS = {
   "корова":"cow", "лошадь":"horse", "большой":"big", "большая":"big (she-words)", "маленький":"small", "маленькая":"small (she-words)",
   "где":"where", "здесь":"here", "там":"there", "дома":"at home", "в":"in, at", "на":"on", "школе":"school · «в школе» = at school", "парк":"park",
   "парке":"park · «в парке» = in the park", "стол":"table", "столе":"table · «на столе» = on the table", "сумка":"bag", "сумке":"bag · «в сумке» = in the bag", "комната":"room",
-  "дела":"things · «как дела?» = how are you?", "хорошо":"good, fine", "отлично":"great", "нормально":"okay", "плохо":"bad", "тоже":"too, also",
+  "дела":"things · «как дела?» = how are you?", "хорошо":"good, fine", "отлично":"great", "нормально":"OK", "плохо":"bad", "тоже":"too, also",
   "пока":"bye", "до":"«до свидания» = goodbye", "свидания":"«до свидания» = goodbye", "доброе":"good · «доброе утро» = good morning", "утро":"morning",
   "спокойной":"«спокойной ночи» = good night", "ночи":"«спокойной ночи» = good night", "извини":"sorry",
   "один":"one", "два":"two", "три":"three", "четыре":"four", "пять":"five", "шесть":"six", "семь":"seven", "восемь":"eight", "девять":"nine", "десять":"ten",
   "плюс":"plus", "сколько":"how many · «сколько тебе лет?» = how old are you?", "тебе":"(to) you · «сколько тебе лет?» = how old are you?", "мне":"(to) me · «мне … лет» = I’m … years old", "лет":"years",
   "красный":"red", "красная":"red (she-words)", "красное":"red (it-words)", "синий":"blue", "синяя":"blue (she-words)", "зеленый":"green", "зеленое":"green (it-words)",
   "желтый":"yellow", "белый":"white", "белая":"white (she-words)", "черный":"black", "розовый":"pink", "розовая":"pink (she-words)", "оранжевый":"orange", "оранжевая":"orange (she-words)",
-  "цвет":"colour", "любимый":"favourite", "какого":"«какого цвета?» = what colour?", "цвета":"«какого цвета?» = what colour?",
+  "цвет":"color", "любимый":"favorite", "какого":"«какого цвета?» = what color?", "цвета":"«какого цвета?» = what color?",
   "люблю":"I love, I like", "любишь":"you love, you like", "любит":"he / she loves", "очень":"very much", "играть":"to play", "читать":"to read", "рисовать":"to draw",
   "шоколад":"chocolate", "мороженое":"ice cream", "торт":"cake", "футбол":"soccer", "мультики":"cartoons", "маму":"mom (after «люблю»)", "папу":"dad (after «люблю»)",
   "аня":"Anya (a girl’s name)", "миша":"Misha (a boy’s name)", "тима":"Tima (a boy’s name)",
-  "у":"at · «у меня́ есть» = I have", "него":"«у него» = he has", "нее":"«у неё» = she has", "есть":"there is, (I) have", "ручка":"pen", "карандаш":"pencil", "тетрадь":"notebook", "рюкзак":"backpack", "велосипед":"bike", "компьютер":"computer", "живу":"I live", "живешь":"you live", "живет":"he / she lives", "америке":"«в Америке» = in America", "россии":"«в России» = in Russia", "город":"city, town", "говорю":"I speak", "говоришь":"you speak", "по-русски":"(in) Russian", "по-английски":"(in) English", "немного":"a little", "говорит":"he / she speaks", "мы":"we", "звонит":"is calling (on the phone)", "делаю":"I do, I'm doing", "делаешь":"you do, you're doing", "делает":"he / she does", "сейчас":"now", "гуляю":"I'm going for a walk", "читаю":"I read, I'm reading", "слушаю":"I listen", "музыку":"music (after «слу́шаю»)", "смотрю":"I watch", "телевизор":"TV", "сплю":"I'm sleeping", "спит":"he / she is sleeping", "гуляет":"he / she goes for a walk", "читает":"he / she reads", "слушает":"he / she listens", "смотришь":"you watch", "смотрит":"he / she watches", "спишь":"you're sleeping", "читаешь":"you read", "слушаешь":"you listen", "гуляешь":"you go for a walk", "сегодня":"today", "завтра":"tomorrow", "день":"day", "какой":"which, what", "понедельник":"Monday", "вторник":"Tuesday", "среда":"Wednesday", "четверг":"Thursday", "пятница":"Friday", "суббота":"Saturday", "воскресенье":"Sunday", "погода":"weather", "какая":"which, what (she-words)", "холодно":"it's cold", "тепло":"it's warm", "жарко":"it's hot", "солнце":"sun", "снег":"snow", "дождь":"rain", "идет":"is falling, is going", "зимой":"in winter", "летом":"in summer", "зима":"winter", "лето":"summer", "солнечно":"it's sunny", "шапка":"hat", "куртка":"jacket", "футболка":"T-shirt", "шарф":"scarf", "кроссовки":"sneakers", "джинсы":"jeans", "платье":"dress", "новый":"new (he-words)", "новая":"new (she-words)", "надень":"put on!", "шапку":"hat (after «наде́нь»)", "куртку":"jacket (after «наде́нь»)", "новые":"new (plural)", "мои":"my (plural)", "твои":"your (plural)", "новое":"new (it-words)", "футболку":"T-shirt (after «наде́нь»)", "голова":"head", "рука":"hand, arm", "нога":"leg, foot", "живот":"tummy", "ухо":"ear", "болит":"hurts", "больно":"it hurts", "врач":"doctor", "устал":"tired (boy)", "устала":"tired (girl)", "кухня":"kitchen", "кухне":"«на кухне» = in the kitchen", "ванная":"bathroom", "окно":"window", "дверь":"door", "диван":"sofa", "диване":"«на диване» = on the sofa", "кровать":"bed", "кровати":"«на кровати» = on the bed", "шкаф":"wardrobe, closet", "шкафу":"«в шкафу» = in the wardrobe", "лампа":"lamp", "ванной":"«в ва́нной» = in the bathroom", "завтрак":"breakfast · «на завтрак» = for breakfast", "обед":"lunch · «на обе́д» = for lunch", "ужин":"dinner · «на у́жин» = for dinner", "каша":"porridge", "суп":"soup", "блины":"pancakes", "мясо":"meat", "картошка":"potatoes", "ем":"I eat", "ешь":"you eat", "ест":"he / she eats", "кашу":"porridge (after «ем»)", "картошку":"potatoes (after «ем»)", "спорт":"sport", "умею":"I can, I know how", "умеешь":"you can", "плавать":"to swim", "бегать":"to run", "кататься":"to ride, to skate", "велосипеде":"«на велосипеде» = on a bike", "коньках":"«на коньках» = on skates", "играю":"I play", "играешь":"you play", "хоккей":"«в хоккей» = (play) hockey", "шахматы":"«в шахматы» = (play) chess", "умеет":"he / she can", "играет":"he / she plays"
+  "у":"at · «у меня́ есть» = I have", "него":"«у него» = he has", "нее":"«у неё» = she has", "есть":"there is, (I) have", "ручка":"pen", "карандаш":"pencil", "тетрадь":"notebook", "рюкзак":"backpack", "велосипед":"bike", "компьютер":"computer", "живу":"I live", "живешь":"you live", "живет":"he / she lives", "америке":"«в Америке» = in America", "россии":"«в России» = in Russia", "город":"city, town", "говорю":"I speak", "говоришь":"you speak", "по-русски":"(in) Russian", "по-английски":"(in) English", "немного":"a little", "говорит":"he / she speaks", "мы":"we", "звонит":"is calling (on the phone)", "делаю":"I do, I’m doing", "делаешь":"you do, you’re doing", "делает":"he / she does", "сейчас":"now", "гуляю":"I’m going for a walk", "читаю":"I read, I’m reading", "слушаю":"I listen", "музыку":"music (after «слу́шаю»)", "смотрю":"I watch", "телевизор":"TV", "сплю":"I’m sleeping", "спит":"he / she is sleeping", "гуляет":"he / she goes for a walk", "читает":"he / she reads", "слушает":"he / she listens", "смотришь":"you watch", "смотрит":"he / she watches", "спишь":"you’re sleeping", "читаешь":"you read", "слушаешь":"you listen", "гуляешь":"you go for a walk", "сегодня":"today", "завтра":"tomorrow", "день":"day", "какой":"which, what", "понедельник":"Monday", "вторник":"Tuesday", "среда":"Wednesday", "четверг":"Thursday", "пятница":"Friday", "суббота":"Saturday", "воскресенье":"Sunday", "погода":"weather", "какая":"which, what (she-words)", "холодно":"it’s cold", "тепло":"it’s warm", "жарко":"it’s hot", "солнце":"sun", "снег":"snow", "дождь":"rain", "идет":"falling (snow, rain)", "зимой":"in winter", "летом":"in summer", "зима":"winter", "лето":"summer", "солнечно":"it’s sunny", "шапка":"hat", "куртка":"jacket", "футболка":"T-shirt", "шарф":"scarf", "кроссовки":"sneakers", "джинсы":"jeans", "платье":"dress", "новый":"new (he-words)", "новая":"new (she-words)", "надень":"put on!", "шапку":"hat (after «наде́нь»)", "куртку":"jacket (after «наде́нь»)", "новые":"new (plural)", "мои":"my (plural)", "твои":"your (plural)", "новое":"new (it-words)", "футболку":"T-shirt (after «наде́нь»)", "голова":"head", "рука":"hand, arm", "нога":"leg, foot", "живот":"tummy", "ухо":"ear", "болит":"hurts", "больно":"it hurts", "врач":"doctor", "устал":"tired (boy)", "устала":"tired (girl)", "кухня":"kitchen", "кухне":"«на кухне» = in the kitchen", "ванная":"bathroom", "окно":"window", "дверь":"door", "диван":"couch", "диване":"«на диване» = on the couch", "кровать":"bed", "кровати":"«на кровати» = on the bed", "шкаф":"closet", "шкафу":"«в шкафу» = in the closet", "лампа":"lamp", "ванной":"«в ва́нной» = in the bathroom", "завтрак":"breakfast · «на завтрак» = for breakfast", "обед":"lunch · «на обе́д» = for lunch", "ужин":"dinner · «на у́жин» = for dinner", "каша":"oatmeal", "суп":"soup", "блины":"pancakes", "мясо":"meat", "картошка":"potatoes", "ем":"I eat", "ешь":"you eat", "ест":"he / she eats", "кашу":"oatmeal (after «ем»)", "картошку":"potatoes (after «ем»)", "спорт":"sport", "умею":"I can, I know how", "умеешь":"you can", "плавать":"to swim", "бегать":"to run", "кататься":"to ride, to skate", "велосипеде":"«на велосипеде» = on a bike", "коньках":"«на коньках» = on skates", "играю":"I play", "играешь":"you play", "хоккей":"«в хоккей» = (play) hockey", "шахматы":"«в шахматы» = (play) chess", "умеет":"he / she can", "играет":"he / she plays"
 };
-Object.assign(GLOSS, {"концерт": "concert", "петь": "to sing", "гитаре": "«на гитаре» = (play) the guitar", "пианино": "piano", "поет": "he/she sings", "пою": "I sing", "песня": "song", "тихо": "quietly", "поешь": "you sing", "волнуйся": "«не волнуйся» = don’t worry", "громко": "loudly", "вопрос": "question", "извините": "excuse me / sorry (polite)", "чей": "whose (m.)", "знаю": "I know", "почему": "why", "потому": "«потому что» = because", "чья": "whose (f.)", "знаешь": "you know", "когда": "when", "чье": "whose (n.)", "ответ": "answer", "магазине": "«в магазине» = in the store", "музее": "«в музее» = in the museum", "кафе": "café", "улице": "«на улице» = outside, on the street", "кино": "movies, movie theater", "библиотеке": "«в библиотеке» = in the library", "магазин": "store", "улица": "street", "куда": "where to", "идешь": "you're going (on foot)", "иду": "I'm going (on foot)", "стадион": "«на стадион» = (go) to the stadium", "пешком": "on foot", "автобусе": "«на автобусе» = by bus", "автобус": "bus", "школу": "«в школу» = (go) to school", "домой": "(go) home", "библиотеку": "«в библиотеку» = (go) to the library", "хобби": "hobby", "фотографирую": "I take photos", "собираю": "I collect", "камни": "rocks", "танцуешь": "you dance", "танцую": "I dance", "видеоигры": "video games", "марки": "stamps", "собираешь": "you collect", "танцевать": "to dance", "фотографировать": "to take photos", "был": "was (he)", "вчера": "yesterday", "читал": "read (he)", "гулял": "went for a walk (he)", "смотрел": "watched (he)", "читала": "read (she)", "играл": "played (he)", "была": "was (she)", "смотрела": "watched (she)", "были": "were", "едешь": "you travel", "еду": "I travel, I ride", "море": "sea", "поезде": "«на поезде» = by train", "едет": "he/she travels", "машине": "«на машине» = by car", "поезд": "train", "машина": "car", "самолет": "airplane", "поездка": "trip", "добрая": "kind (f.)", "умный": "smart (m.)", "веселый": "cheerful, fun (m.)", "быстрый": "fast (m.)", "красивый": "beautiful (m.)", "он": "he", "умная": "smart (f.)", "старый": "old (m.)", "красивая": "beautiful (f.)", "быстрая": "fast (f.)", "старая": "old (f.)", "здравствуй": "hello (to a friend or a child)", "математика": "math", "пишешь": "you write", "пишу": "I write", "уроке": "«на уроке» = in class", "перемена": "recess", "перемене": "«на перемене» = at recess", "класс": "class, classroom", "классе": "«в классе» = in the classroom", "учитель": "teacher (man)", "учительница": "teacher (woman)", "пишет": "he/she writes", "урок": "lesson", "рождения": "«день рождения» = birthday", "мае": "«в мае» = in May", "весной": "in spring", "июле": "«в июле» = in July", "январе": "«в январе» = in January", "декабре": "«в декабре» = in December", "может": "«может быть» = can be", "быть": "«может быть» = can be", "осенью": "in fall", "весна": "spring", "осень": "fall", "месяц": "month"});
+Object.assign(GLOSS, {"концерт": "concert", "петь": "to sing", "гитаре": "«на гитаре» = (play) the guitar", "пианино": "piano", "поет": "he/she sings", "пою": "I sing", "песня": "song", "тихо": "quietly", "поешь": "you sing", "волнуйся": "«не волнуйся» = don’t worry", "громко": "loudly", "вопрос": "question", "извините": "excuse me / sorry (polite)", "чей": "whose (m.)", "знаю": "I know", "почему": "why", "потому": "«потому что» = because", "чья": "whose (f.)", "знаешь": "you know", "когда": "when", "чье": "whose (n.)", "ответ": "answer", "магазине": "«в магазине» = in the store", "музее": "«в музее» = in the museum", "кафе": "café", "улице": "«на улице» = outside, on the street", "кино": "movies, movie theater", "библиотеке": "«в библиотеке» = in the library", "магазин": "store", "улица": "street", "куда": "where to", "идешь": "you’re going (on foot)", "иду": "I’m going (on foot)", "стадион": "«на стадион» = (go) to the stadium", "пешком": "on foot", "автобусе": "«на автобусе» = by bus", "автобус": "bus", "школу": "«в школу» = (go) to school", "домой": "(go) home", "библиотеку": "«в библиотеку» = (go) to the library", "хобби": "hobby", "фотографирую": "I take photos", "собираю": "I collect", "камни": "rocks", "танцуешь": "you dance", "танцую": "I dance", "видеоигры": "video games", "марки": "stamps", "собираешь": "you collect", "танцевать": "to dance", "фотографировать": "to take photos", "был": "was (he)", "вчера": "yesterday", "читал": "read (he)", "гулял": "went for a walk (he)", "смотрел": "watched (he)", "читала": "read (she)", "играл": "played (he)", "была": "was (she)", "смотрела": "watched (she)", "были": "were", "едешь": "you travel", "еду": "I travel, I ride", "море": "sea", "поезде": "«на поезде» = by train", "едет": "he/she travels", "машине": "«на машине» = by car", "поезд": "train", "машина": "car", "самолет": "airplane", "поездка": "trip", "добрая": "kind (f.)", "умный": "smart (m.)", "веселый": "cheerful, fun (m.)", "быстрый": "fast (m.)", "красивый": "beautiful (m.)", "он": "he", "умная": "smart (f.)", "старый": "old (m.)", "красивая": "beautiful (f.)", "быстрая": "fast (f.)", "старая": "old (f.)", "здравствуй": "hello (to a friend or a child)", "математика": "math", "пишешь": "you write", "пишу": "I write", "уроке": "«на уроке» = in class", "перемена": "recess", "перемене": "«на перемене» = at recess", "класс": "class, classroom", "классе": "«в классе» = in the classroom", "учитель": "teacher (man)", "учительница": "teacher (woman)", "пишет": "he/she writes", "урок": "lesson", "рождения": "«день рождения» = birthday", "мае": "«в мае» = in May", "весной": "in spring", "июле": "«в июле» = in July", "январе": "«в январе» = in January", "декабре": "«в декабре» = in December", "может": "«может быть» = can be", "быть": "«может быть» = can be", "осенью": "in fall", "весна": "spring", "осень": "fall", "месяц": "month"});
 
 function tapify(ru){
   return ru.split(/(\s+)/).map(tok => {
@@ -1080,7 +1080,7 @@ const UNIT3 = {
     {id:"chay", ru:"чай", en:"tea", tr:"chay", pic:"<img class='wp' src='img/81b0a6ddc7f1.webp' alt=''>"},
     {id:"moloko", ru:"молоко́", en:"milk", tr:"malako", pic:"<img class='wp' src='img/e0c488dbcbde.webp' alt=''>"},
     {id:"yabloko", ru:"я́блоко", en:"apple", tr:"yablaka", pic:"<img class='wp' src='img/98f33aa4b005.webp' alt=''>"},
-    {id:"vkusno", ru:"вку́сно", en:"tasty!", tr:"fkusna", pic:"<img class='wp' src='img/161f4b6f3867.webp' alt=''>"},
+    {id:"vkusno", ru:"вку́сно", en:"yummy!", tr:"fkusna", pic:"<img class='wp' src='img/161f4b6f3867.webp' alt=''>"},
     {id:"spasibo", ru:"спаси́бо", en:"thank you", tr:"spasiba", pic:"<img class='wp' src='img/fea0a18694f3.webp' alt=''>"},
     {id:"ya", ru:"я", en:"I", tr:"ya", pic:"<img class='wp' src='img/ebf361427a4e.webp' alt=''>"},
     {id:"ty", ru:"ты", en:"you", tr:"ty", pic:"<img class='wp' src='img/09fb1b8d539a.webp' alt=''>"},
@@ -1100,7 +1100,7 @@ const UNIT3 = {
     {ru:"Да, хочу́.", en:"Yes, I do.", set:1},
     {ru:"Нет, спаси́бо.", en:"No, thank you.", set:1},
     {ru:"Я хочу́ хлеб и сыр.", en:"I want bread and cheese.", set:1},
-    {ru:"Ма́ма, это вку́сно!", en:"Mom, this is tasty!", set:1}
+    {ru:"Ма́ма, это вку́сно!", en:"Mom, this is yummy!", set:1}
   ],
   blankable:["хлеб","сыр","сок","чай","молоко́","я́блоко","вку́сно","спаси́бо","хочу́","хо́чешь","я","ты","э́то","да","нет","и","ма́ма"],
   story:[
@@ -1113,7 +1113,7 @@ const UNIT3 = {
     {q:"What did Misha almost eat?", options:["a ball","a book","a cat"], answer:0},
     {who:"misha", ru:"Ой! А э́то? Я́блоко?", en:"Oops! Is this an apple?"},
     {who:"tima", ru:"Да, это я́блоко.", en:"Yes, this is an apple."},
-    {who:"misha", ru:"Вку́сно! Спаси́бо, Ти́ма!", en:"Tasty! Thank you, Tima!"},
+    {who:"misha", ru:"Вку́сно! Спаси́бо, Ти́ма!", en:"Yummy! Thank you, Tima!"},
     {q:"How do you say “No, thank you”?", options:["Нет, спаси́бо.","Да, хочу́.","Э́то вку́сно."], answer:0}
   ]
 };
@@ -1176,10 +1176,10 @@ const UNIT5 = {
     {id:"ryba", ru:"ры́ба", en:"fish", tr:"ryba", pic:"<img class='wp' src='img/1e53861d028b.webp' alt=''>"},
     {id:"korova", ru:"коро́ва", en:"cow", tr:"karova", pic:"<img class='wp' src='img/4cfb07efd3ab.webp' alt=''>"},
     {id:"loshad", ru:"ло́шадь", en:"horse", tr:"loshat'", pic:"<img class='wp' src='img/6c8f56250d54.webp' alt=''>"},
-    {id:"bolshoy", ru:"большо́й", en:"big (he-words)", tr:"bal'shoy", pic:"<img class='wp' src='img/c5c55a8fe688.webp' alt=''>"},
-    {id:"bolshaya", ru:"больша́я", en:"big (she-words)", tr:"bal'shaya", pic:"<img class='wp' src='img/6f11686a681b.webp' alt=''>"},
-    {id:"malenkiy", ru:"ма́ленький", en:"small (he-words)", tr:"malin'kiy", pic:"<img class='wp' src='img/171d7c5f73bb.webp' alt=''>"},
-    {id:"malenkaya", ru:"ма́ленькая", en:"small (she-words)", tr:"malin'kaya", pic:"<img class='wp' src='img/f64b67d01459.webp' alt=''>"}
+    {id:"bolshoy", ru:"большо́й", en:"big (he-words)", tr:"bal’shoy", pic:"<img class='wp' src='img/c5c55a8fe688.webp' alt=''>"},
+    {id:"bolshaya", ru:"больша́я", en:"big (she-words)", tr:"bal’shaya", pic:"<img class='wp' src='img/6f11686a681b.webp' alt=''>"},
+    {id:"malenkiy", ru:"ма́ленький", en:"small (he-words)", tr:"malin’kiy", pic:"<img class='wp' src='img/171d7c5f73bb.webp' alt=''>"},
+    {id:"malenkaya", ru:"ма́ленькая", en:"small (she-words)", tr:"malin’kaya", pic:"<img class='wp' src='img/f64b67d01459.webp' alt=''>"}
   ],
   groups:[["burunduk","yozh","medved","lisa","volk"],["zayats","ptitsa","ryba","korova","loshad"],["bolshoy","bolshaya","malenkiy","malenkaya"]],
   sentences:[
@@ -1261,7 +1261,7 @@ const UNIT7 = {
     {id:"kak_dela", ru:"как дела́?", en:"how are you?", tr:"kak dila?", pic:"<img class='wp' src='img/9469ce817851.webp' alt=''>"},
     {id:"horosho", ru:"хорошо́", en:"good, fine", tr:"kharasho", pic:"<img class='wp' src='img/2eb3a2c34715.webp' alt=''>"},
     {id:"otlichno", ru:"отли́чно", en:"great", tr:"atlichna", pic:"<img class='wp' src='img/bced3c1925d9.webp' alt=''>"},
-    {id:"normalno", ru:"норма́льно", en:"okay", tr:"narmal'na", pic:"<img class='wp' src='img/681174aa9c35.webp' alt=''>"},
+    {id:"normalno", ru:"норма́льно", en:"OK", tr:"narmal’na", pic:"<img class='wp' src='img/681174aa9c35.webp' alt=''>"},
     {id:"ploho", ru:"пло́хо", en:"bad", tr:"plokha", pic:"<img class='wp' src='img/5a097d642ea2.webp' alt=''>"},
     {id:"a_ty", ru:"а ты?", en:"and you?", tr:"a ty?", pic:""},
     {id:"tozhe", ru:"то́же", en:"too, also", tr:"tozhe", pic:"<img class='wp' src='img/70b90bf8f417.webp' alt=''>"},
@@ -1277,7 +1277,7 @@ const UNIT7 = {
     {ru:"Хорошо́, спаси́бо. А ты?", en:"Fine, thank you. And you?", set:0},
     {ru:"То́же хорошо́!", en:"Fine too!", set:0},
     {ru:"Отли́чно!", en:"Great!", set:0},
-    {ru:"Как дела́, Ти́ма? Норма́льно.", en:"How are you, Tima? Okay.", set:0},
+    {ru:"Как дела́, Ти́ма? Норма́льно.", en:"How are you, Tima? OK.", set:0},
     {ru:"Пло́хо…", en:"Bad…", set:0},
     {ru:"До́брое у́тро, ма́ма!", en:"Good morning, Mom!", set:1},
     {ru:"Споко́йной но́чи, па́па!", en:"Good night, Dad!", set:1},
@@ -1292,9 +1292,9 @@ const UNIT7 = {
     {who:"misha", ru:"До́брое у́тро, ма́ма!", en:"Good morning, Mom!"},
     {who:"misha", ru:"Приве́т, Ти́ма! Как дела́?", en:"Hi, Tima! How are you?"},
     {who:"tima", ru:"Пло́хо…", en:"Bad…"},
-    {q:"How is Tima at first?", options:["bad","great","okay"], answer:0},
+    {q:"How is Tima at first?", options:["bad","great","OK"], answer:0},
     {who:"misha", ru:"Ой! Хо́чешь я́блоко?", en:"Oh! Do you want an apple?"},
-    {who:"tima", ru:"Да, хочу́! Спаси́бо! Вку́сно! Отли́чно!", en:"Yes, I do! Thank you! Tasty! Great!"},
+    {who:"tima", ru:"Да, хочу́! Спаси́бо! Вку́сно! Отли́чно!", en:"Yes, I do! Thank you! Yummy! Great!"},
     {q:"What made Tima feel great?", options:["an apple","tea","a ball"], answer:0},
     {who:"misha", ru:"Я то́же хочу́ я́блоко!", en:"I want an apple too!"},
     {who:"tima", ru:"Пока́, Ми́ша!", en:"Bye, Misha!"},
@@ -1315,8 +1315,8 @@ const UNIT8 = {
     {id:"devyat", ru:"де́вять", en:"nine", tr:"dyevit'", pic:"<img class='wp' src='img/f83c189d6c20.webp' alt=''>"},
     {id:"desyat", ru:"де́сять", en:"ten", tr:"dyesit'", pic:"<img class='wp' src='img/e6bfb3c0fe9e.webp' alt=''>"},
     {id:"plyus", ru:"плюс", en:"plus", tr:"plyus", pic:"<img class='wp' src='img/4fb7004a8c9d.webp' alt=''>"},
-    {id:"skolko", ru:"ско́лько?", en:"how many?", tr:"skol'ka?", pic:"<img class='wp' src='img/9384a94751e8.webp' alt=''>"},
-    {id:"skolko_let", ru:"Ско́лько тебе́ лет?", en:"How old are you?", tr:"skol'ka tibye lyet?", pic:"<img class='wp' src='img/120cbf53358b.webp' alt=''>"},
+    {id:"skolko", ru:"ско́лько?", en:"how many?", tr:"skol’ka?", pic:"<img class='wp' src='img/9384a94751e8.webp' alt=''>"},
+    {id:"skolko_let", ru:"Ско́лько тебе́ лет?", en:"How old are you?", tr:"skol’ka tibye lyet?", pic:"<img class='wp' src='img/120cbf53358b.webp' alt=''>"},
     {id:"mne_let", ru:"Мне … лет.", en:"I’m … years old.", tr:"mnye … lyet", pic:"<img class='wp' src='img/b8f91982c65f.webp' alt=''>"}
   ],
   groups:[["odin","dva","tri","chetyre","pyat"],["shest","sem","vosem","devyat","desyat"],["plyus","skolko","skolko_let","mne_let"]],
@@ -1360,9 +1360,9 @@ const UNIT9 = {
     {id:"chyorny", ru:"чёрный", en:"black", tr:"chorny", pic:"<img class='wp' src='img/45db662eeaa1.webp' alt=''>"},
     {id:"rozovy", ru:"ро́зовый", en:"pink", tr:"rozavy", pic:"<img class='wp' src='img/f46042e2e715.webp' alt=''>"},
     {id:"oranzhevy", ru:"ора́нжевый", en:"orange", tr:"aranzhivy", pic:"<img class='wp' src='img/9516e0ba05bb.webp' alt=''>"},
-    {id:"tsvet", ru:"цвет", en:"colour", tr:"tsvyet", pic:"<img class='wp' src='img/123732ba0b2c.webp' alt=''>"},
-    {id:"lyubimy", ru:"люби́мый", en:"favourite", tr:"lyubimy", pic:"<img class='wp' src='img/de7bb1415ba9.webp' alt=''>"},
-    {id:"kakogo_tsveta", ru:"Како́го цве́та?", en:"What colour?", tr:"kakova tsvyeta?", pic:"<img class='wp' src='img/3499153d17eb.webp' alt=''>"}
+    {id:"tsvet", ru:"цвет", en:"color", tr:"tsvyet", pic:"<img class='wp' src='img/123732ba0b2c.webp' alt=''>"},
+    {id:"lyubimy", ru:"люби́мый", en:"favorite", tr:"lyubimy", pic:"<img class='wp' src='img/de7bb1415ba9.webp' alt=''>"},
+    {id:"kakogo_tsveta", ru:"Како́го цве́та?", en:"What color?", tr:"kakova tsvyeta?", pic:"<img class='wp' src='img/3499153d17eb.webp' alt=''>"}
   ],
   groups:[["krasny","siniy","zelyony","zhyolty"],["bely","chyorny","rozovy","oranzhevy"],["tsvet","lyubimy","kakogo_tsveta"]],
   sentences:[
@@ -1372,11 +1372,11 @@ const UNIT9 = {
     {ru:"Мой кот чёрный.", en:"My cat is black.", set:0},
     {ru:"Моя соба́ка бе́лая.", en:"My dog is white.", set:0},
     {ru:"Ры́ба ора́нжевая.", en:"The fish is orange.", set:0},
-    {ru:"Како́го цве́та твой телефо́н?", en:"What colour is your phone?", set:1},
+    {ru:"Како́го цве́та твой телефо́н?", en:"What color is your phone?", set:1},
     {ru:"Мой телефо́н ро́зовый.", en:"My phone is pink.", set:1},
     {ru:"Это жёлтый дом.", en:"This is a yellow house.", set:1},
     {ru:"Ёж не зелёный!", en:"A hedgehog isn’t green!", set:1},
-    {ru:"Мой люби́мый цвет — си́ний.", en:"My favourite colour is blue.", set:1},
+    {ru:"Мой люби́мый цвет — си́ний.", en:"My favorite color is blue.", set:1},
     {ru:"А твой?", en:"And yours?", set:1}
   ],
   blankable:["кра́сный","кра́сная","зелёное","чёрный","бе́лая","ора́нжевая","ро́зовый","жёлтый","зелёный","люби́мый","цвет","си́ний"],
@@ -1384,13 +1384,13 @@ const UNIT9 = {
     {who:"tima", ru:"Ми́ша, вот твоя семья́!", en:"Misha, here is your family!"},
     {who:"misha", ru:"Ой! Па́па не зелёный!", en:"Oh! Dad isn’t green!"},
     {who:"tima", ru:"Па́па зелёный, ма́ма кра́сная, а ба́бушка си́няя!", en:"Dad is green, Mom is red, and Grandma is blue!"},
-    {q:"What colour did Tima paint Dad?", options:["green","red","blue"], answer:0},
-    {who:"misha", ru:"Ба́бушка не си́няя! Како́го цве́та моя ба́бушка?", en:"Grandma isn’t blue! What colour is my grandma?"},
+    {q:"What color did Tima paint Dad?", options:["green","red","blue"], answer:0},
+    {who:"misha", ru:"Ба́бушка не си́няя! Како́го цве́та моя ба́бушка?", en:"Grandma isn’t blue! What color is my grandma?"},
     {who:"tima", ru:"Ора́нжевая?", en:"Orange?"},
     {who:"misha", ru:"Да! И я ора́нжевый!", en:"Yes! And I’m orange!"},
-    {q:"What colour is Misha’s family really?", options:["orange","green","pink"], answer:0},
-    {who:"tima", ru:"Мой люби́мый цвет — зелёный!", en:"My favourite colour is green!"},
-    {q:"Which one means “My favourite colour is green”?", options:["Мой люби́мый цвет — зелёный.","Мой кот зелёный.","Э́то зелёный дом."], answer:0}
+    {q:"What color is Misha’s family really?", options:["orange","green","pink"], answer:0},
+    {who:"tima", ru:"Мой люби́мый цвет — зелёный!", en:"My favorite color is green!"},
+    {q:"Which one means “My favorite color is green”?", options:["Мой люби́мый цвет — зелёный.","Мой кот зелёный.","Э́то зелёный дом."], answer:0}
   ]
 };
 const UNIT10 = {
@@ -1406,7 +1406,7 @@ const UNIT10 = {
     {id:"morozhenoe", ru:"моро́женое", en:"ice cream", tr:"marozhinaye", pic:"<img class='wp' src='img/66b475178c00.webp' alt=''>"},
     {id:"tort", ru:"торт", en:"cake", tr:"tort", pic:"<img class='wp' src='img/c22d8b5501f6.webp' alt=''>"},
     {id:"futbol", ru:"футбо́л", en:"soccer", tr:"futbol", pic:"<img class='wp' src='img/781cb621e7e2.webp' alt=''>"},
-    {id:"multfilmy", ru:"му́льтики", en:"cartoons", tr:"mul'tiki", pic:"<img class='wp' src='img/d792b8b0e992.webp' alt=''>"},
+    {id:"multfilmy", ru:"му́льтики", en:"cartoons", tr:"mul’tiki", pic:"<img class='wp' src='img/d792b8b0e992.webp' alt=''>"},
     {id:"v_futbol", ru:"в футбо́л", en:"(play) soccer", tr:"f futbol", pic:"<img class='wp' src='img/147aa50630c7.webp' alt=''>"}
   ],
   groups:[["lyublyu","lyubish","lyubit","ochen"],["shokolad","morozhenoe","tort","multfilmy"],["igrat","chitat","risovat","futbol","v_futbol"]],
@@ -1435,14 +1435,14 @@ const UNIT10 = {
     {who:"tima", ru:"Я то́же!", en:"Me too!"},
     {q:"What do they both love?", options:["cartoons","soccer","reading"], answer:0},
     {who:"misha", ru:"И я о́чень люблю́ торт!", en:"And I really love cake!"},
-    {who:"tima", ru:"Я то́же люблю́ торт! Вку́сно!", en:"I love cake too! Tasty!"},
+    {who:"tima", ru:"Я то́же люблю́ торт! Вку́сно!", en:"I love cake too! Yummy!"},
     {q:"How do you say “I love cake”?", options:["Я люблю́ торт.","Ты лю́бишь торт?","Ми́ша лю́бит торт."], answer:0}
   ]
 };
 let UNITS = {
   1:{title:"Make introductions", cls:"", icon:"<img class='wp' src='img/4967ccdce6e5.webp' alt=''>", storyTitle:"Ми́ша meets a new friend", doneLine:"You can say hello and introduce yourself in Russian. Молоде́ц!",
      words:WORDS, groups:GROUPS, sentences:SENTENCES, blankable:BLANKABLE, story:STORY,
-     chat:[["l","Приве́т! Меня́ зову́т Ми́ша.","Hi! My name is Misha."],["r","Приве́т! Меня́ зову́т А́ня.","Hi! My name is Anya."],["l","Как тебя́ зову́т?","What is your name?"],["r","Здра́вствуйте! Меня́ зову́т Ти́ма.","Hello! My name is Tima."],["l","Э́то ма́ма?","Is this Mom?"],["r","Да, э́то ма́ма.","Yes, this is Mom."],["l","Э́то па́па?","Is this Dad?"],["r","Нет, э́то Ми́ша.","No, this is Misha."]],
+     chat:[["l","Приве́т! Меня́ зову́т Ми́ша.","Hi! My name is Misha."],["r","Приве́т! Меня́ зову́т А́ня.","Hi! My name is Anya."],["l","Как тебя́ зову́т?","What’s your name?"],["r","Здра́вствуйте! Меня́ зову́т Ти́ма.","Hello! My name is Tima."],["l","Э́то ма́ма?","Is this Mom?"],["r","Да, э́то ма́ма.","Yes, this is Mom."],["l","Э́то па́па?","Is this Dad?"],["r","Нет, э́то Ми́ша.","No, this is Misha."]],
      tips:["Russian doesn’t say “is” here. “This is Mom” is just «Э́то ма́ма».","«Здра́вствуйте» is the polite hello for grown-ups and teachers. «Приве́т» is for friends and family.","«Меня́ зову́т…» literally means “they call me…”. It’s how Russians say “my name is…”.","The little mark over a vowel (á) shows which part of the word is said strongest. Normal Russian books leave it out."]},
   2:{title:"What is this?", cls:"u2", icon:"<img class='wp' src='img/a65943d30c63.webp' alt=''>", storyTitle:"Ми́ша shows Ти́ма around", doneLine:"You can ask «Что э́то?» and «Кто э́то?» and name things around you!",
      words:UNIT2.words, groups:UNIT2.groups, sentences:UNIT2.sentences, blankable:UNIT2.blankable, story:UNIT2.story,
@@ -1450,8 +1450,8 @@ let UNITS = {
      tips:["«Кто э́то?» asks about people and animals. «Что э́то?» asks about things.","Russian has no words for “a” or “the”. «Э́то кот» means “This is a cat” or “This is the cat”.","«Что» is said like «што» (shto).","«Не» means “not” and goes right before the word: «не кот» = not a cat.","«И» means “and”: «мяч и кни́га» = a ball and a book."]},
   3:{title:"Food and drink", cls:"u3", icon:"<img class='wp' src='img/98f33aa4b005.webp' alt=''>", storyTitle:"Ми́ша’s picnic", doneLine:"You can ask for food and drink and say «Спаси́бо»!",
      words:UNIT3.words, groups:UNIT3.groups, sentences:UNIT3.sentences, blankable:UNIT3.blankable, story:UNIT3.story,
-     chat:[["l","Ты хо́чешь сок?","Do you want juice?"],["r","Да, хочу́. Спаси́бо!","Yes, I do. Thank you!"],["l","Ты хо́чешь чай?","Do you want tea?"],["r","Нет, спаси́бо. Я хочу́ молоко́.","No, thank you. I want milk."],["l","Что э́то?","What is this?"],["r","Э́то сыр. Вку́сно!","This is cheese. Tasty!"]],
-     tips:["«Хочу́» means “I want” and «хо́чешь» means “you want”. The ending changes with the person.","«Нет, спаси́бо» is the polite “No, thank you”.","An «о» without the stress mark sounds like «а»: молоко́ is said “malako”.","«Вку́сно!» on its own means “Tasty!”","«Ты хо́чешь чай?» is a question only because of your voice: it goes up at the end."]},
+     chat:[["l","Ты хо́чешь сок?","Do you want juice?"],["r","Да, хочу́. Спаси́бо!","Yes, I do. Thank you!"],["l","Ты хо́чешь чай?","Do you want tea?"],["r","Нет, спаси́бо. Я хочу́ молоко́.","No, thank you. I want milk."],["l","Что э́то?","What is this?"],["r","Э́то сыр. Вку́сно!","This is cheese. Yummy!"]],
+     tips:["«Хочу́» means “I want” and «хо́чешь» means “you want”. The ending changes with the person.","«Нет, спаси́бо» is the polite “No, thank you”.","An «о» without the stress mark sounds like «а»: молоко́ is said “malako”.","«Вку́сно!» on its own means “Yummy!”","«Ты хо́чешь чай?» is a question only because of your voice: it goes up at the end."]},
   4:{title:"My family", cls:"u4", icon:"<img class='wp' src='img/d76b089ca245.webp' alt=''>", storyTitle:"Ми́ша’s family album", doneLine:"You can show your family and say «мой», «моя́» and «моё»!",
      words:UNIT4.words, groups:UNIT4.groups, sentences:UNIT4.sentences, blankable:UNIT4.blankable, story:UNIT4.story,
      chat:[["l","Э́то твой брат?","Is this your brother?"],["r","Нет, э́то мой друг.","No, this is my friend."],["l","Э́то твоя́ кни́га?","Is this your book?"],["r","Да, э́то моя́ кни́га.","Yes, this is my book."],["l","Вот моя́ семья́!","Here is my family!"]],
@@ -1472,10 +1472,10 @@ let UNITS = {
      words:UNIT8.words, groups:UNIT8.groups, sentences:UNIT8.sentences, blankable:UNIT8.blankable, story:UNIT8.story,
      chat:[["l","Ско́лько тебе́ лет?","How old are you?"],["r","Мне де́сять лет. А тебе́?","I’m ten. And you?"],["l","Мне семь лет.","I’m seven."],["r","Два плюс два?","Two plus two?"],["l","Четы́ре!","Four!"]],
      tips:["For ages 5 to 20 you always say «лет»: «Мне де́вять лет».","«Мне … лет» and «Ско́лько тебе́ лет?» are set phrases: learn them whole.","«Оди́н» is said “adin”: the first «о» sounds like «а».","The dash in «Два плюс два — четы́ре» stands for “is”."]},
-  9:{title:"Colours", cls:"u9", icon:"<img class='wp' src='img/123732ba0b2c.webp' alt=''>", storyTitle:"Ти́ма paints a picture", doneLine:"You can say the colours of everything around you!",
+  9:{title:"Colors", cls:"u9", icon:"<img class='wp' src='img/123732ba0b2c.webp' alt=''>", storyTitle:"Ти́ма paints a picture", doneLine:"You can say the colors of everything around you!",
      words:UNIT9.words, groups:UNIT9.groups, sentences:UNIT9.sentences, blankable:UNIT9.blankable, story:UNIT9.story,
-     chat:[["l","Како́го цве́та твой телефо́н?","What colour is your phone?"],["r","Мой телефо́н чёрный.","My phone is black."],["l","Мой люби́мый цвет — си́ний. А твой?","My favourite colour is blue. And yours?"],["r","Мой люби́мый цвет — зелёный.","My favourite colour is green."]],
-     tips:["Colour words end in «-ый» for he-words, «-ая» for she-words and «-ое» for it-words: кра́сный мяч, кра́сная су́мка, кра́сное я́блоко.","«Си́ний» is a little different: си́ний мяч, си́няя су́мка, си́нее я́блоко.","«Ё» always has the stress, so зелёный and жёлтый need no stress mark.","«Како́го цве́та?» means “What colour?”. Learn it whole."]},
+     chat:[["l","Како́го цве́та твой телефо́н?","What color is your phone?"],["r","Мой телефо́н чёрный.","My phone is black."],["l","Мой люби́мый цвет — си́ний. А твой?","My favorite color is blue. And yours?"],["r","Мой люби́мый цвет — зелёный.","My favorite color is green."]],
+     tips:["Color words end in «-ый» for he-words, «-ая» for she-words and «-ое» for it-words: кра́сный мяч, кра́сная су́мка, кра́сное я́блоко.","«Си́ний» is a little different: си́ний мяч, си́няя су́мка, си́нее я́блоко.","«Ё» always has the stress, so зелёный and жёлтый need no stress mark.","«Како́го цве́та?» means “What color?”. Learn it whole."]},
   10:{title:"I love it!", cls:"u10", icon:"<img class='wp' src='img/f7c30cea7536.webp' alt=''>", storyTitle:"A fun day", doneLine:"You can say what you love and what you like to do!",
      words:UNIT10.words, groups:UNIT10.groups, sentences:UNIT10.sentences, blankable:UNIT10.blankable, story:UNIT10.story,
      chat:[["l","Ты лю́бишь моро́женое?","Do you like ice cream?"],["r","Да, о́чень люблю́!","Yes, I love it!"],["l","Ты лю́бишь рисова́ть?","Do you like drawing?"],["r","Нет, я люблю́ игра́ть в футбо́л.","No, I like playing soccer."]],
@@ -1486,8 +1486,8 @@ let UNITS = {
 Object.assign(UNITS, {
   11:{title:"I have", cls:"u11", icon:"🎒", storyTitle:"Where’s my pencil?", doneLine:"You can say what you have!",
   words:[
-    {id:"u_minya", ru:"у меня́", en:"I have (at me)", tr:"u minya", pic:"🙋"},
-    {id:"u_tibya", ru:"у тебя́", en:"you have (at you)", tr:"u tibya", pic:"👉"},
+    {id:"u_minya", ru:"у меня́", en:"I have", tr:"u minya", pic:"🙋"},
+    {id:"u_tibya", ru:"у тебя́", en:"you have", tr:"u tibya", pic:"👉"},
     {id:"u_nivo", ru:"у него́", en:"he has", tr:"u nivo", pic:"👦"},
     {id:"u_niyo", ru:"у неё", en:"she has", tr:"u niyo", pic:"👧"},
     {id:"yest", ru:"есть", en:"there is, (I) have", tr:"yest'", pic:"✅"},
@@ -1505,9 +1505,9 @@ Object.assign(UNITS, {
     {ru:"У него́ есть кни́га.", en:"He has a book.", set:0, src:"T#3453511 Selena777"},
     {ru:"У неё есть велосипе́д.", en:"She has a bike.", set:0, src:"T#3270563 marafon"},
     {ru:"У меня́ есть компью́тер.", en:"I have a computer.", set:0, src:"T#1109726 souris_qui_rit"},
-    {ru:"Это мой каранда́ш.", en:"That's my pencil.", set:0, src:"T#2244291 marafon"},
+    {ru:"Это мой каранда́ш.", en:"That’s my pencil.", set:0, src:"T#2244291 marafon"},
     {ru:"Это твоя тетра́дь?", en:"Is this your notebook?", set:1, src:"T#4896702 odexed"},
-    {ru:"Где твой рюкза́к?", en:"Where's your backpack?", set:1, src:"T#5221035 odexed"},
+    {ru:"Где твой рюкза́к?", en:"Where’s your backpack?", set:1, src:"T#5221035 odexed"},
     {ru:"У тебя́ есть брат?", en:"Do you have a brother?", set:1, src:"T#3066941 odexed"},
     {ru:"Что у тебя́ есть?", en:"What do you have?", set:1, src:"T#4303500 marafon"},
     {ru:"У меня́ есть кра́сная ру́чка и си́ний каранда́ш.", en:"I have a red pen and a blue pencil.", set:1, src:"C"},
@@ -1515,13 +1515,13 @@ Object.assign(UNITS, {
   ],
   blankable:["есть", "велосипе́д", "ру́чка", "компью́тер", "каранда́ш", "тетра́дь", "рюкза́к"],
   story:[
-    {who:"misha", ru:"Ой! Где мой каранда́ш?", en:"Oh no! Where's my pencil?"},
+    {who:"misha", ru:"Ой! Где мой каранда́ш?", en:"Oh no! Where’s my pencil?"},
     {who:"tima", ru:"Каранда́ш? У меня́ есть ру́чка.", en:"A pencil? I have a pen."},
     {who:"misha", ru:"Спаси́бо, Ти́ма! А у тебя́ есть тетра́дь?", en:"Thanks, Tima! And do you have a notebook?"},
     {q:"What is Misha looking for?", options:["his pencil", "his pen", "his bike"], answer:0},
-    {who:"tima", ru:"Да, вот тетра́дь.", en:"Yes, here's a notebook."},
+    {who:"tima", ru:"Да, вот тетра́дь.", en:"Yes, here’s a notebook."},
     {who:"mama", ru:"Ми́ша, это твой рюкза́к?", en:"Misha, is this your backpack?"},
-    {who:"misha", ru:"Да, ма́ма, это мой рюкза́к.", en:"Yes, Mom, it's my backpack."},
+    {who:"misha", ru:"Да, ма́ма, это мой рюкза́к.", en:"Yes, Mom, it’s my backpack."},
     {who:"mama", ru:"Твой каранда́ш здесь, в су́мке!", en:"Your pencil is here, in the bag!"},
     {q:"Where is the pencil?", options:["in the bag", "on the table", "at school"], answer:0},
     {who:"misha", ru:"Ой! Спаси́бо, ма́ма!", en:"Oh! Thanks, Mom!"},
@@ -1533,10 +1533,10 @@ Object.assign(UNITS, {
   qa:[
     {q:"У тебя́ есть ру́чка?", hint:"Say: yes, I have a pen", pic:"🖊️", a:"Да, у меня́ есть ру́чка."},
     {q:"У тебя́ есть велосипе́д?", hint:"Say: yes, I have a bike", pic:"🚲", a:"Да, у меня́ есть велосипе́д."},
-    {q:"Что э́то?", hint:"It's a pencil", pic:"✏️", a:"Э́то каранда́ш."},
-    {q:"Э́то твой рюкза́к?", hint:"Say: yes, it's my backpack", pic:"🎒", a:"Да, э́то мой рюкза́к."},
+    {q:"Что э́то?", hint:"It’s a pencil", pic:"✏️", a:"Э́то каранда́ш."},
+    {q:"Э́то твой рюкза́к?", hint:"Say: yes, it’s my backpack", pic:"🎒", a:"Да, э́то мой рюкза́к."},
     {q:"У тебя́ есть компью́тер?", hint:"Say: no, I have a phone", pic:"📱", a:"Нет, у меня́ есть телефо́н."},
-    {q:"Э́то твоя́ тетра́дь?", hint:"Say: yes, it's my notebook", pic:"📓", a:"Да, э́то моя́ тетра́дь."}
+    {q:"Э́то твоя́ тетра́дь?", hint:"Say: yes, it’s my notebook", pic:"📓", a:"Да, э́то моя́ тетра́дь."}
   ]},
   12:{title:"Where do you live?", cls:"u12", icon:"🏙️", storyTitle:"Hello, Grandma!", doneLine:"You can say where you live and what you speak!",
   words:[
@@ -1558,7 +1558,7 @@ Object.assign(UNITS, {
     {ru:"Я живу́ в Аме́рике.", en:"I live in America.", set:0, src:"C"},
     {ru:"Моя ба́бушка живёт в Росси́и.", en:"My grandma lives in Russia.", set:0, src:"C"},
     {ru:"Где живёт твоя ба́бушка?", en:"Where does your grandma live?", set:0, src:"T#1006931 saiko"},
-    {ru:"Это большо́й го́род.", en:"It's a big city.", set:0, src:"T#5526056 odexed"},
+    {ru:"Это большо́й го́род.", en:"It’s a big city.", set:0, src:"T#5526056 odexed"},
     {ru:"Моя семья́ живёт здесь.", en:"My family lives here.", set:0, src:"T#5485141 odexed"},
     {ru:"Я говорю́ по-англи́йски.", en:"I speak English.", set:1, src:"T#2794845 sharptoothed"},
     {ru:"Ты говори́шь по-ру́сски?", en:"Do you speak Russian?", set:1, src:"C"},
@@ -1573,7 +1573,7 @@ Object.assign(UNITS, {
     {who:"misha", ru:"Моя ба́бушка живёт в Росси́и.", en:"My grandma lives in Russia."},
     {who:"tima", ru:"В Росси́и? А ты?", en:"In Russia? And you?"},
     {who:"misha", ru:"Я живу́ здесь, в Аме́рике.", en:"I live here, in America."},
-    {q:"Where does Misha's grandma live?", options:["in Russia", "in America", "in the park"], answer:0},
+    {q:"Where does Misha’s grandma live?", options:["in Russia", "in America", "in the park"], answer:0},
     {who:"tima", ru:"Ба́бушка говори́т по-англи́йски?", en:"Does Grandma speak English?"},
     {who:"misha", ru:"Немно́го. А я говорю́ по-ру́сски!", en:"A little. And I speak Russian!"},
     {who:"tima", ru:"Ты говори́шь по-ру́сски? Отли́чно!", en:"You speak Russian? Great!"},
@@ -1589,63 +1589,63 @@ Object.assign(UNITS, {
     {q:"Ты говори́шь по-ру́сски?", hint:"Say: yes, a little", pic:"🤏", a:"Да, немно́го."},
     {q:"Ты говори́шь по-англи́йски?", hint:"Say: yes, I speak English", pic:"🔤", a:"Да, я говорю́ по-англи́йски."},
     {q:"Где живёт твоя́ ба́бушка?", hint:"Say: my grandma lives in Russia", pic:"🇷🇺", a:"Моя́ ба́бушка живёт в Росси́и."},
-    {q:"Э́то большо́й го́род?", hint:"Say: no, it's a small town", pic:"🏘️", a:"Нет, э́то ма́ленький го́род."},
+    {q:"Э́то большо́й го́род?", hint:"Say: no, it’s a small town", pic:"🏘️", a:"Нет, э́то ма́ленький го́род."},
     {q:"Ты живёшь здесь?", hint:"Say: yes, I live here", pic:"🏠", a:"Да, я живу́ здесь."}
   ]},
   13:{title:"What are you doing?", cls:"u13", icon:"🎧", storyTitle:"Shh, Misha is sleeping!", doneLine:"You can say what you’re doing!",
   words:[
-    {id:"dyelayu", ru:"де́лаю", en:"I do, I'm doing", tr:"dyelayu", pic:"🛠️"},
-    {id:"dyelayesh", ru:"де́лаешь", en:"you do, you're doing", tr:"dyelayesh", pic:"❓"},
+    {id:"dyelayu", ru:"де́лаю", en:"I do, I’m doing", tr:"dyelayu", pic:"🛠️"},
+    {id:"dyelayesh", ru:"де́лаешь", en:"you do, you’re doing", tr:"dyelayesh", pic:"❓"},
     {id:"dyelayet", ru:"де́лает", en:"he / she does", tr:"dyelayet", pic:"🤷"},
     {id:"sichas", ru:"сейча́с", en:"now", tr:"sichas", pic:"⏱️"},
-    {id:"gulyayu", ru:"гуля́ю", en:"I'm going for a walk", tr:"gulyayu", pic:"🚶"},
-    {id:"chitayu", ru:"чита́ю", en:"I read, I'm reading", tr:"chitayu", pic:"📖"},
+    {id:"gulyayu", ru:"гуля́ю", en:"I’m going for a walk", tr:"gulyayu", pic:"🚶"},
+    {id:"chitayu", ru:"чита́ю", en:"I read, I’m reading", tr:"chitayu", pic:"📖"},
     {id:"slushayu", ru:"слу́шаю", en:"I listen", tr:"slushayu", pic:"👂"},
     {id:"muzyku", ru:"му́зыку", en:"music (after «слу́шаю»)", tr:"muzyku", pic:"🎧"},
     {id:"smatryu", ru:"смотрю́", en:"I watch", tr:"smatryu", pic:"👀"},
     {id:"tilivizar", ru:"телеви́зор", en:"TV", tr:"tilivizar", pic:"📺"},
-    {id:"splyu", ru:"сплю", en:"I'm sleeping", tr:"splyu", pic:"😴"},
+    {id:"splyu", ru:"сплю", en:"I’m sleeping", tr:"splyu", pic:"😴"},
     {id:"spit", ru:"спит", en:"he / she is sleeping", tr:"spit", pic:"💤"}
   ],
   groups:[["dyelayu", "dyelayesh", "dyelayet", "sichas"], ["gulyayu", "chitayu", "slushayu", "muzyku"], ["smatryu", "tilivizar", "splyu", "spit"]],
   sentences:[
     {ru:"Что ты де́лаешь?", en:"What are you doing?", set:0, src:"T#5411 Aleksej"},
-    {ru:"Я чита́ю.", en:"I'm reading.", set:0, src:"T#613252 Maksimo"},
-    {ru:"Я слу́шаю му́зыку.", en:"I'm listening to music.", set:0, src:"T#597430 kobylkin"},
-    {ru:"Я смотрю́ телеви́зор.", en:"I'm watching TV.", set:0, src:"T#828983 Arkadeko"},
+    {ru:"Я чита́ю.", en:"I’m reading.", set:0, src:"T#613252 Maksimo"},
+    {ru:"Я слу́шаю му́зыку.", en:"I’m listening to music.", set:0, src:"T#597430 kobylkin"},
+    {ru:"Я смотрю́ телеви́зор.", en:"I’m watching TV.", set:0, src:"T#828983 Arkadeko"},
     {ru:"Кот спит.", en:"The cat is sleeping.", set:0, src:"T#6887614 marafon"},
     {ru:"Ты спишь?", en:"Are you sleeping?", set:0, src:"T#612463 Aleksej"},
     {ru:"Па́па, что ты де́лаешь?", en:"Dad, what are you doing?", set:1, src:"T#585068 ae5s"},
     {ru:"Мой брат смо́трит телеви́зор.", en:"My brother is watching TV.", set:1, src:"T#1542444 Biga"},
     {ru:"Что я де́лаю?", en:"What am I doing?", set:1, src:"T#3746912 alexdiment"},
-    {ru:"Я гуля́ю в па́рке.", en:"I'm going for a walk in the park.", set:1, src:"T#2313465 sharptoothed"},
+    {ru:"Я гуля́ю в па́рке.", en:"I’m going for a walk in the park.", set:1, src:"T#2313465 sharptoothed"},
     {ru:"Что ты чита́ешь?", en:"What are you reading?", set:1, src:"T#2520525 paul_lingvo"},
     {ru:"Ти́ма чита́ет, а Ми́ша спит.", en:"Tima is reading, and Misha is sleeping.", set:1, src:"C"}
   ],
   blankable:["де́лаешь", "чита́ю", "слу́шаю", "му́зыку", "смотрю́", "телеви́зор", "спит", "спишь", "смо́трит", "де́лаю", "гуля́ю", "чита́ешь", "чита́ет"],
   story:[
     {who:"tima", ru:"Ми́ша, что ты де́лаешь?", en:"Misha, what are you doing?"},
-    {who:"misha", ru:"Я сплю.", en:"I'm sleeping."},
-    {who:"tima", ru:"Ты спишь? Сейча́с?", en:"You're sleeping? Now?"},
+    {who:"misha", ru:"Я сплю.", en:"I’m sleeping."},
+    {who:"tima", ru:"Ты спишь? Сейча́с?", en:"You’re sleeping? Now?"},
     {who:"misha", ru:"Да. Споко́йной но́чи!", en:"Yes. Good night!"},
     {q:"What is Misha doing?", options:["sleeping", "reading", "going for a walk"], answer:0},
     {who:"tima", ru:"Ма́ма, что де́лает Ми́ша?", en:"Mom, what is Misha doing?"},
-    {who:"mama", ru:"Ми́ша спит. А я чита́ю.", en:"Misha is sleeping. And I'm reading."},
+    {who:"mama", ru:"Ми́ша спит. А я чита́ю.", en:"Misha is sleeping. And I’m reading."},
     {who:"tima", ru:"А что де́лает па́па?", en:"And what is Dad doing?"},
     {who:"mama", ru:"Па́па смо́трит футбо́л.", en:"Dad is watching soccer."},
     {q:"What is Dad doing?", options:["watching soccer", "sleeping", "reading"], answer:0},
-    {who:"misha", ru:"Футбо́л? Я не сплю! Я то́же смотрю́!", en:"Soccer? I'm not sleeping! I'm watching too!"},
+    {who:"misha", ru:"Футбо́л? Я не сплю! Я то́же смотрю́!", en:"Soccer? I’m not sleeping! I’m watching too!"},
     {q:"Why does Misha wake up?", options:["He wants to watch soccer.", "He wants to read.", "He wants to go for a walk."], answer:0}
   ],
-  chat:[["l", "Что ты де́лаешь?", "What are you doing?"], ["r", "Я слу́шаю му́зыку. А ты?", "I'm listening to music. And you?"], ["l", "Я смотрю́ му́льтики.", "I'm watching cartoons."], ["r", "Отли́чно!", "Great!"]],
+  chat:[["l", "Что ты де́лаешь?", "What are you doing?"], ["r", "Я слу́шаю му́зыку. А ты?", "I’m listening to music. And you?"], ["l", "Я смотрю́ му́льтики.", "I’m watching cartoons."], ["r", "Отли́чно!", "Great!"]],
   tips:["«Что ты де́лаешь?» Verbs end in -ю for I (де́лаю), -ешь for you (де́лаешь), -ет for he/she (де́лает)."],
   qa:[
-    {q:"Что ты де́лаешь?", hint:"Say: I'm reading", pic:"📖", a:"Я чита́ю."},
-    {q:"Что ты де́лаешь сейча́с?", hint:"Say: I'm listening to music", pic:"🎧", a:"Я слу́шаю му́зыку."},
-    {q:"Ты спишь?", hint:"Say: no, I'm watching TV", pic:"📺", a:"Нет, я смотрю́ телеви́зор."},
+    {q:"Что ты де́лаешь?", hint:"Say: I’m reading", pic:"📖", a:"Я чита́ю."},
+    {q:"Что ты де́лаешь сейча́с?", hint:"Say: I’m listening to music", pic:"🎧", a:"Я слу́шаю му́зыку."},
+    {q:"Ты спишь?", hint:"Say: no, I’m watching TV", pic:"📺", a:"Нет, я смотрю́ телеви́зор."},
     {q:"Что де́лает кот?", hint:"Say: the cat is sleeping", pic:"🐱", a:"Кот спит."},
-    {q:"Ты гуля́ешь?", hint:"Say: yes, I'm walking in the park", pic:"🌳", a:"Да, я гуля́ю в па́рке."},
-    {q:"Что ты смо́тришь?", hint:"Say: I'm watching cartoons", pic:"📺", a:"Я смотрю́ му́льтики."}
+    {q:"Ты гуля́ешь?", hint:"Say: yes, I’m walking in the park", pic:"🌳", a:"Да, я гуля́ю в па́рке."},
+    {q:"Что ты смо́тришь?", hint:"Say: I’m watching cartoons", pic:"📺", a:"Я смотрю́ му́льтики."}
   ]},
   14:{title:"Days of the week", cls:"u14", icon:"📅", storyTitle:"Is it Saturday yet?", doneLine:"You know all the days of the week!",
   words:[
@@ -1653,26 +1653,26 @@ Object.assign(UNITS, {
     {id:"zaftra", ru:"за́втра", en:"tomorrow", tr:"zaftra", pic:"➡️"},
     {id:"dyen", ru:"день", en:"day", tr:"dyen'", pic:"☀️"},
     {id:"kakoy", ru:"како́й", en:"which, what", tr:"kakoy", pic:"❔"},
-    {id:"panidyel_nik", ru:"понеде́льник", en:"Monday", tr:"panidyel'nik", pic:"1️⃣"},
+    {id:"panidyel_nik", ru:"понеде́льник", en:"Monday", tr:"panidyel’nik", pic:"1️⃣"},
     {id:"ftornik", ru:"вто́рник", en:"Tuesday", tr:"ftornik", pic:"2️⃣"},
     {id:"srida", ru:"среда́", en:"Wednesday", tr:"srida", pic:"3️⃣"},
     {id:"chitvyerk", ru:"четве́рг", en:"Thursday", tr:"chitvyerk", pic:"4️⃣"},
     {id:"pyatnitsa", ru:"пя́тница", en:"Friday", tr:"pyatnitsa", pic:"5️⃣"},
     {id:"subota", ru:"суббо́та", en:"Saturday", tr:"subota", pic:"6️⃣"},
-    {id:"vaskrisyen_ye", ru:"воскресе́нье", en:"Sunday", tr:"vaskrisyen'ye", pic:"7️⃣"}
+    {id:"vaskrisyen_ye", ru:"воскресе́нье", en:"Sunday", tr:"vaskrisyen’ye", pic:"7️⃣"}
   ],
   groups:[["sivodnya", "zaftra", "dyen", "kakoy"], ["panidyel_nik", "ftornik", "srida", "chitvyerk"], ["pyatnitsa", "subota", "vaskrisyen_ye"]],
   sentences:[
     {ru:"Како́й сего́дня день?", en:"What day is it today?", set:0, src:"T#1643278 Hayabusa"},
-    {ru:"Сего́дня понеде́льник.", en:"It's Monday.", set:0, src:"T#407793 Hellerick"},
+    {ru:"Сего́дня понеде́льник.", en:"It’s Monday.", set:0, src:"T#407793 Hellerick"},
     {ru:"Сего́дня пя́тница.", en:"Today is Friday.", set:0, src:"T#1275197 shanghainese"},
     {ru:"За́втра суббо́та?", en:"Is tomorrow Saturday?", set:0, src:"T#4102540 Selena777"},
-    {ru:"Сего́дня не вто́рник?", en:"Isn't it Tuesday today?", set:0, src:"T#4476266 odexed"},
+    {ru:"Сего́дня не вто́рник?", en:"Isn’t it Tuesday today?", set:0, src:"T#4476266 odexed"},
     {ru:"«Како́й сего́дня день?» — «Среда́».", en:"“What day is it?” “Wednesday.”", set:0, src:"T#4633301 marafon"},
     {ru:"Что ты де́лаешь за́втра?", en:"What are you doing tomorrow?", set:1, src:"T#1036182 saiko"},
-    {ru:"Я сего́дня до́ма.", en:"I'm at home today.", set:1, src:"T#5929519 marafon"},
-    {ru:"Како́й твой люби́мый день?", en:"What's your favourite day?", set:1, src:"T#4747816 odexed"},
-    {ru:"Мой люби́мый день — суббо́та.", en:"My favourite day is Saturday.", set:1, src:"C"},
+    {ru:"Я сего́дня до́ма.", en:"I’m at home today.", set:1, src:"T#5929519 marafon"},
+    {ru:"Како́й твой люби́мый день?", en:"What’s your favorite day?", set:1, src:"T#4747816 odexed"},
+    {ru:"Мой люби́мый день — суббо́та.", en:"My favorite day is Saturday.", set:1, src:"C"},
     {ru:"Сего́дня четве́рг, а за́втра пя́тница.", en:"Today is Thursday, and tomorrow is Friday.", set:1, src:"C"},
     {ru:"Я люблю́ понеде́льник!", en:"I love Monday!", set:1, src:"T#2630053 Olya"}
   ],
@@ -1683,10 +1683,10 @@ Object.assign(UNITS, {
     {who:"misha", ru:"Пя́тница? А за́втра суббо́та? Отли́чно!", en:"Friday? So tomorrow is Saturday? Great!"},
     {q:"What day does Tima say it is?", options:["Friday", "Saturday", "Monday"], answer:0},
     {who:"tima", ru:"Что ты де́лаешь за́втра?", en:"What are you doing tomorrow?"},
-    {who:"misha", ru:"За́втра я гуля́ю в па́рке. А ты?", en:"Tomorrow I'm going for a walk in the park. And you?"},
-    {who:"tima", ru:"Я то́же! А воскресе́нье — мой люби́мый день.", en:"Me too! And Sunday is my favourite day."},
-    {q:"What is Tima's favourite day?", options:["Sunday", "Monday", "Friday"], answer:0},
-    {who:"mama", ru:"Ми́ша, Ти́ма! Сего́дня не пя́тница. Сего́дня четве́рг!", en:"Misha, Tima! Today isn't Friday. Today is Thursday!"},
+    {who:"misha", ru:"За́втра я гуля́ю в па́рке. А ты?", en:"Tomorrow I’m going for a walk in the park. And you?"},
+    {who:"tima", ru:"Я то́же! А воскресе́нье — мой люби́мый день.", en:"Me too! And Sunday is my favorite day."},
+    {q:"What is Tima’s favorite day?", options:["Sunday", "Monday", "Friday"], answer:0},
+    {who:"mama", ru:"Ми́ша, Ти́ма! Сего́дня не пя́тница. Сего́дня четве́рг!", en:"Misha, Tima! Today isn’t Friday. Today is Thursday!"},
     {who:"misha", ru:"Ой!", en:"Oh no!"},
     {who:"tima", ru:"Извини́, Ми́ша!", en:"Sorry, Misha!"},
     {q:"What day is it really?", options:["Thursday", "Friday", "Sunday"], answer:0}
@@ -1697,62 +1697,62 @@ Object.assign(UNITS, {
     {q:"Како́й сего́дня день?", hint:"Say: today is Monday", pic:"📅", a:"Сего́дня понеде́льник."},
     {q:"Сего́дня вто́рник?", hint:"Say: no, today is Wednesday", pic:"3️⃣", a:"Нет, сего́дня среда́."},
     {q:"Како́й за́втра день?", hint:"Say: tomorrow is Saturday", pic:"6️⃣", a:"За́втра суббо́та."},
-    {q:"Како́й твой люби́мый день?", hint:"Say: my favourite day is Sunday", pic:"7️⃣", a:"Мой люби́мый день — воскресе́нье."},
-    {q:"Что ты де́лаешь за́втра?", hint:"Say: tomorrow I'm reading at home", pic:"📖", a:"За́втра я чита́ю до́ма."},
+    {q:"Како́й твой люби́мый день?", hint:"Say: my favorite day is Sunday", pic:"7️⃣", a:"Мой люби́мый день — воскресе́нье."},
+    {q:"Что ты де́лаешь за́втра?", hint:"Say: tomorrow I’m reading at home", pic:"📖", a:"За́втра я чита́ю до́ма."},
     {q:"Сего́дня пя́тница?", hint:"Say: yes, today is Friday", pic:"5️⃣", a:"Да, сего́дня пя́тница."}
   ]},
   15:{title:"The weather", cls:"u15", icon:"⛅", storyTitle:"Snow!", doneLine:"You can talk about the weather!",
   words:[
     {id:"pagoda", ru:"пого́да", en:"weather", tr:"pagoda", pic:"🌤️"},
     {id:"kakaya", ru:"кака́я", en:"which, what (she-words)", tr:"kakaya", pic:"❓"},
-    {id:"holadna", ru:"хо́лодно", en:"it's cold", tr:"holadna", pic:"🥶"},
-    {id:"tiplo", ru:"тепло́", en:"it's warm", tr:"tiplo", pic:"🌡️"},
-    {id:"zharka", ru:"жа́рко", en:"it's hot", tr:"zharka", pic:"🥵"},
+    {id:"holadna", ru:"хо́лодно", en:"it’s cold", tr:"holadna", pic:"🥶"},
+    {id:"tiplo", ru:"тепло́", en:"it’s warm", tr:"tiplo", pic:"🌡️"},
+    {id:"zharka", ru:"жа́рко", en:"it’s hot", tr:"zharka", pic:"🥵"},
     {id:"sontse", ru:"со́лнце", en:"sun", tr:"sontse", pic:"☀️"},
     {id:"snyek", ru:"снег", en:"snow", tr:"snyek", pic:"❄️"},
     {id:"dosht", ru:"дождь", en:"rain", tr:"dosht'", pic:"🌧️"},
-    {id:"idyot", ru:"идёт", en:"is falling, is going", tr:"idyot", pic:"⬇️"},
+    {id:"idyot", ru:"идёт", en:"falling (snow, rain)", tr:"idyot", pic:"⬇️"},
     {id:"zimoy", ru:"зимо́й", en:"in winter", tr:"zimoy", pic:"☃️"},
     {id:"lyetam", ru:"ле́том", en:"in summer", tr:"lyetam", pic:"🏖️"}
   ],
   groups:[["pagoda", "kakaya", "holadna", "tiplo"], ["zharka", "sontse", "snyek", "dosht"], ["idyot", "zimoy", "lyetam"]],
   sentences:[
-    {ru:"Кака́я сего́дня пого́да?", en:"What's the weather like today?", set:0, src:"T#496579 Tonari"},
-    {ru:"Сего́дня хо́лодно.", en:"It's cold today.", set:0, src:"T#2753108 marafon"},
-    {ru:"Снег идёт.", en:"It's snowing.", set:0, src:"T#3022503 sharptoothed"},
-    {ru:"Идёт дождь.", en:"It's raining.", set:0, src:"T#408383 Wadimiy"},
-    {ru:"Сего́дня тепло́.", en:"It's warm today.", set:0, src:"T#788249 Arkadeko"},
-    {ru:"Мне хо́лодно.", en:"I'm cold.", set:0, src:"T#885130 afyodor"},
-    {ru:"Ле́том о́чень жа́рко.", en:"It's very hot in summer.", set:1, src:"T#5151288 marafon"},
-    {ru:"Зимо́й хо́лодно.", en:"It's cold in winter.", set:1, src:"C"},
+    {ru:"Кака́я сего́дня пого́да?", en:"What’s the weather like today?", set:0, src:"T#496579 Tonari"},
+    {ru:"Сего́дня хо́лодно.", en:"It’s cold today.", set:0, src:"T#2753108 marafon"},
+    {ru:"Снег идёт.", en:"It’s snowing.", set:0, src:"T#3022503 sharptoothed"},
+    {ru:"Идёт дождь.", en:"It’s raining.", set:0, src:"T#408383 Wadimiy"},
+    {ru:"Сего́дня тепло́.", en:"It’s warm today.", set:0, src:"T#788249 Arkadeko"},
+    {ru:"Мне хо́лодно.", en:"I’m cold.", set:0, src:"T#885130 afyodor"},
+    {ru:"Ле́том о́чень жа́рко.", en:"It’s very hot in summer.", set:1, src:"T#5151288 marafon"},
+    {ru:"Зимо́й хо́лодно.", en:"It’s cold in winter.", set:1, src:"C"},
     {ru:"Тебе́ жа́рко?", en:"Are you hot?", set:1, src:"T#6683704 marafon"},
-    {ru:"Здесь о́чень хо́лодно.", en:"It's very cold here.", set:1, src:"T#547888 ae5s"},
-    {ru:"Как там пого́да?", en:"How's the weather there?", set:1, src:"T#407509 Hellerick"},
-    {ru:"Сего́дня со́лнечно и тепло́.", en:"Today it's sunny and warm.", set:1, src:"C"}
+    {ru:"Здесь о́чень хо́лодно.", en:"It’s very cold here.", set:1, src:"T#547888 ae5s"},
+    {ru:"Как там пого́да?", en:"How’s the weather there?", set:1, src:"T#407509 Hellerick"},
+    {ru:"Сего́дня со́лнечно и тепло́.", en:"Today it’s sunny and warm.", set:1, src:"C"}
   ],
   blankable:["кака́я", "пого́да", "хо́лодно", "снег", "идёт", "дождь", "тепло́", "ле́том", "жа́рко", "зимо́й", "со́лнечно"],
   story:[
-    {who:"misha", ru:"Ти́ма, кака́я сего́дня пого́да?", en:"Tima, what's the weather like today?"},
-    {who:"tima", ru:"Хо́лодно. Идёт снег!", en:"It's cold. It's snowing!"},
+    {who:"misha", ru:"Ти́ма, кака́я сего́дня пого́да?", en:"Tima, what’s the weather like today?"},
+    {who:"tima", ru:"Хо́лодно. Идёт снег!", en:"It’s cold. It’s snowing!"},
     {who:"misha", ru:"Снег? Отли́чно! Я люблю́ снег!", en:"Snow? Great! I love snow!"},
-    {q:"What's the weather like?", options:["It's snowing.", "It's raining.", "It's hot."], answer:0},
-    {who:"tima", ru:"А я нет. Я люблю́ ле́то. Ле́том тепло́.", en:"I don't. I love summer. It's warm in summer."},
-    {who:"misha", ru:"Ле́том жа́рко! А зимо́й снег.", en:"In summer it's hot! And in winter there's snow."},
+    {q:"What’s the weather like?", options:["It’s snowing.", "It’s raining.", "It’s hot."], answer:0},
+    {who:"tima", ru:"А я нет. Я люблю́ ле́то. Ле́том тепло́.", en:"I don’t. I love summer. It’s warm in summer."},
+    {who:"misha", ru:"Ле́том жа́рко! А зимо́й снег.", en:"In summer it’s hot! And in winter there’s snow."},
     {q:"Which season does Tima love?", options:["summer", "winter", "neither"], answer:0},
-    {who:"mama", ru:"Ми́ша, тебе́ не хо́лодно?", en:"Misha, aren't you cold?"},
-    {who:"misha", ru:"Нет, ма́ма! Мне жа́рко!", en:"No, Mom! I'm hot!"},
-    {who:"tima", ru:"Ой, а мне о́чень хо́лодно!", en:"Oh, but I'm very cold!"},
-    {q:"How do you say “It's cold”?", options:["Хо́лодно.", "Жа́рко.", "Тепло́."], answer:0}
+    {who:"mama", ru:"Ми́ша, тебе́ не хо́лодно?", en:"Misha, aren’t you cold?"},
+    {who:"misha", ru:"Нет, ма́ма! Мне жа́рко!", en:"No, Mom! I’m hot!"},
+    {who:"tima", ru:"Ой, а мне о́чень хо́лодно!", en:"Oh, but I’m very cold!"},
+    {q:"How do you say “It’s cold”?", options:["Хо́лодно.", "Жа́рко.", "Тепло́."], answer:0}
   ],
-  chat:[["l", "Кака́я сего́дня пого́да?", "What's the weather like today?"], ["r", "Сего́дня тепло́ и со́лнечно.", "It's warm and sunny today."], ["l", "А здесь идёт дождь. Где со́лнце?", "And here it's raining. Where's the sun?"], ["r", "Со́лнце здесь, у меня́!", "The sun is here, at my place!"]],
-  tips:["«Хо́лодно» on its own means “It's cold”.", "«Идёт снег» = It's snowing (literally “snow is going”)."],
+  chat:[["l", "Кака́я сего́дня пого́да?", "What’s the weather like today?"], ["r", "Сего́дня тепло́ и со́лнечно.", "It’s warm and sunny today."], ["l", "А здесь идёт дождь. Где со́лнце?", "And here it’s raining. Where’s the sun?"], ["r", "Со́лнце здесь, у меня́!", "The sun is here, at my place!"]],
+  tips:["«Хо́лодно» on its own means “It’s cold”.", "«Идёт снег» = It’s snowing (literally “snow is going”)."],
   qa:[
-    {q:"Кака́я сего́дня пого́да?", hint:"Say: it's cold today", pic:"🥶", a:"Сего́дня хо́лодно."},
-    {q:"Тебе́ хо́лодно?", hint:"Say: no, I'm hot", pic:"🥵", a:"Нет, мне жа́рко."},
-    {q:"Идёт снег?", hint:"Say: no, it's raining", pic:"🌧️", a:"Нет, идёт дождь."},
-    {q:"Кака́я пого́да ле́том?", hint:"Say: in summer it's hot", pic:"🏖️", a:"Ле́том жа́рко."},
+    {q:"Кака́я сего́дня пого́да?", hint:"Say: it’s cold today", pic:"🥶", a:"Сего́дня хо́лодно."},
+    {q:"Тебе́ хо́лодно?", hint:"Say: no, I’m hot", pic:"🥵", a:"Нет, мне жа́рко."},
+    {q:"Идёт снег?", hint:"Say: no, it’s raining", pic:"🌧️", a:"Нет, идёт дождь."},
+    {q:"Кака́я пого́да ле́том?", hint:"Say: in summer it’s hot", pic:"🏖️", a:"Ле́том жа́рко."},
     {q:"Ты лю́бишь снег?", hint:"Say: yes, I love snow", pic:"❄️", a:"Да, я люблю́ снег."},
-    {q:"Сего́дня тепло́?", hint:"Say: yes, it's warm today", pic:"☀️", a:"Да, сего́дня тепло́."}
+    {q:"Сего́дня тепло́?", hint:"Say: yes, it’s warm today", pic:"☀️", a:"Да, сего́дня тепло́."}
   ]},
   16:{title:"Clothes", cls:"u16", icon:"🧢", storyTitle:"Put on your hat!", doneLine:"You can talk about clothes!",
   words:[
@@ -1762,7 +1762,7 @@ Object.assign(UNITS, {
     {id:"sharf", ru:"шарф", en:"scarf", tr:"sharf", pic:"🧣"},
     {id:"krasofki", ru:"кроссо́вки", en:"sneakers", tr:"krasofki", pic:"👟"},
     {id:"dzhinsy", ru:"джи́нсы", en:"jeans", tr:"dzhinsy", pic:"👖"},
-    {id:"plat_ye", ru:"пла́тье", en:"dress", tr:"plat'ye", pic:"👗"},
+    {id:"plat_ye", ru:"пла́тье", en:"dress", tr:"plat’ye", pic:"👗"},
     {id:"novy", ru:"но́вый", en:"new (he-words)", tr:"novy", pic:"✨"},
     {id:"novaya", ru:"но́вая", en:"new (she-words)", tr:"novaya", pic:"🆕"},
     {id:"nadyen", ru:"наде́нь", en:"put on!", tr:"nadyen'", pic:"🫴"},
@@ -1771,8 +1771,8 @@ Object.assign(UNITS, {
   ],
   groups:[["shapka", "kurtka", "futbolka", "sharf"], ["krasofki", "dzhinsy", "plat_ye", "novy"], ["novaya", "nadyen", "shapku", "kurtku"]],
   sentences:[
-    {ru:"Это моя ку́ртка.", en:"That's my jacket.", set:0, src:"T#5999796 odexed"},
-    {ru:"Где твоя ку́ртка?", en:"Where's your jacket?", set:0, src:"T#5465695 marafon"},
+    {ru:"Это моя ку́ртка.", en:"That’s my jacket.", set:0, src:"T#5999796 odexed"},
+    {ru:"Где твоя ку́ртка?", en:"Where’s your jacket?", set:0, src:"T#5465695 marafon"},
     {ru:"Наде́нь ша́пку.", en:"Put on your hat.", set:0, src:"T#4328589 marafon"},
     {ru:"Наде́нь ку́ртку.", en:"Put on a jacket.", set:0, src:"T#4340175 savella"},
     {ru:"Мой шарф си́ний.", en:"My scarf is blue.", set:0, src:"T#4413283 odexed"},
@@ -1786,30 +1786,30 @@ Object.assign(UNITS, {
   ],
   blankable:["ку́ртка", "наде́нь", "ша́пку", "ку́ртку", "шарф", "но́вая", "но́вое", "пла́тье", "мои́", "кроссо́вки", "джи́нсы", "футбо́лка"],
   story:[
-    {who:"mama", ru:"Ми́ша, сего́дня хо́лодно. Наде́нь ша́пку!", en:"Misha, it's cold today. Put on your hat!"},
-    {who:"misha", ru:"Ма́ма, где моя ша́пка?", en:"Mom, where's my hat?"},
+    {who:"mama", ru:"Ми́ша, сего́дня хо́лодно. Наде́нь ша́пку!", en:"Misha, it’s cold today. Put on your hat!"},
+    {who:"misha", ru:"Ма́ма, где моя ша́пка?", en:"Mom, where’s my hat?"},
     {who:"mama", ru:"Твоя ша́пка на столе́.", en:"Your hat is on the table."},
     {q:"Where is the hat?", options:["on the table", "in the bag", "at school"], answer:0},
-    {who:"misha", ru:"Это не моя ша́пка! Моя ша́пка кра́сная.", en:"That's not my hat! My hat is red."},
-    {who:"mama", ru:"Это твоя но́вая ша́пка.", en:"It's your new hat."},
-    {who:"misha", ru:"Но́вая? Отли́чно! А где мой шарф?", en:"New? Great! And where's my scarf?"},
-    {q:"Why doesn't Misha know the hat?", options:["It's new.", "It's Tima's.", "It's blue."], answer:0},
+    {who:"misha", ru:"Это не моя ша́пка! Моя ша́пка кра́сная.", en:"That’s not my hat! My hat is red."},
+    {who:"mama", ru:"Это твоя но́вая ша́пка.", en:"It’s your new hat."},
+    {who:"misha", ru:"Но́вая? Отли́чно! А где мой шарф?", en:"New? Great! And where’s my scarf?"},
+    {q:"Why doesn’t Misha know the hat?", options:["It’s new.", "It’s Tima’s.", "It’s blue."], answer:0},
     {who:"mama", ru:"Шарф здесь. И наде́нь ку́ртку!", en:"The scarf is here. And put on your jacket!"},
-    {who:"misha", ru:"Ма́ма, я бурунду́к! Мне не хо́лодно!", en:"Mom, I'm a chipmunk! I'm not cold!"},
+    {who:"misha", ru:"Ма́ма, я бурунду́к! Мне не хо́лодно!", en:"Mom, I’m a chipmunk! I’m not cold!"},
     {who:"mama", ru:"Ми́ша! Наде́нь ку́ртку!", en:"Misha! Put on your jacket!"},
     {q:"How do you say “Put on your jacket”?", options:["Наде́нь ку́ртку!", "Наде́нь ша́пку!", "Где моя́ ку́ртка?"], answer:0}
   ],
-  chat:[["l", "Э́то твоя́ футбо́лка?", "Is this your T-shirt?"], ["r", "Да, э́то моя́ но́вая футбо́лка.", "Yes, it's my new T-shirt."], ["l", "Отли́чно! А шарф но́вый?", "Great! And is the scarf new?"], ["r", "Нет, шарф не но́вый.", "No, the scarf isn't new."]],
+  chat:[["l", "Э́то твоя́ футбо́лка?", "Is this your T-shirt?"], ["r", "Да, э́то моя́ но́вая футбо́лка.", "Yes, it’s my new T-shirt."], ["l", "Отли́чно! А шарф но́вый?", "Great! And is the scarf new?"], ["r", "Нет, шарф не но́вый.", "No, the scarf isn’t new."]],
   tips:["After «наде́нь» (put on!), she-words change -а to -у: ша́пка → ша́пку, like ма́ма → ма́му."],
   qa:[
     {q:"Где твоя́ ша́пка?", hint:"Say: my hat is on the table", pic:"🧢", a:"Моя́ ша́пка на столе́."},
-    {q:"Э́то твоя́ ку́ртка?", hint:"Say: yes, it's my jacket", pic:"🧥", a:"Да, э́то моя́ ку́ртка."},
+    {q:"Э́то твоя́ ку́ртка?", hint:"Say: yes, it’s my jacket", pic:"🧥", a:"Да, э́то моя́ ку́ртка."},
     {q:"Сего́дня хо́лодно.", hint:"Tell a friend: put on your hat!", pic:"🥶", a:"Наде́нь ша́пку!"},
-    {q:"Э́то но́вое пла́тье?", hint:"Say: yes, it's a new dress", pic:"👗", a:"Да, э́то но́вое пла́тье."},
+    {q:"Э́то но́вое пла́тье?", hint:"Say: yes, it’s a new dress", pic:"👗", a:"Да, э́то но́вое пла́тье."},
     {q:"Како́го цве́та твой шарф?", hint:"Say: my scarf is blue", pic:"🧣", a:"Мой шарф си́ний."},
     {q:"Э́то твои́ кроссо́вки?", hint:"Say: yes, these are my sneakers", pic:"👟", a:"Да, э́то мои́ кроссо́вки."}
   ]},
-  17:{title:"I don't feel well", cls:"u17", icon:"🤒", storyTitle:"The big cake", doneLine:"You can say what hurts!",
+  17:{title:"I don’t feel well", cls:"u17", icon:"🤒", storyTitle:"The big cake", doneLine:"You can say what hurts!",
   words:[
     {id:"galava", ru:"голова́", en:"head", tr:"galava", pic:"🙆"},
     {id:"ruka", ru:"рука́", en:"hand, arm", tr:"ruka", pic:"✋"},
@@ -1817,7 +1817,7 @@ Object.assign(UNITS, {
     {id:"zhivot", ru:"живо́т", en:"tummy", tr:"zhivot", pic:"🫃"},
     {id:"ukha", ru:"у́хо", en:"ear", tr:"ukha", pic:"👂"},
     {id:"balit", ru:"боли́т", en:"hurts", tr:"balit", pic:"🤕"},
-    {id:"bol_na", ru:"бо́льно", en:"it hurts", tr:"bol'na", pic:"😣"},
+    {id:"bol_na", ru:"бо́льно", en:"it hurts", tr:"bol’na", pic:"😣"},
     {id:"vrach", ru:"врач", en:"doctor", tr:"vrach", pic:"🩺"},
     {id:"ustal", ru:"уста́л", en:"tired (boy)", tr:"ustal", pic:"🥱"},
     {id:"ustala", ru:"уста́ла", en:"tired (girl)", tr:"ustala", pic:"😩"}
@@ -1828,9 +1828,9 @@ Object.assign(UNITS, {
     {ru:"Где боли́т?", en:"Where does it hurt?", set:0, src:"T#3019937 marafon"},
     {ru:"Рука́ боли́т?", en:"Does your arm hurt?", set:0, src:"T#5546794 marafon"},
     {ru:"О́чень бо́льно?", en:"Does it hurt a lot?", set:0, src:"T#1870951 soweli_Elepanto"},
-    {ru:"Я уста́л!", en:"I'm tired! (boy)", set:0, src:"T#2651902 Olya"},
+    {ru:"Я уста́л!", en:"I’m tired! (boy)", set:0, src:"T#2651902 Olya"},
     {ru:"Ты уста́ла?", en:"Are you tired? (to a girl)", set:0, src:"T#2619490 Olya"},
-    {ru:"Как твоя нога́?", en:"How's your leg?", set:1, src:"T#3746914 alexdiment"},
+    {ru:"Как твоя нога́?", en:"How’s your leg?", set:1, src:"T#3746914 alexdiment"},
     {ru:"Ты врач?", en:"Are you a doctor?", set:1, src:"T#1438251 Avelesy"},
     {ru:"У меня́ боли́т живо́т.", en:"I have a tummy ache.", set:1, src:"A#3794582 marafon"},
     {ru:"У тебя́ боли́т у́хо?", en:"Does your ear hurt?", set:1, src:"C"},
@@ -1841,24 +1841,24 @@ Object.assign(UNITS, {
   story:[
     {who:"mama", ru:"Ми́ша, что боли́т?", en:"Misha, what hurts?"},
     {who:"misha", ru:"Ма́ма, у меня́ боли́т живо́т.", en:"Mom, my tummy hurts."},
-    {who:"mama", ru:"Живо́т? А где торт?", en:"Your tummy? And where's the cake?"},
+    {who:"mama", ru:"Живо́т? А где торт?", en:"Your tummy? And where’s the cake?"},
     {who:"misha", ru:"Како́й торт?", en:"What cake?"},
     {q:"What hurts?", options:["his tummy", "his head", "his ear"], answer:0},
     {who:"mama", ru:"Большо́й торт! Здесь, на столе́!", en:"The big cake! Here, on the table!"},
     {who:"misha", ru:"Ой... Извини́, ма́ма.", en:"Oops… Sorry, Mom."},
-    {q:"Why does Misha's tummy hurt?", options:["He ate the big cake.", "He played soccer.", "He is cold."], answer:0},
-    {who:"papa", ru:"Ми́ша, я врач. Где боли́т? Здесь?", en:"Misha, I'm the doctor. Where does it hurt? Here?"},
-    {who:"misha", ru:"Да, здесь. Па́па, я уста́л.", en:"Yes, here. Dad, I'm tired."},
+    {q:"Why does Misha’s tummy hurt?", options:["He ate the big cake.", "He played soccer.", "He is cold."], answer:0},
+    {who:"papa", ru:"Ми́ша, я врач. Где боли́т? Здесь?", en:"Misha, I’m the doctor. Where does it hurt? Here?"},
+    {who:"misha", ru:"Да, здесь. Па́па, я уста́л.", en:"Yes, here. Dad, I’m tired."},
     {who:"papa", ru:"Споко́йной но́чи, Ми́ша! За́втра — я́блоко, а не торт.", en:"Good night, Misha! Tomorrow: an apple, not cake."},
-    {q:"How does a boy say “I'm tired”?", options:["Я уста́л.", "Я уста́ла.", "Мне бо́льно."], answer:0}
+    {q:"How does a boy say “I’m tired”?", options:["Я уста́л.", "Я уста́ла.", "Мне бо́льно."], answer:0}
   ],
   chat:[["l", "Как дела́?", "How are you?"], ["r", "Пло́хо. У меня́ боли́т голова́.", "Bad. My head hurts."], ["l", "Ой! О́чень бо́льно?", "Oh no! Does it hurt a lot?"], ["r", "Немно́го.", "A little."]],
   tips:["«У меня́ боли́т голова́» = My head hurts (literally “at me hurts the head”)."],
   qa:[
     {q:"Что боли́т?", hint:"Say: my head hurts", pic:"🤕", a:"У меня́ боли́т голова́."},
     {q:"Где боли́т?", hint:"Say: it hurts here", pic:"👉", a:"Здесь боли́т."},
-    {q:"Ты уста́л?", hint:"You're a boy. Say: yes, I'm tired", pic:"🥱", a:"Да, я уста́л."},
-    {q:"Ты уста́ла?", hint:"You're a girl. Say: no, I'm not tired", pic:"💪", a:"Нет, я не уста́ла."},
+    {q:"Ты уста́л?", hint:"You’re a boy. Say: yes, I’m tired", pic:"🥱", a:"Да, я уста́л."},
+    {q:"Ты уста́ла?", hint:"You’re a girl. Say: no, I’m not tired", pic:"💪", a:"Нет, я не уста́ла."},
     {q:"Рука́ боли́т?", hint:"Say: no, my leg hurts", pic:"🦵", a:"Нет, нога́ боли́т."},
     {q:"Ты врач?", hint:"Say: no, my mom is a doctor", pic:"🩺", a:"Нет, моя́ ма́ма врач."}
   ]},
@@ -1869,61 +1869,61 @@ Object.assign(UNITS, {
     {id:"vannaya", ru:"ва́нная", en:"bathroom", tr:"vannaya", pic:"🛁"},
     {id:"akno", ru:"окно́", en:"window", tr:"akno", pic:"🪟"},
     {id:"dvyer", ru:"дверь", en:"door", tr:"dvyer'", pic:"🚪"},
-    {id:"divan", ru:"дива́н", en:"sofa", tr:"divan", pic:"🛋️"},
-    {id:"na_divanye", ru:"на дива́не", en:"on the sofa", tr:"na divanye", pic:"🛋️"},
+    {id:"divan", ru:"дива́н", en:"couch", tr:"divan", pic:"🛋️"},
+    {id:"na_divanye", ru:"на дива́не", en:"on the couch", tr:"na divanye", pic:"🛋️"},
     {id:"kravat", ru:"крова́ть", en:"bed", tr:"kravat'", pic:"🛏️"},
     {id:"na_kravati", ru:"на крова́ти", en:"on the bed", tr:"na kravati", pic:"😴"},
-    {id:"shkaf", ru:"шкаф", en:"wardrobe, closet", tr:"shkaf", pic:"🚪"},
-    {id:"f_shkafu", ru:"в шкафу́", en:"in the wardrobe", tr:"f shkafu", pic:"👚"},
+    {id:"shkaf", ru:"шкаф", en:"closet", tr:"shkaf", pic:"🚪"},
+    {id:"f_shkafu", ru:"в шкафу́", en:"in the closet", tr:"f shkafu", pic:"👚"},
     {id:"lampa", ru:"ла́мпа", en:"lamp", tr:"lampa", pic:"💡"}
   ],
   groups:[["kukhnya", "na_kukhnye", "vannaya", "akno"], ["dvyer", "divan", "na_divanye", "kravat"], ["na_kravati", "shkaf", "f_shkafu", "lampa"]],
   sentences:[
     {ru:"Ма́ма на ку́хне.", en:"Mom is in the kitchen.", set:0, src:"T#4511266 sharptoothed"},
-    {ru:"Где ку́хня?", en:"Where's the kitchen?", set:0, src:"T#2900921 odexed"},
+    {ru:"Где ку́хня?", en:"Where’s the kitchen?", set:0, src:"T#2900921 odexed"},
     {ru:"Это ва́нная.", en:"This is the bathroom.", set:0, src:"T#5472316 marafon"},
-    {ru:"Что в шкафу́?", en:"What's in the wardrobe?", set:0, src:"T#5472363 marafon"},
-    {ru:"Я в ва́нной.", en:"I'm in the bathroom.", set:0, src:"T#610278 Vokabre"},
-    {ru:"Кот спит на дива́не.", en:"The cat is sleeping on the sofa.", set:0, src:"A#658530 Aleksej"},
-    {ru:"Где дверь?", en:"Where's the door?", set:1, src:"T#3253800 marafon"},
-    {ru:"На ку́хне жа́рко.", en:"It's hot in the kitchen.", set:1, src:"T#7083083 marafon"},
-    {ru:"Это но́вый дива́н?", en:"Is that a new sofa?", set:1, src:"A#5552467 marafon"},
-    {ru:"Моя ку́ртка в шкафу́.", en:"My jacket is in the wardrobe.", set:1, src:"C"},
+    {ru:"Что в шкафу́?", en:"What’s in the closet?", set:0, src:"T#5472363 marafon"},
+    {ru:"Я в ва́нной.", en:"I’m in the bathroom.", set:0, src:"T#610278 Vokabre"},
+    {ru:"Кот спит на дива́не.", en:"The cat is sleeping on the couch.", set:0, src:"A#658530 Aleksej"},
+    {ru:"Где дверь?", en:"Where’s the door?", set:1, src:"T#3253800 marafon"},
+    {ru:"На ку́хне жа́рко.", en:"It’s hot in the kitchen.", set:1, src:"T#7083083 marafon"},
+    {ru:"Это но́вый дива́н?", en:"Is that a new couch?", set:1, src:"A#5552467 marafon"},
+    {ru:"Моя ку́ртка в шкафу́.", en:"My jacket is in the closet.", set:1, src:"C"},
     {ru:"Кни́га на крова́ти.", en:"The book is on the bed.", set:1, src:"C"},
-    {ru:"Окно́ здесь, а шкаф там.", en:"The window is here, and the wardrobe is over there.", set:1, src:"C"}
+    {ru:"Окно́ здесь, а шкаф там.", en:"The window is here, and the closet is over there.", set:1, src:"C"}
   ],
   blankable:["ку́хня", "ва́нная", "дверь", "дива́н", "окно́", "шкаф"],
   story:[
     {who:"misha", ru:"Ти́ма! Где ты?", en:"Tima! Where are you?"},
     {who:"mama", ru:"Ти́ма на ку́хне?", en:"Is Tima in the kitchen?"},
-    {who:"misha", ru:"Нет, на ку́хне кот.", en:"No, the cat's in the kitchen."},
-    {who:"misha", ru:"Ти́ма в ва́нной? Нет. На дива́не? Нет.", en:"Is Tima in the bathroom? No. On the sofa? No."},
+    {who:"misha", ru:"Нет, на ку́хне кот.", en:"No, the cat’s in the kitchen."},
+    {who:"misha", ru:"Ти́ма в ва́нной? Нет. На дива́не? Нет.", en:"Is Tima in the bathroom? No. On the couch? No."},
     {q:"Who is in the kitchen?", options:["the cat", "Tima", "Dad"], answer:0},
-    {who:"papa", ru:"Ми́ша, а что в шкафу́?", en:"Misha, and what's in the wardrobe?"},
-    {who:"misha", ru:"В шкафу́? Моя ку́ртка, ша́пка... и Ти́ма!", en:"In the wardrobe? My jacket, my hat… and Tima!"},
-    {q:"Where is Tima?", options:["in the wardrobe", "on the bed", "in the bathroom"], answer:0},
-    {who:"tima", ru:"Приве́т, Ми́ша! Я здесь!", en:"Hi, Misha! I'm here!"},
-    {who:"misha", ru:"Ти́ма, это не крова́ть!", en:"Tima, this isn't a bed!"},
-    {who:"tima", ru:"Здесь тепло́. Я сплю!", en:"It's warm in here. I'm sleeping!"},
-    {q:"How do you say “on the sofa”?", options:["на дива́не", "на ку́хне", "в шкафу́"], answer:0}
+    {who:"papa", ru:"Ми́ша, а что в шкафу́?", en:"Misha, and what’s in the closet?"},
+    {who:"misha", ru:"В шкафу́? Моя ку́ртка, ша́пка... и Ти́ма!", en:"In the closet? My jacket, my hat… and Tima!"},
+    {q:"Where is Tima?", options:["in the closet", "on the bed", "in the bathroom"], answer:0},
+    {who:"tima", ru:"Приве́т, Ми́ша! Я здесь!", en:"Hi, Misha! I’m here!"},
+    {who:"misha", ru:"Ти́ма, это не крова́ть!", en:"Tima, this isn’t a bed!"},
+    {who:"tima", ru:"Здесь тепло́. Я сплю!", en:"It’s warm in here. I’m sleeping!"},
+    {q:"How do you say “on the couch”?", options:["на дива́не", "на ку́хне", "в шкафу́"], answer:0}
   ],
-  chat:[["l", "Где ма́ма?", "Where's Mom?"], ["r", "Ма́ма на ку́хне.", "Mom is in the kitchen."], ["l", "А па́па?", "And Dad?"], ["r", "Па́па на дива́не, смо́трит телеви́зор.", "Dad's on the sofa, watching TV."]],
+  chat:[["l", "Где ма́ма?", "Where’s Mom?"], ["r", "Ма́ма на ку́хне.", "Mom is in the kitchen."], ["l", "А па́па?", "And Dad?"], ["r", "Па́па на дива́не, смо́трит телеви́зор.", "Dad’s on the couch, watching TV."]],
   tips:["To say where something is, use «на» or «в» and change the ending: на ку́хне, на дива́не, на крова́ти; в ва́нной.", "«В шкафу́» is a special form.", "Learn each place together with its «на» or «в»."],
   qa:[
     {q:"Где ма́ма?", hint:"Say: Mom is in the kitchen", pic:"🍳", a:"Ма́ма на ку́хне."},
-    {q:"Где кот?", hint:"Say: the cat is on the sofa", pic:"🛋️", a:"Кот на дива́не."},
-    {q:"Где твоя́ ку́ртка?", hint:"Say: my jacket is in the wardrobe", pic:"🧥", a:"Моя́ ку́ртка в шкафу́."},
+    {q:"Где кот?", hint:"Say: the cat is on the couch", pic:"🛋️", a:"Кот на дива́не."},
+    {q:"Где твоя́ ку́ртка?", hint:"Say: my jacket is in the closet", pic:"🧥", a:"Моя́ ку́ртка в шкафу́."},
     {q:"Где кни́га?", hint:"Say: the book is on the bed", pic:"🛏️", a:"Кни́га на крова́ти."},
-    {q:"Где ты?", hint:"Say: I'm in the bathroom", pic:"🛁", a:"Я в ва́нной."},
-    {q:"Э́то но́вая ла́мпа?", hint:"Say: yes, it's a new lamp", pic:"💡", a:"Да, э́то но́вая ла́мпа."}
+    {q:"Где ты?", hint:"Say: I’m in the bathroom", pic:"🛁", a:"Я в ва́нной."},
+    {q:"Э́то но́вая ла́мпа?", hint:"Say: yes, it’s a new lamp", pic:"💡", a:"Да, э́то но́вая ла́мпа."}
   ]},
-  19:{title:"Breakfast, lunch, dinner", cls:"u19", icon:"🥣", storyTitle:"Porridge or pancakes?", doneLine:"You can talk about breakfast and dinner!",
+  19:{title:"Breakfast, lunch, dinner", cls:"u19", icon:"🥣", storyTitle:"Oatmeal or pancakes?", doneLine:"You can talk about breakfast and dinner!",
   words:[
     {id:"zaftrak", ru:"за́втрак", en:"breakfast", tr:"zaftrak", pic:"🍳"},
     {id:"abyet", ru:"обе́д", en:"lunch", tr:"abyet", pic:"🍲"},
     {id:"uzhin", ru:"у́жин", en:"dinner", tr:"uzhin", pic:"🍽️"},
     {id:"na_zaftrak", ru:"на за́втрак", en:"for breakfast", tr:"na zaftrak", pic:"🌅"},
-    {id:"kasha", ru:"ка́ша", en:"porridge", tr:"kasha", pic:"🥣"},
+    {id:"kasha", ru:"ка́ша", en:"oatmeal", tr:"kasha", pic:"🥣"},
     {id:"sup", ru:"суп", en:"soup", tr:"sup", pic:"🍜"},
     {id:"bliny", ru:"блины́", en:"pancakes", tr:"bliny", pic:"🥞"},
     {id:"myasa", ru:"мя́со", en:"meat", tr:"myasa", pic:"🥩"},
@@ -1934,39 +1934,39 @@ Object.assign(UNITS, {
   ],
   groups:[["zaftrak", "abyet", "uzhin", "na_zaftrak"], ["kasha", "sup", "bliny", "myasa"], ["kartoshka", "yem", "yesh", "yest2"]],
   sentences:[
-    {ru:"Что на за́втрак?", en:"What's for breakfast?", set:0, src:"T#5475263 marafon"},
-    {ru:"Что на у́жин?", en:"What's for dinner?", set:0, src:"T#2076136 marafon"},
+    {ru:"Что на за́втрак?", en:"What’s for breakfast?", set:0, src:"T#5475263 marafon"},
+    {ru:"Что на у́жин?", en:"What’s for dinner?", set:0, src:"T#2076136 marafon"},
     {ru:"Что ты ешь?", en:"What are you eating?", set:0, src:"T#2037575 Balamax"},
-    {ru:"Я ем моро́женое.", en:"I'm eating ice cream.", set:0, src:"T#7851495 marafon"},
+    {ru:"Я ем моро́женое.", en:"I’m eating ice cream.", set:0, src:"T#7851495 marafon"},
     {ru:"Ты ешь мя́со?", en:"Do you eat meat?", set:0, src:"T#1776848 Balamax"},
     {ru:"У́жин на столе́.", en:"Dinner is on the table.", set:0, src:"T#3950122 sharptoothed"},
     {ru:"Хо́чешь суп?", en:"Do you want soup?", set:1, src:"T#2743780 afyodor"},
-    {ru:"На за́втрак я ем ка́шу.", en:"For breakfast I eat porridge.", set:1, src:"C"},
+    {ru:"На за́втрак я ем ка́шу.", en:"For breakfast I eat oatmeal.", set:1, src:"C"},
     {ru:"Ба́бушка де́лает блины́.", en:"Grandma is making pancakes.", set:1, src:"A#3611133 sharptoothed"},
     {ru:"Кот ест.", en:"The cat is eating.", set:1, src:"T#658571 Aleksej"},
     {ru:"На обе́д суп и карто́шка.", en:"Soup and potatoes for lunch.", set:1, src:"C"},
-    {ru:"Где мой за́втрак?", en:"Where's my breakfast?", set:1, src:"T#5473936 marafon"}
+    {ru:"Где мой за́втрак?", en:"Where’s my breakfast?", set:1, src:"T#5473936 marafon"}
   ],
   blankable:["за́втрак", "у́жин", "ешь", "ем", "мя́со", "суп", "ка́шу", "блины́", "ест", "обе́д", "карто́шка"],
   story:[
-    {who:"misha", ru:"Ма́ма, что на за́втрак?", en:"Mom, what's for breakfast?"},
-    {who:"mama", ru:"На за́втрак ка́ша.", en:"Porridge for breakfast."},
-    {who:"misha", ru:"Ка́ша? Ой... А блины́?", en:"Porridge? Oh… What about pancakes?"},
-    {q:"What's for breakfast?", options:["porridge", "pancakes", "soup"], answer:0},
+    {who:"misha", ru:"Ма́ма, что на за́втрак?", en:"Mom, what’s for breakfast?"},
+    {who:"mama", ru:"На за́втрак ка́ша.", en:"Oatmeal for breakfast."},
+    {who:"misha", ru:"Ка́ша? Ой... А блины́?", en:"Oatmeal? Oh… What about pancakes?"},
+    {q:"What’s for breakfast?", options:["oatmeal", "pancakes", "soup"], answer:0},
     {who:"mama", ru:"Блины́ на у́жин.", en:"Pancakes are for dinner."},
-    {who:"tima", ru:"Я ем ка́шу. Вку́сно!", en:"I'm eating porridge. Yummy!"},
-    {who:"misha", ru:"Хорошо́, я то́же хочу́ ка́шу.", en:"OK, I want porridge too."},
-    {q:"Who says the porridge is yummy?", options:["Tima", "Misha", "Mom"], answer:0},
+    {who:"tima", ru:"Я ем ка́шу. Вку́сно!", en:"I’m eating oatmeal. Yummy!"},
+    {who:"misha", ru:"Хорошо́, я то́же хочу́ ка́шу.", en:"OK, I want oatmeal too."},
+    {q:"Who says the oatmeal is yummy?", options:["Tima", "Misha", "Mom"], answer:0},
     {who:"mama", ru:"Ми́ша, Ти́ма, у́жин! Блины́ на столе́!", en:"Misha, Tima, dinner! The pancakes are on the table!"},
-    {who:"misha", ru:"Блины́! Я ем, ем, ем!", en:"Pancakes! I'm eating and eating and eating!"},
+    {who:"misha", ru:"Блины́! Я ем, ем, ем!", en:"Pancakes! I’m eating and eating and eating!"},
     {who:"tima", ru:"Ми́ша! А я?", en:"Misha! What about me?"},
-    {q:"How do you say “I eat porridge”?", options:["Я ем ка́шу.", "Ты ешь ка́шу?", "Ма́ма ест ка́шу."], answer:0}
+    {q:"How do you say “I eat oatmeal”?", options:["Я ем ка́шу.", "Ты ешь ка́шу?", "Ма́ма ест ка́шу."], answer:0}
   ],
-  chat:[["l", "Что ты ешь на за́втрак?", "What do you eat for breakfast?"], ["r", "Я ем ка́шу. А ты?", "I eat porridge. And you?"], ["l", "Я ем хлеб и сыр.", "I eat bread and cheese."], ["r", "Вку́сно!", "Yummy!"]],
-  tips:["«Есть» (to eat) is irregular: я ем, ты ешь, он ест.", "Don't mix it up with «есть» from «у меня́ есть»!"],
+  chat:[["l", "Что ты ешь на за́втрак?", "What do you eat for breakfast?"], ["r", "Я ем ка́шу. А ты?", "I eat oatmeal. And you?"], ["l", "Я ем хлеб и сыр.", "I eat bread and cheese."], ["r", "Вку́сно!", "Yummy!"]],
+  tips:["«Есть» (to eat) is irregular: я ем, ты ешь, он ест.", "Don’t mix it up with «есть» from «у меня́ есть»!"],
   qa:[
-    {q:"Что на за́втрак?", hint:"Say: porridge for breakfast", pic:"🥣", a:"На за́втрак ка́ша."},
-    {q:"Что ты ешь?", hint:"Say: I'm eating soup", pic:"🍜", a:"Я ем суп."},
+    {q:"Что на за́втрак?", hint:"Say: oatmeal for breakfast", pic:"🥣", a:"На за́втрак ка́ша."},
+    {q:"Что ты ешь?", hint:"Say: I’m eating soup", pic:"🍜", a:"Я ем суп."},
     {q:"Ты ешь мя́со?", hint:"Say: yes, I eat meat", pic:"🥩", a:"Да, я ем мя́со."},
     {q:"Что на у́жин?", hint:"Say: pancakes for dinner", pic:"🥞", a:"На у́жин блины́."},
     {q:"Хо́чешь суп?", hint:"Say: no, I want potatoes", pic:"🥔", a:"Нет, я хочу́ карто́шку."},
@@ -1979,9 +1979,9 @@ Object.assign(UNITS, {
     {id:"umyeyesh", ru:"уме́ешь", en:"you can", tr:"umyeyesh", pic:"❓"},
     {id:"plavat", ru:"пла́вать", en:"to swim", tr:"plavat'", pic:"🏊"},
     {id:"byegat", ru:"бе́гать", en:"to run", tr:"byegat'", pic:"🏃"},
-    {id:"katat_sa", ru:"ката́ться", en:"to ride, to skate", tr:"katat'sa", pic:"🛼"},
+    {id:"katat_sa", ru:"ката́ться", en:"to ride, to skate", tr:"katat’sa", pic:"🛼"},
     {id:"na_vilasipyedye", ru:"на велосипе́де", en:"on a bike", tr:"na vilasipyedye", pic:"🚴"},
-    {id:"na_kan_kakh", ru:"на конька́х", en:"on skates", tr:"na kan'kakh", pic:"⛸️"},
+    {id:"na_kan_kakh", ru:"на конька́х", en:"on skates", tr:"na kan’kakh", pic:"⛸️"},
     {id:"igrayu", ru:"игра́ю", en:"I play", tr:"igrayu", pic:"🎮"},
     {id:"igrayesh", ru:"игра́ешь", en:"you play", tr:"igrayesh", pic:"🕹️"},
     {id:"f_khakyey", ru:"в хокке́й", en:"(play) hockey", tr:"f khakyey", pic:"🏒"},
@@ -2009,7 +2009,7 @@ Object.assign(UNITS, {
     {who:"misha", ru:"Да! Я о́чень люблю́ хокке́й.", en:"Yes! I really love hockey."},
     {q:"Can Tima skate?", options:["No", "Yes", "A little"], answer:0},
     {who:"tima", ru:"А я уме́ю игра́ть в ша́хматы.", en:"And I can play chess."},
-    {who:"misha", ru:"В ша́хматы? Это не спорт!", en:"Chess? That's not a sport!"},
+    {who:"misha", ru:"В ша́хматы? Это не спорт!", en:"Chess? That’s not a sport!"},
     {who:"tima", ru:"Это спорт!", en:"It is a sport!"},
     {q:"What can Tima do?", options:["play chess", "skate", "swim"], answer:0},
     {who:"misha", ru:"Хорошо́! Сего́дня ша́хматы, а за́втра хокке́й!", en:"OK! Chess today, and hockey tomorrow!"},
@@ -2024,7 +2024,7 @@ Object.assign(UNITS, {
     {q:"Ты игра́ешь в ша́хматы?", hint:"Say: no, I play hockey", pic:"🏒", a:"Нет, я игра́ю в хокке́й."},
     {q:"Ты уме́ешь ката́ться на велосипе́де?", hint:"Say: yes, I can", pic:"🚴", a:"Да, уме́ю."},
     {q:"Ты лю́бишь бе́гать?", hint:"Say: yes, I love running", pic:"🏃", a:"Да, я люблю́ бе́гать."},
-    {q:"Ты уме́ешь ката́ться на конька́х?", hint:"Say: no, I can't", pic:"⛸️", a:"Нет, не уме́ю."}
+    {q:"Ты уме́ешь ката́ться на конька́х?", hint:"Say: no, I can’t", pic:"⛸️", a:"Нет, не уме́ю."}
   ]}
 });
 Object.assign(UNITS, {
@@ -2197,7 +2197,7 @@ Object.assign(UNITS, {
    },
    {
     "ru": "Сего́дня конце́рт!",
-    "en": "There's a concert today!",
+    "en": "There’s a concert today!",
     "set": 1,
     "src": "C"
    },
@@ -2215,13 +2215,13 @@ Object.assign(UNITS, {
    },
    {
     "ru": "Не волну́йся!",
-    "en": "Don't worry!",
+    "en": "Don’t worry!",
     "set": 1,
     "src": "C"
    },
    {
     "ru": "Я не уме́ю петь.",
-    "en": "I can't sing.",
+    "en": "I can’t sing.",
     "set": 1,
     "src": "C"
    }
@@ -2241,12 +2241,12 @@ Object.assign(UNITS, {
    {
     "who": "misha",
     "ru": "Ти́ма, сего́дня конце́рт!",
-    "en": "Tima, there's a concert today!"
+    "en": "Tima, there’s a concert today!"
    },
    {
     "who": "tima",
     "ru": "Конце́рт? Я не уме́ю петь.",
-    "en": "A concert? I can't sing."
+    "en": "A concert? I can’t sing."
    },
    {
     "who": "misha",
@@ -2299,7 +2299,7 @@ Object.assign(UNITS, {
    {
     "who": "mama",
     "ru": "Спаси́бо, Ми́ша! Ти́ма, не волну́йся! Я пою́ гро́мко!",
-    "en": "Thank you, Misha! Tima, don't worry! I sing loudly!"
+    "en": "Thank you, Misha! Tima, don’t worry! I sing loudly!"
    },
    {
     "q": "How do you say “I play the guitar”?",
@@ -2336,7 +2336,7 @@ Object.assign(UNITS, {
   "tips": [
    "«Игра́ть на гита́ре» = to play the guitar. Russian says “on the guitar”: «на».",
    "«Пою́, поёшь, поёт»: the stress jumps, and «ё» is always stressed.",
-   "«Не волну́йся!» = Don't worry! You say it to a friend (ты). To an adult you say «Не волну́йтесь!»"
+   "«Не волну́йся!» = Don’t worry! You say it to a friend (ты). To an adult you say «Не волну́йтесь!»"
   ],
   "qa": [
    {
@@ -2371,7 +2371,7 @@ Object.assign(UNITS, {
    },
    {
     "q": "Что сего́дня?",
-    "hint": "Say: there's a concert today",
+    "hint": "Say: there’s a concert today",
     "pic": "🎪",
     "a": "Сего́дня конце́рт."
    }
@@ -2464,7 +2464,7 @@ Object.assign(UNITS, {
    {
     "id": "nye_znayu",
     "ru": "не зна́ю",
-    "en": "I don't know",
+    "en": "I don’t know",
     "tr": "nye znayu",
     "pic": "<img class='wp' src='img/3bbc49966e60.webp' alt=''>"
    }
@@ -2498,13 +2498,13 @@ Object.assign(UNITS, {
    },
    {
     "ru": "Почему́ ты не игра́ешь?",
-    "en": "Why aren't you playing?",
+    "en": "Why aren’t you playing?",
     "set": 0,
     "src": "C"
    },
    {
     "ru": "Потому́ что я уста́л.",
-    "en": "Because I'm tired.",
+    "en": "Because I’m tired.",
     "set": 0,
     "src": "C"
    },
@@ -2552,7 +2552,7 @@ Object.assign(UNITS, {
    },
    {
     "ru": "Я не зна́ю. А ты зна́ешь?",
-    "en": "I don't know. Do you?",
+    "en": "I don’t know. Do you?",
     "set": 1,
     "src": "C"
    },
@@ -2589,10 +2589,10 @@ Object.assign(UNITS, {
    {
     "who": "tima",
     "ru": "Э́то не мой рюкза́к. Я не зна́ю.",
-    "en": "This is not my backpack. I don't know."
+    "en": "This is not my backpack. I don’t know."
    },
    {
-    "q": "Is the backpack Tima's?",
+    "q": "Is the backpack Tima’s?",
     "options": [
      "No",
      "Yes",
@@ -2618,14 +2618,14 @@ Object.assign(UNITS, {
    {
     "who": "papa",
     "ru": "Потому́ что я до́ма.",
-    "en": "Because I'm home."
+    "en": "Because I’m home."
    },
    {
     "q": "Whose backpack is it?",
     "options": [
-     "Dad's",
-     "Tima's",
-     "Mom's"
+     "Dad’s",
+     "Tima’s",
+     "Mom’s"
     ],
     "answer": 0
    },
@@ -2645,7 +2645,7 @@ Object.assign(UNITS, {
     "en": "OK! Here is your bag, Mom."
    },
    {
-    "q": "How do you say “I don't know”?",
+    "q": "How do you say “I don’t know”?",
     "options": [
      "Я не зна́ю.",
      "Я зна́ю.",
@@ -2668,7 +2668,7 @@ Object.assign(UNITS, {
    [
     "l",
     "Я не зна́ю.",
-    "I don't know."
+    "I don’t know."
    ],
    [
     "r",
@@ -2683,25 +2683,25 @@ Object.assign(UNITS, {
   "qa": [
    {
     "q": "Чей э́то телефо́н?",
-    "hint": "Say: it's my phone",
+    "hint": "Say: it’s my phone",
     "pic": "📱",
     "a": "Э́то мой телефо́н."
    },
    {
     "q": "Чья э́то су́мка?",
-    "hint": "Say: it's my bag",
+    "hint": "Say: it’s my bag",
     "pic": "👜",
     "a": "Э́то моя́ су́мка."
    },
    {
     "q": "Чьё э́то я́блоко?",
-    "hint": "Say: it's my apple",
+    "hint": "Say: it’s my apple",
     "pic": "🍎",
     "a": "Э́то моё я́блоко."
    },
    {
     "q": "Ты зна́ешь, где па́па?",
-    "hint": "Say: no, I don't know",
+    "hint": "Say: no, I don’t know",
     "pic": "🤷",
     "a": "Нет, я не зна́ю."
    },
@@ -2713,7 +2713,7 @@ Object.assign(UNITS, {
    },
    {
     "q": "Почему́ ты уста́л?",
-    "hint": "Say: because I'm tired",
+    "hint": "Say: because I’m tired",
     "pic": "😴",
     "a": "Потому́ что я уста́л."
    }
@@ -2846,7 +2846,7 @@ Object.assign(UNITS, {
    },
    {
     "ru": "Где ты? Я в кафе́.",
-    "en": "Where are you? I'm at the café.",
+    "en": "Where are you? I’m at the café.",
     "set": 0,
     "src": "C"
    },
@@ -2864,7 +2864,7 @@ Object.assign(UNITS, {
    },
    {
     "ru": "Я в библиоте́ке.",
-    "en": "I'm at the library.",
+    "en": "I’m at the library.",
     "set": 0,
     "src": "C"
    },
@@ -2894,13 +2894,13 @@ Object.assign(UNITS, {
    },
    {
     "ru": "Там у́лица, а здесь кафе́.",
-    "en": "There's a street over there, and a café here.",
+    "en": "There’s a street over there, and a café here.",
     "set": 1,
     "src": "C"
    },
    {
     "ru": "На у́лице хо́лодно.",
-    "en": "It's cold outside.",
+    "en": "It’s cold outside.",
     "set": 1,
     "src": "C"
    }
@@ -2920,7 +2920,7 @@ Object.assign(UNITS, {
    {
     "who": "mama",
     "ru": "Я в магази́не.",
-    "en": "I'm at the store."
+    "en": "I’m at the store."
    },
    {
     "who": "misha",
@@ -2944,7 +2944,7 @@ Object.assign(UNITS, {
    {
     "who": "tima",
     "ru": "Ми́ша, я в кафе́. Я ем торт!",
-    "en": "Misha, I'm at the café. I'm eating cake!"
+    "en": "Misha, I’m at the café. I’m eating cake!"
    },
    {
     "who": "misha",
@@ -2959,7 +2959,7 @@ Object.assign(UNITS, {
    {
     "who": "misha",
     "ru": "Я на у́лице. Здесь хо́лодно!",
-    "en": "I'm outside. It's cold here!"
+    "en": "I’m outside. It’s cold here!"
    },
    {
     "q": "Where is Tima?",
@@ -2978,10 +2978,10 @@ Object.assign(UNITS, {
    {
     "who": "misha",
     "ru": "Нет! Я на у́лице!",
-    "en": "No! I'm outside!"
+    "en": "No! I’m outside!"
    },
    {
-    "q": "How do you say “I'm at the library”?",
+    "q": "How do you say “I’m at the library”?",
     "options": [
      "Я в библиоте́ке.",
      "Я в кино́.",
@@ -2999,12 +2999,12 @@ Object.assign(UNITS, {
    [
     "r",
     "Я в библиоте́ке. А ты?",
-    "I'm at the library. And you?"
+    "I’m at the library. And you?"
    ],
    [
     "l",
     "Я в кафе́. Я ем торт!",
-    "I'm at the café. I'm eating cake!"
+    "I’m at the café. I’m eating cake!"
    ],
    [
     "r",
@@ -3031,13 +3031,13 @@ Object.assign(UNITS, {
    },
    {
     "q": "Ты в кино́?",
-    "hint": "Say: no, I'm at the library",
+    "hint": "Say: no, I’m at the library",
     "pic": "📚",
     "a": "Нет, я в библиоте́ке."
    },
    {
     "q": "Где ты?",
-    "hint": "Say: I'm at the café",
+    "hint": "Say: I’m at the café",
     "pic": "☕",
     "a": "Я в кафе́."
    },
@@ -3072,14 +3072,14 @@ Object.assign(UNITS, {
    {
     "id": "idu",
     "ru": "иду́",
-    "en": "I'm going (on foot)",
+    "en": "I’m going (on foot)",
     "tr": "idu",
     "pic": "<img class='wp' src='img/e5f77c8ef7e6.webp' alt=''>"
    },
    {
     "id": "idyosh",
     "ru": "идёшь",
-    "en": "you're going (on foot)",
+    "en": "you’re going (on foot)",
     "tr": "idyosh",
     "pic": "<img class='wp' src='img/5606f8bb76c6.webp' alt=''>"
    },
@@ -3176,13 +3176,13 @@ Object.assign(UNITS, {
    },
    {
     "ru": "Я иду́ в шко́лу.",
-    "en": "I'm going to school.",
+    "en": "I’m going to school.",
     "set": 0,
     "src": "C"
    },
    {
     "ru": "Я иду́ в магази́н.",
-    "en": "I'm going to the store.",
+    "en": "I’m going to the store.",
     "set": 0,
     "src": "C"
    },
@@ -3194,7 +3194,7 @@ Object.assign(UNITS, {
    },
    {
     "ru": "Я иду́ домо́й.",
-    "en": "I'm going home.",
+    "en": "I’m going home.",
     "set": 0,
     "src": "C"
    },
@@ -3212,7 +3212,7 @@ Object.assign(UNITS, {
    },
    {
     "ru": "Я иду́ в библиоте́ку.",
-    "en": "I'm going to the library.",
+    "en": "I’m going to the library.",
     "set": 1,
     "src": "C"
    },
@@ -3259,12 +3259,12 @@ Object.assign(UNITS, {
    {
     "who": "tima",
     "ru": "Я иду́ в магази́н. А ты?",
-    "en": "I'm going to the store. And you?"
+    "en": "I’m going to the store. And you?"
    },
    {
     "who": "misha",
     "ru": "Я иду́ на стадио́н. Па́па там.",
-    "en": "I'm going to the stadium. Dad is there."
+    "en": "I’m going to the stadium. Dad is there."
    },
    {
     "q": "Where is Misha going?",
@@ -3278,7 +3278,7 @@ Object.assign(UNITS, {
    {
     "who": "tima",
     "ru": "На стадио́н? Я то́же иду́ на стадио́н!",
-    "en": "To the stadium? I'm going to the stadium too!"
+    "en": "To the stadium? I’m going to the stadium too!"
    },
    {
     "who": "misha",
@@ -3288,12 +3288,12 @@ Object.assign(UNITS, {
    {
     "who": "tima",
     "ru": "Нет, на авто́бусе.",
-    "en": "No, I'm taking the bus."
+    "en": "No, I’m taking the bus."
    },
    {
     "who": "misha",
     "ru": "Хорошо́. Вот авто́бус!",
-    "en": "OK. Here's the bus!"
+    "en": "OK. Here’s the bus!"
    },
    {
     "who": "tima",
@@ -3317,10 +3317,10 @@ Object.assign(UNITS, {
    {
     "who": "papa",
     "ru": "Ми́ша, Ти́ма! Я здесь!",
-    "en": "Misha, Tima! I'm here!"
+    "en": "Misha, Tima! I’m here!"
    },
    {
-    "q": "How do you say “I'm going home”?",
+    "q": "How do you say “I’m going home”?",
     "options": [
      "Я иду́ домо́й.",
      "Я иду́ в шко́лу.",
@@ -3338,12 +3338,12 @@ Object.assign(UNITS, {
    [
     "r",
     "Я иду́ в шко́лу. А ты?",
-    "I'm going to school. And you?"
+    "I’m going to school. And you?"
    ],
    [
     "l",
     "Я иду́ домо́й.",
-    "I'm going home."
+    "I’m going home."
    ],
    [
     "r",
@@ -3358,7 +3358,7 @@ Object.assign(UNITS, {
   "qa": [
    {
     "q": "Куда́ ты идёшь?",
-    "hint": "Say: I'm going to school",
+    "hint": "Say: I’m going to school",
     "pic": "🏫",
     "a": "Я иду́ в шко́лу."
    },
@@ -3382,7 +3382,7 @@ Object.assign(UNITS, {
    },
    {
     "q": "Ты идёшь в библиоте́ку?",
-    "hint": "Say: yes, I'm going to the library",
+    "hint": "Say: yes, I’m going to the library",
     "pic": "📚",
     "a": "Да, я иду́ в библиоте́ку."
    },
@@ -3515,7 +3515,7 @@ Object.assign(UNITS, {
    },
    {
     "ru": "Да, э́то моё хо́бби.",
-    "en": "Yes, it's my hobby.",
+    "en": "Yes, it’s my hobby.",
     "set": 0,
     "src": "C"
    },
@@ -3968,7 +3968,7 @@ Object.assign(UNITS, {
    {
     "who": "tima",
     "ru": "Я не гуля́л! Я смотре́л телеви́зор.",
-    "en": "I didn't go for a walk! I watched TV."
+    "en": "I didn’t go for a walk! I watched TV."
    },
    {
     "who": "misha",
@@ -4213,7 +4213,7 @@ Object.assign(UNITS, {
    },
    {
     "ru": "Я е́ду на по́езде.",
-    "en": "I'm going by train.",
+    "en": "I’m going by train.",
     "set": 0,
     "src": "C"
    },
@@ -4225,7 +4225,7 @@ Object.assign(UNITS, {
    },
    {
     "ru": "Я е́ду на мо́ре.",
-    "en": "I'm going to the sea.",
+    "en": "I’m going to the sea.",
     "set": 1,
     "src": "C"
    },
@@ -4279,7 +4279,7 @@ Object.assign(UNITS, {
    {
     "who": "misha",
     "ru": "Я е́ду на мо́ре!",
-    "en": "I'm going to the sea!"
+    "en": "I’m going to the sea!"
    },
    {
     "who": "tima",
@@ -4332,10 +4332,10 @@ Object.assign(UNITS, {
    {
     "who": "tima",
     "ru": "Е́ду!",
-    "en": "I'm coming!"
+    "en": "I’m coming!"
    },
    {
-    "q": "How do you say “I'm going by train”?",
+    "q": "How do you say “I’m going by train”?",
     "options": [
      "Я е́ду на по́езде.",
      "Я е́ду на маши́не.",
@@ -4353,12 +4353,12 @@ Object.assign(UNITS, {
    [
     "r",
     "Я е́ду на мо́ре. А ты?",
-    "I'm going to the sea. And you?"
+    "I’m going to the sea. And you?"
    ],
    [
     "l",
     "Я е́ду на по́езде.",
-    "I'm going by train."
+    "I’m going by train."
    ],
    [
     "r",
@@ -4368,12 +4368,12 @@ Object.assign(UNITS, {
   ],
   "tips": [
    "«Е́хать на» + vehicle: «на по́езде, на маши́не, на авто́бусе». Same «на» as with «на гита́ре».",
-   "«Идти́» is walking, «е́хать» is riding or travelling: «я иду́» / «я е́ду». On a plane Russians fly («лете́ть»), they don't «е́хать». That word comes later."
+   "«Идти́» is walking, «е́хать» is riding or travelling: «я иду́» / «я е́ду». On a plane Russians fly («лете́ть»), they don’t «е́хать». That word comes later."
   ],
   "qa": [
    {
     "q": "Куда́ ты е́дешь?",
-    "hint": "Say: I'm going to the sea",
+    "hint": "Say: I’m going to the sea",
     "pic": "🏖️",
     "a": "Я е́ду на мо́ре."
    },
@@ -4639,22 +4639,22 @@ Object.assign(UNITS, {
    {
     "who": "misha",
     "ru": "Да, э́то мой но́вый велосипе́д. Бы́стрый!",
-    "en": "Yes, it's my new bike. Fast!"
+    "en": "Yes, it’s my new bike. Fast!"
    },
    {
     "who": "tima",
     "ru": "Ми́ша, ты у́мный!",
-    "en": "Misha, you're smart!"
+    "en": "Misha, you’re smart!"
    },
    {
     "who": "misha",
     "ru": "Спаси́бо! А ты весёлый!",
-    "en": "Thanks! And you're cheerful!"
+    "en": "Thanks! And you’re cheerful!"
    },
    {
-    "q": "Is Misha's bike old?",
+    "q": "Is Misha’s bike old?",
     "options": [
-     "No, it's new",
+     "No, it’s new",
      "Yes",
      "Maybe"
     ],
@@ -4739,7 +4739,7 @@ Object.assign(UNITS, {
    },
    {
     "q": "Э́то краси́вая су́мка?",
-    "hint": "Say: yes, it's a beautiful bag",
+    "hint": "Say: yes, it’s a beautiful bag",
     "pic": "👜",
     "a": "Да, э́то краси́вая су́мка."
    }
@@ -4777,7 +4777,7 @@ Object.assign(UNITS, {
     "id": "uchityelnitsa",
     "ru": "учи́тельница",
     "en": "teacher (woman)",
-    "tr": "uchityel'nitsa",
+    "tr": "uchityel’nitsa",
     "pic": "<img class='wp' src='img/bd93d6406389.webp' alt=''>"
    },
    {
@@ -4866,7 +4866,7 @@ Object.assign(UNITS, {
    },
    {
     "ru": "Я в кла́ссе.",
-    "en": "I'm in the classroom.",
+    "en": "I’m in the classroom.",
     "set": 0,
     "src": "C"
    },
@@ -4926,7 +4926,7 @@ Object.assign(UNITS, {
    },
    {
     "ru": "Сейча́с не уро́к. Сейча́с переме́на.",
-    "en": "It's not a lesson now. It's recess now.",
+    "en": "It’s not a lesson now. It’s recess now.",
     "set": 1,
     "src": "C"
    },
@@ -4962,7 +4962,7 @@ Object.assign(UNITS, {
    {
     "who": "misha",
     "ru": "Да, я пишу́.",
-    "en": "Yes, I'm writing."
+    "en": "Yes, I’m writing."
    },
    {
     "q": "What class is it today?",
@@ -4981,12 +4981,12 @@ Object.assign(UNITS, {
    {
     "who": "tima",
     "ru": "Я чита́ю.",
-    "en": "I'm reading."
+    "en": "I’m reading."
    },
    {
     "who": "teacher",
     "ru": "Ти́ма, сейча́с матема́тика!",
-    "en": "Tima, we're doing math now!"
+    "en": "Tima, we’re doing math now!"
    },
    {
     "who": "tima",
@@ -5057,7 +5057,7 @@ Object.assign(UNITS, {
    },
    {
     "q": "Ты в кла́ссе?",
-    "hint": "Say: yes, I'm in the classroom",
+    "hint": "Say: yes, I’m in the classroom",
     "pic": "🏫",
     "a": "Да, я в кла́ссе."
    },
@@ -5081,7 +5081,7 @@ Object.assign(UNITS, {
    },
    {
     "q": "Э́то уро́к?",
-    "hint": "Say: no, it's recess",
+    "hint": "Say: no, it’s recess",
     "pic": "🔔",
     "a": "Нет, э́то переме́на."
    }
@@ -5133,7 +5133,7 @@ Object.assign(UNITS, {
     "id": "osyenyu",
     "ru": "о́сенью",
     "en": "in fall",
-    "tr": "osyen'yu",
+    "tr": "osyen’yu",
     "pic": ""
    },
    {
@@ -5208,19 +5208,19 @@ Object.assign(UNITS, {
    },
    {
     "ru": "Зимо́й хо́лодно.",
-    "en": "It's cold in winter.",
+    "en": "It’s cold in winter.",
     "set": 0,
     "src": "C"
    },
    {
     "ru": "Весно́й тепло́.",
-    "en": "It's warm in spring.",
+    "en": "It’s warm in spring.",
     "set": 0,
     "src": "C"
    },
    {
     "ru": "Ле́том жа́рко.",
-    "en": "It's hot in summer.",
+    "en": "It’s hot in summer.",
     "set": 0,
     "src": "C"
    },
@@ -5268,7 +5268,7 @@ Object.assign(UNITS, {
    },
    {
     "ru": "Сейча́с о́сень. Сейча́с зима́.",
-    "en": "It's fall now. It's winter now.",
+    "en": "It’s fall now. It’s winter now.",
     "set": 1,
     "src": "C"
    }
@@ -5296,10 +5296,10 @@ Object.assign(UNITS, {
    {
     "who": "misha",
     "ru": "В ма́е? Отли́чно! Весно́й тепло́!",
-    "en": "In May? Great! It's warm in spring!"
+    "en": "In May? Great! It’s warm in spring!"
    },
    {
-    "q": "When is Mom's birthday?",
+    "q": "When is Mom’s birthday?",
     "options": [
      "in May",
      "in July",
@@ -5315,7 +5315,7 @@ Object.assign(UNITS, {
    {
     "who": "misha",
     "ru": "Ле́том жа́рко!",
-    "en": "It's hot in summer!"
+    "en": "It’s hot in summer!"
    },
    {
     "who": "tima",
@@ -5325,7 +5325,7 @@ Object.assign(UNITS, {
    {
     "who": "misha",
     "ru": "Зимо́й хо́лодно!",
-    "en": "It's cold in winter!"
+    "en": "It’s cold in winter!"
    },
    {
     "q": "Who has a birthday in July?",
@@ -5396,19 +5396,19 @@ Object.assign(UNITS, {
    },
    {
     "q": "Ле́том жа́рко?",
-    "hint": "Say: yes, it's hot in summer",
+    "hint": "Say: yes, it’s hot in summer",
     "pic": "☀️",
     "a": "Да, ле́том жа́рко."
    },
    {
     "q": "Зимо́й хо́лодно?",
-    "hint": "Say: yes, it's cold in winter",
+    "hint": "Say: yes, it’s cold in winter",
     "pic": "❄️",
     "a": "Да, зимо́й хо́лодно."
    },
    {
     "q": "Весно́й тепло́?",
-    "hint": "Say: yes, it's warm in spring",
+    "hint": "Say: yes, it’s warm in spring",
     "pic": "🌷",
     "a": "Да, весно́й тепло́."
    },
@@ -5420,7 +5420,7 @@ Object.assign(UNITS, {
    },
    {
     "q": "Сейча́с зима́?",
-    "hint": "Say: yes, it's winter now",
+    "hint": "Say: yes, it’s winter now",
     "pic": "❄️",
     "a": "Да, сейча́с зима́."
    }
@@ -5437,9 +5437,9 @@ let UNIT_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 1
   [12, {"ru": "Я живу́ здесь, в Аме́рике.", "en": "I live here, in America.", "set": 1, "src": "C"}],
   [12, {"ru": "Я говорю́ по-ру́сски.", "en": "I speak Russian.", "set": 1, "src": "C"}],
   [13, {"ru": "Что де́лает па́па?", "en": "What is Dad doing?", "set": 1, "src": "C"}],
-  [15, {"ru": "Тебе не хо́лодно?", "en": "Aren't you cold?", "set": 1, "src": "C"}],
+  [15, {"ru": "Тебе не хо́лодно?", "en": "Aren’t you cold?", "set": 1, "src": "C"}],
   [17, {"ru": "Что боли́т?", "en": "What hurts?", "set": 1, "src": "C"}],
-  [18, {"ru": "Я здесь!", "en": "I'm here!", "set": 1, "src": "C"}]
+  [18, {"ru": "Я здесь!", "en": "I’m here!", "set": 1, "src": "C"}]
 ].forEach(([u, s]) => UNITS[u].sentences.push(s));
 
 /* “Answer Ми́ша” role-plays: he asks, the child answers out loud */
@@ -5865,7 +5865,7 @@ studio:[
 "The ruler and the eraser had an argument. The eraser won. The drawing looks great.",
 "The designer hummed a Russian song while drawing. The lines came out extra smooth.",
 "Your idea was so good that the whole studio clapped. Even the plant.",
-"The designer tried the colours on a paper chipmunk first. He looked fabulous.",
+"The designer tried the colors on a paper chipmunk first. He looked fabulous.",
 "Someone spilled cocoa on the plan. It made the perfect brown for the details!",
 "The studio dog guarded your sketch all night. Not one crumb touched it.",
 "The designer drew your item upside down by mistake. It looked cool that way too.",
@@ -5873,7 +5873,7 @@ studio:[
 "The sketch was pinned on the wall of fame. Right next to the golden acorn.",
 "The designer counted every stripe on Ми́ша’s tail to make sure it fits. Seven!",
 "A tiny ladybug walked across the drawing and left a little dot. It’s now a signature.",
-"The colour pencils lined up from lightest to darkest, just for your order.",
+"The color pencils lined up from lightest to darkest, just for your order.",
 "The designer’s glasses fogged up from excitement. She wiped them and kept going.",
 "Three designers wanted to draw your item. They took turns. Everyone was happy.",
 "The plan was checked with a magnifying glass. Every line is perfect.",
@@ -6269,7 +6269,7 @@ const SCENES = {
   pirate:{t:["You found the treasure!","Land ahoy, captain!","X marks the spot!","Arrr, that was brilliant!","The parrot says: “Smart! Smart!”","Gold coins for the captain!","Walk the plank? No, walk the path!","The treasure chest is full of stars!","Shiver me timbers, what a level!","The whole crew is cheering!"]},
   chef:{t:["A tasty lesson!","Cooked to perfection!","Chef’s kiss! 👌","Five stars from the food critic!","Freshly baked brain power!","Just the right amount of genius!","Soup’s on, and so are you!","Nothing burnt. Everything brilliant!","Seconds, please!","Whisked, mixed and nailed it!"]},
   knight:{t:["Brave and strong!","Quest complete, sir knight!","You fought hard and won!","The dragon ran away crying!","Shields up, mistakes down!","Your armour is extra shiny today!","A true hero never gives up!","The castle gates open for you!","The horse is doing a happy dance!","Hard battle. Glorious win!"]},
-  artist:{t:["A masterpiece!","You painted it perfectly!","What an artist!","This belongs in a museum!","Every stroke, just right!","The paintbrush wants a selfie with you!","Colourful and correct!","Art critics are speechless!","Frame it! Hang it! Admire it!","Picasso is calling for tips!"]},
+  artist:{t:["A masterpiece!","You painted it perfectly!","What an artist!","This belongs in a museum!","Every stroke, just right!","The paintbrush wants a selfie with you!","Colorful and correct!","Art critics are speechless!","Frame it! Hang it! Admire it!","Picasso is calling for tips!"]},
   scientist:{t:["Brilliant brain!","Experiment: success!","Genius at work!","Eureka!","The results are… amazing!","Your brain just glowed green!","Hypothesis: you’re a genius. Confirmed!","Lab coat: on. Mistakes: gone!","Science says: well done!","The test tubes are bubbling with pride!"]},
   karate:{t:["Hi-yah! Combo master!","Black-belt brain!","Unstoppable!","Chop! Chop! Correct!","You kicked those questions!","The board broke. The record too!","Focus of a ninja!","One more combo and the dojo is yours!","Fast hands, faster brain!","Bow to the master!"]},
   explorer:{t:["New land discovered!","What an explorer!","Adventure complete!","The map just got bigger!","Compass says: awesome!","Through the jungle and out the other side!","Every path leads to more fun!","Plant the flag! You made it!","Your backpack is full of new words!","The mountains say “wow”!"]},
@@ -6299,7 +6299,7 @@ const SCENES = {
   es_pirate:{t:["Treasure found, captain!", "X marks the smart spot!", "The parrot says: ¡muy bien!", "Gold coins for the whole crew!", "Sail on, brave captain!", "The map led straight to you!", "Ahoy! A new level on the horizon!", "The treasure chest is overflowing!", "Caribbean waves of applause!", "Captain’s log: another win!"]},
   es_paella:{t:["A perfect paella of words!", "Cooked just right!", "Every grain of rice in place!", "Chef’s kiss! 👌", "Smells like success!", "A big pan of brain power!", "Seconds, please!", "The secret ingredient? You!", "Stirred, simmered and served!", "Five stars from the kitchen!"]},
   es_quijote:{t:["Brave as a knight!", "You charged ahead and won!", "No windmill can stop you!", "A true adventurer never gives up!", "Lance up, chin up!", "That was a real quest!", "Bravery level: legendary!", "The windmill waves its arms in surrender!", "Onward, noble knight!", "Tough road, heroic finish!"]},
-  es_mosaic:{t:["A masterpiece, piece by piece!", "Every tile in the right place!", "Colourful and correct!", "The lizard is proud of you!", "Bit by bit, it all fits!", "Museum-worthy work!", "You built something beautiful!", "Patience makes art!", "Tiny pieces, big picture!", "The art gallery wants this one!"]},
+  es_mosaic:{t:["A masterpiece, piece by piece!", "Every tile in the right place!", "Colorful and correct!", "The lizard is proud of you!", "Bit by bit, it all fits!", "Museum-worthy work!", "You built something beautiful!", "Patience makes art!", "Tiny pieces, big picture!", "The art gallery wants this one!"]},
   es_naturalist:{t:["A great discovery!", "Note it down: you’re brilliant!", "The tortoise gives you a slow, proud nod!", "Science says: well done!", "Careful work, great results!", "One step at a time, like the tortoise!", "Field notes: excellent!", "Curious mind, clever learner!", "This island is full of new words!", "Explorer’s journal: another good day!"]},
   es_futbol:{t:["¡Goooool!", "Straight into the net!", "What a kick!", "The stadium is on its feet!", "Fast feet, faster brain!", "Player of the match!", "Top corner! Unstoppable!", "The goalkeeper never saw it coming!", "Pass, shoot, score!", "The fans are chanting your name!"]},
   es_explorer:{t:["Into the rainforest!", "New words spotted!", "The toucan approves!", "Adventure complete!", "Binoculars ready: what’s next?", "Exploring like a pro!", "Every path leads somewhere new!", "The jungle is cheering!", "Map, binoculars, brain: all packed!", "Discovery of the day: you!"]},
@@ -7408,8 +7408,8 @@ function settings(){
     <label class="toggle">Sound effects<input type="checkbox" id="tSnd" ${S.sound?"checked":""}></label>
     <label class="toggle">Vibration<input type="checkbox" id="tVib" ${P.vibe!==false?"checked":""}></label>
     <label class="toggle">Full screen (hide the phone’s buttons)<input type="checkbox" id="tFull" ${P.full!==false?"checked":""}></label>
-    <h3>Colours</h3>
-    <div class="seg" role="group" aria-label="Colour theme">${[["light","☀️ Light"],["dark","🌙 Dark"],["auto","📱 Phone"]].map(([v,n]) => `<button data-theme-btn="${v}" aria-pressed="${(P.theme||"light")===v}">${n}</button>`).join("")}</div>
+    <h3>Colors</h3>
+    <div class="seg" role="group" aria-label="Color theme">${[["light","☀️ Light"],["dark","🌙 Dark"],["auto","📱 Phone"]].map(([v,n]) => `<button data-theme-btn="${v}" aria-pressed="${(P.theme||"light")===v}">${n}</button>`).join("")}</div>
     ${installPrompt && !isStandalone() ? `<h3>Install</h3><div><button class="btn" id="instBtn">📲 Install Mishaling as an app</button></div>` : ""}
     <h3>Offline</h3>
     <div><button class="btn ghost" id="offBtn">⬇ Voices for offline</button></div>
