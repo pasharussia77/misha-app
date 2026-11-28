@@ -1,0 +1,32 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Mishaling: phrases to teach</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><style>
+:root{--bg:#fbf6ee;--card:#fff;--ink:#2b1d10;--mute:#7a6650;--line:#e6d9c5;--acc:#8a4f1d;--ok:#2e7d32;--okb:#e3f1e3;--no:#8a6d3b;--nob:#efe6d6;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d1610;--card:#2a2018;--ink:#f1e6d6;--mute:#b3a08a;--line:#43362a;--acc:#e0a468;--ok:#8fd694;--okb:#233a26;--no:#d2b98c;--nob:#3a2f20}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;max-width:720px;margin:auto;padding:12px 14px 60px}
+h1{font-size:18px;margin:6px 0 2px}p.s{margin:0 0 10px;color:var(--mute);font-size:14px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:6px 0 8px;border-bottom:1px solid var(--line);font-size:14px;color:var(--mute);z-index:5}
+.c{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin:10px 0}.c.adopt{border-color:var(--ok);background:var(--okb)}.c.skip{border-color:var(--no);background:var(--nob)}
+.src{font-size:12px;color:var(--mute)}.ru{font-size:21px;font-weight:600;margin:2px 0}.en{color:var(--ink)}.why{font-size:14px;color:var(--mute);margin:4px 0}
+.btn{display:flex;gap:8px;margin-top:8px}button{flex:1;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:10px;font:inherit}
+button.on{background:var(--acc);color:var(--bg);border-color:var(--acc)}
+input{width:100%;margin-top:8px;padding:9px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit;font-size:15px}.sv{font-size:13px;color:var(--mute);min-height:18px}
+</style></head><body><h1>Phrases to teach</h1><p class="s">These phrases appear in stories but aren't taught yet. Adopt = we add it as a sentence so it is tested and reviewed. Skip = leave it as is. Anything you don't touch stays undecided.</p>
+<div class="bar" id="bar"></div><div id="l"></div>
+<script>
+const I=__ITEMS__;let S={},db=null;const L=document.getElementById('l');
+function lsLoad(){try{S=JSON.parse(localStorage.getItem('mishaling_phrases')||'{}')}catch(e){S={}}}function lsSave(){try{localStorage.setItem('mishaling_phrases',JSON.stringify(S))}catch(e){}}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function bar(){const a=Object.values(S).filter(x=>x.d=='adopt').length,k=Object.values(S).filter(x=>x.d=='skip').length;document.getElementById('bar').textContent=`${I.length} phrases · adopted ${a} · skipped ${k} · undecided ${I.length-a-k}`}
+function card(x){const s=S['p'+x.i]||{};return `<div class="c ${s.d||''}" id="c${x.i}"><div class="src">Unit ${x.unit} · suggested: ${esc(x.form)}</div><div class="ru">${x.ru}</div><div class="en">${esc(x.en)}</div><div class="why">${esc(x.why)}</div><div class="btn"><button data-i="${x.i}" data-d="adopt" class="${s.d=='adopt'?'on':''}">Adopt</button><button data-i="${x.i}" data-d="skip" class="${s.d=='skip'?'on':''}">Skip</button></div><input class="nt" data-i="${x.i}" placeholder="Note (optional, saves by itself)" value="${esc(s.note||'')}"><div class="sv" id="sv${x.i}">${s.note?'Saved ✓':''}</div></div>`}
+function render(){L.innerHTML=I.map(card).join('');bar()}
+async function persist(i,cb,expect){const k='p'+i,v=S[k];lsSave();if(!db){cb&&cb(false,'Saved on this phone only');return}const ref=db.doc('phrases/'+k);
+ try{if(v){await ref.set(v);if(cb){const g=await ref.get();const d=g&&(g.data?g.data():g);cb(!!d&&(d.note||'')===(expect||''),(d&&(d.note||'')===(expect||''))?'Saved ✓':'Not saved online. Try again.')}}else{await ref.delete();cb&&cb(true,'Saved ✓')}}catch(e){cb&&cb(false,'Not saved online: '+(e&&e.message||'error'))}}
+L.onclick=e=>{const b=e.target.closest('button[data-d]');if(!b)return;const i=+b.dataset.i,k='p'+i,cur=S[k]||{i,ru:I[i].ru.replace(/\u0301/g,''),unit:I[i].unit};
+ if(cur.d==b.dataset.d)delete cur.d;else cur.d=b.dataset.d;if(!cur.d&&!cur.note)delete S[k];else S[k]=cur;persist(i);render()};
+let t={};function saveNote(i){const el=document.querySelector('.nt[data-i="'+i+'"]');if(!el)return;const v=el.value.trim(),k='p'+i;const cur=S[k]||{i,ru:I[i].ru.replace(/\u0301/g,''),unit:I[i].unit};
+ if(v)cur.note=v;else delete cur.note;if(!cur.d&&!cur.note)delete S[k];else S[k]=cur;const sv=document.getElementById('sv'+i);if(sv)sv.textContent='Saving…';persist(i,(ok,m)=>{const e=document.getElementById('sv'+i);if(e)e.textContent=m},v);bar()}
+L.addEventListener('input',e=>{const x=e.target;if(x.classList.contains('nt')){const i=+x.dataset.i;clearTimeout(t[i]);const sv=document.getElementById('sv'+i);if(sv)sv.textContent='Typing…';t[i]=setTimeout(()=>saveNote(i),700)}});
+L.addEventListener('focusout',e=>{const x=e.target;if(x.classList.contains('nt')){const i=+x.dataset.i;clearTimeout(t[i]);saveNote(i)}});
+lsLoad();render();
+(async()=>{try{const c=window.claude&&await window.claude.use('db');if(!c)return;db=c;const snap=await db.collection('phrases').get();snap.docs.forEach(d=>{S[d.id]=JSON.parse(JSON.stringify(d.data()))});lsSave();render()}catch(e){}})();
+</script></body></html>

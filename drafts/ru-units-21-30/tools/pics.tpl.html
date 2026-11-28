@@ -1,0 +1,46 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Mishaling: pictures for units 21–30</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><style>
+:root{--bg:#fbf6ee;--card:#fff;--ink:#2b1d10;--mute:#7a6650;--line:#e6d9c5;--acc:#8a4f1d;--on:#f3e3cc;--warn:#b45309;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d1610;--card:#2a2018;--ink:#f1e6d6;--mute:#b3a08a;--line:#43362a;--acc:#e0a468;--on:#3b2b1c;--warn:#f0b36a}}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 110px)}*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;max-width:720px;margin:auto}
+header{padding:12px 14px 0}h1{font-size:18px;margin:0}p.s{margin:2px 0 8px;color:var(--mute);font-size:13px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;padding:6px 12px 8px;border-bottom:1px solid var(--line)}
+nav{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px}nav button{flex:0 0 auto;padding:6px 11px;font-size:15px}
+button{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:9px 12px;font:inherit}button.on,nav button[aria-pressed=true]{background:var(--acc);color:var(--bg);border-color:var(--acc)}
+.sum{font-size:13px;color:var(--mute)}main{padding:10px 14px 60px}h2{font-size:17px;margin:4px 0 8px}
+.c{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px;margin:9px 0}.c.chg{border-color:var(--acc);background:var(--on)}
+.top{display:flex;gap:10px;align-items:center}.em{font-size:30px;width:40px;text-align:center}.ru{font-size:20px;font-weight:600}.en{color:var(--mute);font-size:14px}
+.idea{margin:6px 0 2px;font-size:15px}.cf{font-size:13px;color:var(--warn);margin:2px 0}.th{display:flex;gap:8px;margin:6px 0}.th figure{margin:0;text-align:center;font-size:11px;color:var(--mute)}.th img{width:64px;height:64px;object-fit:contain;background:#fff;border-radius:8px;border:1px solid var(--line)}
+.opts{display:flex;gap:6px;margin-top:8px}.opts button{flex:1;padding:8px 4px;font-size:15px}.opts button.prop{border-style:dashed}
+input{width:100%;margin-top:8px;padding:9px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit;font-size:15px}.sv{font-size:13px;color:var(--mute);min-height:18px}
+</style></head><body><header><h1>Pictures for units 21–30</h1><p class="s">Each word has a proposal (dashed button). If you agree, do nothing. To change it, tap Draw, Reuse or None. Add a note if you want a different idea.</p></header>
+<div class="bar"><nav id="nav"></nav><div class="sum" id="sum"></div></div><main id="main"></main>
+<script>
+const U=__U__;let cu=0,S={},db=null;const nav=document.getElementById('nav'),main=document.getElementById('main');
+const MODES={draw:'Draw new',reuse:'Reuse',none:'No picture'};
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function lsLoad(){try{S=JSON.parse(localStorage.getItem('mishaling_pics')||'{}')}catch(e){S={}}}function lsSave(){try{localStorage.setItem('mishaling_pics',JSON.stringify(S))}catch(e){}}
+function mode(w){return (S[w.id]&&S[w.id].mode)||w.mode}
+function sum(){let c={draw:0,reuse:0,none:0},ch=0;U.forEach(u=>u.words.forEach(w=>{c[mode(w)]++;if(S[w.id]&&S[w.id].mode&&S[w.id].mode!==w.mode)ch++}));document.getElementById('sum').textContent=`All units: draw ${c.draw} · reuse ${c.reuse} · none ${c.none} · changed by you ${ch}`}
+U.forEach((u,i)=>{const b=document.createElement('button');b.textContent=u.u;b.dataset.i=i;nav.appendChild(b)});
+function card(w){const s=S[w.id]||{},m=mode(w),chg=s.mode&&s.mode!==w.mode||s.note;
+ return `<div class="c ${chg?'chg':''}"><div class="top"><span class="em">${w.emoji}</span><div><div class="ru">${w.ru}</div><div class="en">${esc(w.en)}</div></div></div>
+ <div class="idea">${esc(w.idea)}</div>${w.conf?`<div class="cf">⚠ ${esc(w.conf)}</div>`:''}
+ ${w.ex.length?`<div class="th">${w.ex.map(e=>`<figure><img src="${e.src}" alt=""><br>${esc(e.label)}</figure>`).join('')}</div>`:''}
+ <div class="opts">${Object.keys(MODES).map(k=>`<button data-id="${w.id}" data-m="${k}" class="${m==k?'on':''} ${w.mode==k?'prop':''}">${MODES[k]}${w.mode==k?' ★':''}</button>`).join('')}</div>
+ <input class="nt" data-id="${w.id}" placeholder="Note (optional, saves by itself)" value="${esc(s.note||'')}"><div class="sv" id="sv_${w.id}">${s.note?'Saved ✓':''}</div></div>`}
+function render(){[...nav.children].forEach((b,i)=>b.setAttribute('aria-pressed',i==cu));const u=U[cu];main.innerHTML=`<h2>Unit ${u.u}: ${esc(u.t)}</h2><p class="s">★ = my proposal. Highlighted = current choice.</p>`+u.words.map(card).join('');sum()}
+nav.onclick=e=>{const b=e.target.closest('button');if(!b)return;cu=+b.dataset.i;render();window.scrollTo(0,0)};
+async function persist(id,cb,expect){const v=S[id];lsSave();if(!db){cb&&cb(false,'Saved on this phone only');return}const ref=db.doc('pics/'+id);
+ try{if(v){await ref.set(v);if(cb){const g=await ref.get();const d=g&&(g.data?g.data():g);const ok=!!d&&(d.note||'')===(expect||'');cb(ok,ok?'Saved ✓':'Not saved online. Try again.')}}else{await ref.delete();cb&&cb(true,'Saved ✓')}}catch(e){cb&&cb(false,'Not saved online: '+(e&&e.message||'error'))}}
+function find(id){for(const u of U)for(const w of u.words)if(w.id===id)return w}
+main.onclick=e=>{const b=e.target.closest('button[data-m]');if(!b)return;const id=b.dataset.id,w=find(id),cur=S[id]||{id,ru:w.plain,unit:w.unit};
+ if(b.dataset.m===w.mode)delete cur.mode;else cur.mode=b.dataset.m;if(!cur.mode&&!cur.note)delete S[id];else S[id]=cur;persist(id);const y=window.scrollY;render();window.scrollTo(0,y)};
+let t={};function saveNote(id){const el=document.querySelector('.nt[data-id="'+id+'"]');if(!el)return;const v=el.value.trim(),w=find(id),cur=S[id]||{id,ru:w.plain,unit:w.unit};if(v)cur.note=v;else delete cur.note;
+ if(!cur.mode&&!cur.note)delete S[id];else S[id]=cur;const sv=document.getElementById('sv_'+id);if(sv)sv.textContent='Saving…';persist(id,(ok,m)=>{const e=document.getElementById('sv_'+id);if(e)e.textContent=m},v);sum()}
+main.addEventListener('input',e=>{const x=e.target;if(x.classList.contains('nt')){const id=x.dataset.id;clearTimeout(t[id]);const sv=document.getElementById('sv_'+id);if(sv)sv.textContent='Typing…';t[id]=setTimeout(()=>saveNote(id),700)}});
+main.addEventListener('focusout',e=>{const x=e.target;if(x.classList.contains('nt')){const id=x.dataset.id;clearTimeout(t[id]);saveNote(id)}});
+lsLoad();render();
+(async()=>{try{const c=window.claude&&await window.claude.use('db');if(!c)return;db=c;const snap=await db.collection('pics').get();snap.docs.forEach(d=>{S[d.id]=JSON.parse(JSON.stringify(d.data()))});lsSave();render()}catch(e){}})();
+</script></body></html>

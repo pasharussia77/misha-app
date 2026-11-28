@@ -1,0 +1,26 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Mishaling: new pictures review</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><style>
+:root{--bg:#fbf6ee;--card:#fff;--ink:#2b1d10;--mute:#7a6650;--line:#e6d9c5;--acc:#8a4f1d;--bad:#c0392b;--badb:#fbe3df;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d1610;--card:#2a2018;--ink:#f1e6d6;--mute:#b3a08a;--line:#43362a;--acc:#e0a468;--bad:#ff8a7a;--badb:#4a2622}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;max-width:720px;margin:auto;padding:12px 14px 60px}
+h1{font-size:18px;margin:6px 0 2px}p.s{margin:0 0 10px;color:var(--mute);font-size:14px}.bar{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:6px 0 8px;border-bottom:1px solid var(--line);font-size:14px;color:var(--mute);z-index:5}
+.c{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;margin:10px 0}.c.redo{border-color:var(--bad);background:var(--badb)}
+.c img{width:100%;max-width:420px;display:block;margin:0 auto;border-radius:8px;background:#fff}.ru{font-size:20px;font-weight:600;margin-top:6px}.en{color:var(--mute);font-size:14px}
+button{width:100%;margin-top:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:10px;font:inherit}button.on{background:var(--bad);color:#fff;border-color:var(--bad)}
+input{width:100%;margin-top:8px;padding:9px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit;font-size:15px}.sv{font-size:13px;color:var(--mute);min-height:18px}
+</style></head><body><h1>New pictures: review</h1><p class="s">Unflagged = good. Tap “Redo this one” and describe what to change in the note.</p><div class="bar" id="bar"></div><div id="l"></div>
+<script>
+const I=__ITEMS__;let S={},db=null;const L=document.getElementById('l');
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function lsLoad(){try{S=JSON.parse(localStorage.getItem('mishaling_picrev')||'{}')}catch(e){S={}}}function lsSave(){try{localStorage.setItem('mishaling_picrev',JSON.stringify(S))}catch(e){}}
+function bar(){document.getElementById('bar').textContent=`${I.length} pictures · to redo: ${Object.values(S).filter(x=>x.redo).length} · with notes: ${Object.values(S).filter(x=>x.note).length}`}
+function render(){L.innerHTML=I.map(x=>{const s=S[x.id]||{};return `<div class="c ${s.redo?'redo':''}"><img src="${x.src}" alt=""><div class="ru">${esc(x.ru)}</div><div class="en">${esc(x.en)}</div><button data-id="${x.id}" class="${s.redo?'on':''}">${s.redo?'Redo: flagged':'Redo this one'}</button><input class="nt" data-id="${x.id}" placeholder="Note (saves by itself)" value="${esc(s.note||'')}"><div class="sv" id="sv_${x.id}">${s.note?'Saved ✓':''}</div></div>`}).join('');bar()}
+async function persist(id,cb,expect){const v=S[id];lsSave();if(!db){cb&&cb(false,'Saved on this phone only');return}const ref=db.doc('picreview/'+id);
+ try{if(v){await ref.set(v);if(cb){const g=await ref.get();const d=g&&(g.data?g.data():g);const ok=!!d&&(d.note||'')===(expect||'');cb(ok,ok?'Saved ✓':'Not saved online. Try again.')}}else{await ref.delete();cb&&cb(true,'Saved ✓')}}catch(e){cb&&cb(false,'Not saved online: '+(e&&e.message||'error'))}}
+L.onclick=e=>{const b=e.target.closest('button[data-id]');if(!b)return;const id=b.dataset.id,cur=S[id]||{id};if(cur.redo)delete cur.redo;else cur.redo=true;if(!cur.redo&&!cur.note)delete S[id];else S[id]=cur;persist(id);const y=scrollY;render();scrollTo(0,y)};
+let t={};function saveNote(id){const el=document.querySelector('.nt[data-id="'+id+'"]');if(!el)return;const v=el.value.trim(),cur=S[id]||{id};if(v)cur.note=v;else delete cur.note;if(!cur.redo&&!cur.note)delete S[id];else S[id]=cur;const sv=document.getElementById('sv_'+id);if(sv)sv.textContent='Saving…';persist(id,(ok,m)=>{const e=document.getElementById('sv_'+id);if(e)e.textContent=m},v);bar()}
+L.addEventListener('input',e=>{const x=e.target;if(x.classList.contains('nt')){const id=x.dataset.id;clearTimeout(t[id]);const sv=document.getElementById('sv_'+id);if(sv)sv.textContent='Typing…';t[id]=setTimeout(()=>saveNote(id),700)}});
+L.addEventListener('focusout',e=>{const x=e.target;if(x.classList.contains('nt')){const id=x.dataset.id;clearTimeout(t[id]);saveNote(id)}});
+lsLoad();render();
+(async()=>{try{const c=window.claude&&await window.claude.use('db');if(!c)return;db=c;const snap=await db.collection('picreview').get();snap.docs.forEach(d=>{S[d.id]=JSON.parse(JSON.stringify(d.data()))});lsSave();render()}catch(e){}})();
+</script></body></html>
