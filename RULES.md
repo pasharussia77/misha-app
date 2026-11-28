@@ -113,6 +113,14 @@ Recorded Nov 26 2026 from the earlier picture-redesign chats (how the existing ~
 - Gender pairs: the phone is masculine and the bag is feminine, in both courses. Feminine forms (e.g. читала) use Mom or Grandma (Galina's choice, Nov 26 2026).
 - Look-alike pictures never appear together as answer choices.
 - Emoji: if the emoji reads clearly, redraw it in the app style; if it suggests another word, draw a new picture.
+- Added Nov 27-28 2026 (Galina, units 21-30 pictures):
+  - Tima is ALWAYS drawn upright on his two hind legs, whatever he is doing (walking, writing, singing), front paws free.
+  - Infinitive verbs and other "activity, not a person" pictures use a FACELESS outline person (blank head: no eyes, nose or mouth), focus on the action (e.g. head with a microphone, figure holding a camera). Not Misha, not a named character. Same for a person at a screen: shown from behind so the screen and console are in focus.
+  - Misha / pointing / Tima rule stays for I / you / he forms. When the verb is about performing (sing), Misha holds the prop (a microphone) and points it at the viewer for «you» and at Tima for «he».
+  - Raising a hand in class = the whole hand raised, never a pointing finger.
+  - Do not draw a real brand or game character (a game screen is abstract shapes). Do not use a picture of a book as the style reference (open-book framing leaks into other pictures); use the neutral apple picture as style reference.
+  - Places drawn for the app should look real and detailed, not like a toy playset; «in X» pictures show the place with Misha small inside it.
+  - Past tense, question words, months and a few others have no picture (see the units 21-30 plan).
 - Process for new units: first an analysis page marking each word redraw / new / no picture, compared against all existing pictures for conflicts (Galina reviews by tapping); then 1-3 test pictures, estimated cost stated, then the batch; show every picture in the same message it is generated; needs an OpenAI key (pasted per session). Never draw before the unit's text is approved.
 
 ## 7. App and course facts
